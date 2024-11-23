@@ -3,4 +3,4 @@ const nextConfig = {
   output: 'standalone'};
 
 module.export = nextConfig
-/export default nextConfig;
+//export default nextConfig;

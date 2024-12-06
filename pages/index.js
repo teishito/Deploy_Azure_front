@@ -1,139 +1,85 @@
 import { useState } from 'react';
 
 export default function Home() {
-
-  //GETリクエストを送信
+  // GETリクエスト（/api/hello）用の状態
   const [getResponse, setGetResponse] = useState('');
 
   const handleGetRequest = async () => {
     const res = await fetch('https://tech0-gen-8-step3-app-py-10.azurewebsites.net/api/hello', {
-    //const res = await fetch('https://tech0-gen-8-step3-testapp-py2-19.azurewebsites.net/api/hello', {
       method: 'GET',
     });
     const data = await res.json();
 
-
-    // GETリクエストの結果をコンソールに表示
+    // GETリクエストの結果を更新
     console.log("GETリクエストの結果:", data.message);
-
     setGetResponse(data.message);
   };
 
-  //動的なGETリクエストの送信
-  const [id, setId] = useState('');
-  const [idResponse, setIdResponse] = useState('');
+  // ホームエンドポイント（/）用の状態
+  const [homeResponse, setHomeResponse] = useState('');
 
-  // IDを指定してGETリクエストを送信
-  const handleIdRequest = async (e) => {
-    e.preventDefault();
-
-    const res = await fetch(`https://tech0-gen-8-step3-app-py-10.azurewebsites.net/api/multiply/${id}`, {
-    //const res = await fetch(`https://tech0-gen-8-step3-testapp-py2-19.azurewebsites.net/api/multiply/${id}`, {
+  const fetchHome = async () => {
+    const res = await fetch('https://tech0-gen-8-step3-app-py-10.azurewebsites.net/', {
       method: 'GET',
     });
     const data = await res.json();
 
-    // IDリクエストの結果をコンソールに表示
-    console.log("IDリクエストの結果:", data.doubled_value);
-
-    setIdResponse(data.doubled_value);
+    // ホームエンドポイントの結果を更新
+    console.log("ホームエンドポイントの結果:", data.message);
+    setHomeResponse(data.message);
   };
 
-  //POSTリクエストを送信
-  const [input, setInput] = useState('');
-  const [postResponse, setPostResponse] = useState('');
+  // レストランデータ取得用の状態管理
+  const [restaurants, setRestaurants] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    //入力されたデータをコンソールに表示
-    console.log("入力情報:", input);
-
-    const res = await fetch('https://tech0-gen-8-step3-app-py-10.azurewebsites.net/api/echo', {
-    //const res = await fetch('https://tech0-gen-8-step3-testapp-py2-19.azurewebsites.net/api/echo', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ "message":input }),
-
-    });
-    console.log(JSON.stringify({ "message":input }));
-    const data = await res.json();
-
-    //バックエンドからのレスポンスをコンソールに表示
-    console.log("Backendからのお返事:", data.message);
-
-    setPostResponse(data.message);
+  const fetchRestaurants = async () => {
+    setLoading(true); // ローディング状態を設定
+    try {
+      const res = await fetch('https://tech0-gen-8-step3-app-py-10.azurewebsites.net/api/restaurants', {
+        method: 'GET',
+      });
+      const data = await res.json();
+      setRestaurants(data); // レストランデータを状態に保存
+    } catch (error) {
+      console.error("エラーが発生しました:", error);
+    } finally {
+      setLoading(false); // ローディング状態を解除
+    }
   };
-
-  //POSTリクエストを送信
-  const [translateInput, setTranslateInput] = useState('');
-  const [translateResponse, setTranslateResponse] = useState('');
-
-  // 翻訳リクエストを送信する関数
-  const handleTranslateSubmit = async (e) => {
-    e.preventDefault();
-
-    const res = await fetch('https://tech0-gen-8-step3-app-py-10.azurewebsites.net/api/translate', {
-    //const res = await fetch('https://tech0-gen-8-step3-testapp-py2-19.azurewebsites.net/api/translate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ "text": translateInput }),
-    });
-
-    const data = await res.json();
-    setTranslateResponse(data.translated_text);
-  };  
 
   return (
     <div>
-
       <h1>Next.jsとFlaskの連携アプリ</h1>
 
+      {/* ホームエンドポイント */}
+      <h2>Flaskサーバーの起動確認</h2>
+      <button onClick={fetchHome}>ホームエンドポイントにアクセス</button>
+      {homeResponse && <p>サーバーからの応答: {homeResponse}</p>}
+
+      {/* GETリクエスト */}
       <h2>GETリクエストを送信</h2>
       <button onClick={handleGetRequest}>GETリクエストを送信</button>
       {getResponse && <p>サーバーからのGET応答: {getResponse}</p>}
 
-      <h2>IDを指定してGETリクエストを送信</h2>
-      <form onSubmit={handleIdRequest}>
-        <input
-          type="number"
-          value={id}
-          onChange={(e) => setId(e.target.value)}
-          placeholder="IDを入力してください"
-        />
-        <button type="submit">送信</button>
-      </form>
-      {idResponse && <p>Flaskからの応答: {idResponse}</p>}
-
-      <h2>POSTリクエストを送信</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={input}
-
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="テキストを入力してください"
-        />
-
-        <button type="submit">送信</button>
-      </form>
-      {postResponse && <p>FlaskからのPOST応答: {postResponse}</p>}
-
-      <h2>翻訳リクエストを送信</h2>
-      <form onSubmit={handleTranslateSubmit}>
-        <input
-          type="text"
-          value={translateInput}
-          onChange={(e) => setTranslateInput(e.target.value)}
-          placeholder="翻訳する日本語テキストを入力してください"
-        />
-        <button type="submit">翻訳</button>
-      </form>
-      {translateResponse && <p>翻訳結果: {translateResponse}</p>}
+      {/* レストランデータ取得 */}
+      <h2>レストランデータを取得</h2>
+      <button onClick={fetchRestaurants}>レストラン情報を取得</button>
+      {loading && <p>データを取得中...</p>}
+      {restaurants.length > 0 && (
+        <div>
+          <h3>レストラン一覧</h3>
+          <ul>
+            {restaurants.map((restaurant, index) => (
+              <li key={index}>
+                <strong>{restaurant[1]}</strong> ({restaurant[2]})<br />
+                評価: {restaurant[3]} ({restaurant[4]}件のレビュー)<br />
+                <a href={restaurant[5]} target="_blank" rel="noopener noreferrer">食べログリンク</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 }

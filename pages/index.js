@@ -50,7 +50,7 @@ export default function Home() {
 
   return (
     <div>
-      <h1>Next.jsとFlaskの連携アプリ</h1>
+      <h1>Fortune-Dinner</h1>
 
       {/* ホームエンドポイント */}
       <h2>Flaskサーバーの起動確認</h2>

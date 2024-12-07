@@ -7,6 +7,7 @@ export default function Home() {
   const [restaurants, setRestaurants] = useState([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   // 検索条件
   const [area, setArea] = useState("");
@@ -24,20 +25,6 @@ export default function Home() {
     } catch (error) {
       console.error("ホームエンドポイントの取得中にエラー:", error);
       setHomeResponse("エラーが発生しました");
-    }
-  };
-
-  // GETリクエスト（/api/hello）
-  const handleGetRequest = async () => {
-    try {
-      const res = await fetch("https://tech0-gen-8-step3-app-py-10.azurewebsites.net/api/hello", {
-        method: "GET",
-      });
-      const data = await res.json();
-      setGetResponse(data.message || "エラーが発生しました");
-    } catch (error) {
-      console.error("GETリクエストの取得中にエラー:", error);
-      setGetResponse("エラーが発生しました");
     }
   };
 
@@ -77,75 +64,114 @@ export default function Home() {
   }, []);
 
   return (
-    <div>
-      <h1>Fortune-Dinner</h1>
-
-      {/* ホームエンドポイント */}
-      <h2>Flaskサーバーの起動確認</h2>
-      <button onClick={fetchHome}>ホームエンドポイントにアクセス</button>
-      {homeResponse && <p>サーバーからの応答: {homeResponse}</p>}
-
-      {/* GETリクエスト */}
-      <h2>GETリクエストを送信</h2>
-      <button onClick={handleGetRequest}>GETリクエストを送信</button>
-      {getResponse && <p>サーバーからのGET応答: {getResponse}</p>}
-
-      {/* 検索フォーム */}
-      <h2>検索条件を入力</h2>
-      <div>
-        <label>
-          エリア:
-          <select value={area} onChange={(e) => setArea(e.target.value)}>
-            <option value="">エリアを選択</option>
-            <option value="福岡">福岡</option>
-            <option value="博多">博多</option>
-          </select>
-        </label>
-      </div>
-      <div>
-        <label>
-          人数:
-          <input
-            type="number"
-            value={guests}
-            onChange={(e) => setGuests(e.target.value)}
-          />
-        </label>
-      </div>
-      <div>
-        <label>
-          ジャンル:
-          <select value={genre} onChange={(e) => setGenre(e.target.value)}>
-            <option value="">ジャンルを選択</option>
-            <option value="和食">和食</option>
-            <option value="洋食">洋食</option>
-          </select>
-        </label>
-      </div>
-      <button onClick={handleSearch}>検索</button>
-
-      {/* レストランデータ */}
-      <h2>レストランデータを取得</h2>
-      <button onClick={fetchRestaurants}>レストラン情報を取得</button>
-      {loading && <p>データを取得中...</p>}
-      {filteredRestaurants.length > 0 ? (
-        <div>
-          <h3>レストラン一覧</h3>
-          <ul>
-            {filteredRestaurants.map((restaurant, index) => (
-              <li key={index}>
-                <strong>{restaurant[1]}</strong> ({restaurant[2]})<br />
-                評価: {restaurant[3]} ({restaurant[4]}件のレビュー)<br />
-                <a href={restaurant[5]} target="_blank" rel="noopener noreferrer">
-                  食べログリンク
-                </a>
-              </li>
-            ))}
+    <div className="min-h-screen bg-black text-white">
+      <header className="bg-gray-900 p-4 flex justify-between items-center">
+        <h1 className="text-lg font-bold">FortuneDinner</h1>
+        <nav>
+          <ul className="flex space-x-4">
+            <li>予約・履歴</li>
+            <li>お気に入り</li>
+            <li>レポート</li>
           </ul>
-        </div>
-      ) : (
-        <p>条件に一致するレストランが見つかりませんでした。</p>
-      )}
+        </nav>
+      </header>
+
+      <main className="max-w-screen-lg mx-auto py-6 px-4">
+        <section className="bg-gray-800 p-6 rounded-lg mb-4">
+          <h2 className="text-xl font-bold">Flaskサーバーの起動確認</h2>
+          <button
+            onClick={fetchHome}
+            className="mt-2 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+          >
+            ホームエンドポイントにアクセス
+          </button>
+          {homeResponse && <p className="mt-4">{homeResponse}</p>}
+        </section>
+
+        <section className="bg-gray-800 p-6 rounded-lg mb-4">
+          <h2 className="text-xl font-bold">GETリクエスト</h2>
+          <button
+            onClick={handleGetRequest}
+            className="mt-2 bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
+          >
+            GETリクエストを送信
+          </button>
+          {getResponse && <p className="mt-4">{getResponse}</p>}
+        </section>
+
+        <section className="bg-gray-800 p-6 rounded-lg mb-4">
+          <h2 className="text-xl font-bold">検索条件を入力</h2>
+          <div className="flex flex-col space-y-4">
+            <label>
+              エリア:
+              <select
+                value={area}
+                onChange={(e) => setArea(e.target.value)}
+                className="block w-full mt-1 p-2 bg-gray-900 text-white border border-gray-700 rounded"
+              >
+                <option value="">エリアを選択</option>
+                <option value="福岡">福岡</option>
+                <option value="博多">博多</option>
+              </select>
+            </label>
+            <label>
+              人数:
+              <input
+                type="number"
+                value={guests}
+                onChange={(e) => setGuests(e.target.value)}
+                className="block w-full mt-1 p-2 bg-gray-900 text-white border border-gray-700 rounded"
+              />
+            </label>
+            <label>
+              ジャンル:
+              <select
+                value={genre}
+                onChange={(e) => setGenre(e.target.value)}
+                className="block w-full mt-1 p-2 bg-gray-900 text-white border border-gray-700 rounded"
+              >
+                <option value="">ジャンルを選択</option>
+                <option value="和食">和食</option>
+                <option value="洋食">洋食</option>
+              </select>
+            </label>
+            <button
+              onClick={handleSearch}
+              className="w-full bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600"
+            >
+              検索
+            </button>
+          </div>
+        </section>
+
+        <section className="bg-gray-800 p-6 rounded-lg mb-4">
+          <h2 className="text-xl font-bold">検索結果</h2>
+          {loading && <p>データを取得中...</p>}
+          {filteredRestaurants.length > 0 ? (
+            <ul className="space-y-4">
+              {filteredRestaurants.map((restaurant, index) => (
+                <li key={index} className="border p-4 rounded-md bg-gray-900 text-white">
+                  <h3 className="font-bold">{restaurant[1]}</h3>
+                  <p>住所: {restaurant[2]}</p>
+                  <p>
+                    評価: {restaurant[3]} ({restaurant[4]}件のレビュー)
+                  </p>
+                  <a
+                    href={restaurant[5]}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 underline"
+                  >
+                    食べログリンク
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>条件に一致するレストランが見つかりませんでした。</p>
+          )}
+        </section>
+      </main>
     </div>
   );
 }

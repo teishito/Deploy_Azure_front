@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 export default function Home() {
+  // 状態管理
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [area, setArea] = useState("指定なし");
@@ -9,10 +10,11 @@ export default function Home() {
 
   const BACKEND_URL = "https://tech0-gen-8-step3-app-py-10.azurewebsites.net";
 
+  // レストランデータ取得と検索の統合
   const handleSearch = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${BACKEND_URL}/api/search`, {
+      const res = await fetch(`${BACKEND_URL}/api/restaurants`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -23,9 +25,11 @@ export default function Home() {
           genre: genre === "指定なし" ? "" : genre,
         }),
       });
+
       if (!res.ok) {
         throw new Error("検索に失敗しました");
       }
+
       const data = await res.json();
       setSearchResults(data.results || []);
     } catch (error) {
@@ -36,34 +40,50 @@ export default function Home() {
     }
   };
 
+  // スタイル設定
+  const containerStyle = {
+    fontFamily: "'Arial', sans-serif",
+    backgroundColor: "#f5f5f5",
+    minHeight: "100vh",
+    padding: "20px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  };
+
+  const boxStyle = {
+    backgroundColor: "#fff",
+    borderRadius: "8px",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+    padding: "20px",
+    width: "100%",
+    maxWidth: "400px",
+    textAlign: "center",
+    marginBottom: "20px",
+  };
+
+  const buttonStyle = {
+    backgroundColor: "#007BFF",
+    color: "#fff",
+    padding: "10px",
+    border: "none",
+    borderRadius: "4px",
+    fontSize: "16px",
+    cursor: "pointer",
+    width: "100%",
+  };
+
   return (
-    <div
-      style={{
-        fontFamily: "'Arial', sans-serif",
-        backgroundColor: '#f5f5f5',
-        minHeight: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '20px',
-      }}
-    >
-      <div
-        style={{
-          backgroundColor: '#fff',
-          borderRadius: '8px',
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-          padding: '20px',
-          width: '100%',
-          maxWidth: '400px',
-        }}
-      >
-        <h1 style={{ fontSize: '24px', textAlign: 'center', color: '#333', marginBottom: '20px' }}>
+    <div style={containerStyle}>
+      {/* 検索フォーム */}
+      <div style={boxStyle}>
+        <h1 style={{ fontSize: "24px", color: "#333", marginBottom: "20px" }}>
           FortuneDinner
         </h1>
-        <h2 style={{ fontSize: '16px', marginBottom: '10px', color: '#555' }}>会食用のお店を検索</h2>
- 
+        <h2 style={{ fontSize: "16px", color: "#555", marginBottom: "20px" }}>
+          会食用のお店を検索
+        </h2>
         <div style={{ marginBottom: "10px" }}>
           <label>エリア</label>
           <select
@@ -115,44 +135,41 @@ export default function Home() {
             <option value="イタリアン">イタリアン</option>
           </select>
         </div>
-        <button
-          onClick={handleSearch}
-          style={{
-            backgroundColor: "#007BFF",
-            color: "#fff",
-            padding: "10px",
-            border: "none",
-            borderRadius: "4px",
-            fontSize: "16px",
-            cursor: "pointer",
-            width: "100%",
-          }}
-        >
+        <button onClick={handleSearch} style={buttonStyle}>
           検索する
         </button>
       </div>
 
-      <div
-        style={{
-          marginTop: "20px",
-          backgroundColor: "#fff",
-          borderRadius: "8px",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-          padding: "20px",
-          maxWidth: "600px",
-          margin: "20px auto",
-        }}
-      >
+      {/* 検索結果表示 */}
+      <div style={boxStyle}>
         <h2 style={{ fontSize: "20px", color: "#333", marginBottom: "10px" }}>
           検索結果
         </h2>
         {loading ? (
           <p style={{ textAlign: "center", color: "#555" }}>検索中...</p>
         ) : searchResults.length > 0 ? (
-          <ul>
+          <ul style={{ padding: 0, listStyleType: "none" }}>
             {searchResults.map((result, index) => (
-              <li key={index} style={{ marginBottom: "10px" }}>
-                {result.name} - {result.area} - ¥{result.price}
+              <li
+                key={index}
+                style={{
+                  marginBottom: "10px",
+                  padding: "10px",
+                  border: "1px solid #ddd",
+                  borderRadius: "4px",
+                  textAlign: "left",
+                }}
+              >
+                <strong>{result.name}</strong> ({result.area})<br />
+                評価: {result.rating} ({result.reviews}件のレビュー)<br />
+                <a
+                  href={result.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "#007BFF" }}
+                >
+                  食べログリンク
+                </a>
               </li>
             ))}
           </ul>
@@ -162,14 +179,14 @@ export default function Home() {
           </p>
         )}
       </div>
-    </div>
 
       {/* フッター */}
       <footer
         style={{
-          marginTop: '20px',
-          fontSize: '12px',
-          color: '#888',
+          marginTop: "20px",
+          fontSize: "12px",
+          color: "#888",
+          textAlign: "center",
         }}
       >
         © 2024 FortuneDinner. All rights reserved.

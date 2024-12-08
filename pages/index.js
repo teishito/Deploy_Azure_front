@@ -154,8 +154,14 @@ export default function Home() {
             }}
           >
             <option value="指定なし">指定なし</option>
-            <option value="東京">東京</option>
-            <option value="大阪">大阪</option>
+            <option value="福岡県福岡市中央区">福岡市中央区</option>
+            <option value="福岡県福岡市博多区">福岡市博多区</option>
+            <option value="福岡県福岡市早良区">福岡市早良区</option>
+            <option value="福岡県福岡市東区">福岡市東区</option>
+            <option value="福岡県福岡市南区">福岡市南区</option>
+            <option value="福岡県福岡市西区">福岡市西区</option>
+            <option value="福岡県福岡市城南区">福岡市城南区</option>
+            <option value="福岡県北九州市小倉北区">北九州市小倉北区</option>
           </select>
         </div>
         <div style={{ marginBottom: "10px" }}>
@@ -187,8 +193,35 @@ export default function Home() {
             }}
           >
             <option value="指定なし">指定なし</option>
-            <option value="和食">和食</option>
+            <option value="ビストロ">ビストロ</option>
+            <option value="焼き鳥">焼き鳥</option>
+            <option value="居酒屋">居酒屋</option>
+            <option value="寿司">寿司</option>
             <option value="イタリアン">イタリアン</option>
+            <option value="餃子">餃子</option>
+            <option value="焼肉">焼肉</option>
+            <option value="フレンチ">フレンチ</option>
+            <option value="日本料理">日本料理</option>
+            <option value="鍋">鍋</option>
+            <option value="鉄板焼き">鉄板焼き</option>
+            <option value="ステーキ">ステーキ</option>
+            <option value="串揚げ">串揚げ</option>
+            <option value="しゃぶしゃぶ">しゃぶしゃぶ</option>
+            <option value="レストラン">レストラン</option>
+            <option value="そば">そば</option>
+            <option value="海鮮">海鮮</option>
+            <option value="水炊き">水炊き</option>
+            <option value="ジンギスカン">ジンギスカン</option>
+            <option value="うなぎ">うなぎ</option>
+            <option value="肉料理">肉料理</option>
+            <option value="中華料理">中華料理</option>
+            <option value="すっぽん">すっぽん</option>
+            <option value="韓国料理">韓国料理</option>
+            <option value="インド料理">インド料理</option>
+            <option value="もつ鍋">もつ鍋</option>
+            <option value="鳥料理">鳥料理</option>
+            <option value="ラーメン">ラーメン</option>
+            <option value="ダイニングバー">ダイニングバー</option>
           </select>
 
        {/* 詳細検索リンク */}

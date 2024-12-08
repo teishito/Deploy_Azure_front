@@ -80,6 +80,13 @@ export default function Home() {
     }
   };
 
+  export default function Header() {
+    const [menuOpen, setMenuOpen] = useState(false);
+  
+    const toggleMenu = () => {
+      setMenuOpen(!menuOpen);
+    };
+  
   // スタイル設定
   const containerStyle = {
     fontFamily: "'Arial', sans-serif",
@@ -115,13 +122,94 @@ export default function Home() {
   };
 
   return (
+    <header
+      style={{
+        backgroundColor: "#000",
+        color: "#fff",
+        padding: "10px 20px",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}
+    >
+      {/* ロゴ */}
+      <h1
+        style={{
+          fontSize: "20px",
+          margin: 0,
+          fontWeight: "bold",
+        }}
+      >
+        FortuneDinner
+      </h1>
+
+      {/* ハンバーガーメニュー */}
+      <div style={{ position: "relative" }}>
+        <button
+          onClick={toggleMenu}
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+          }}
+        >
+          {/* ハンバーガーアイコン */}
+          <div
+            style={{
+              width: "25px",
+              height: "3px",
+              backgroundColor: "#fff",
+              margin: "4px 0",
+            }}
+          />
+          <div
+            style={{
+              width: "25px",
+              height: "3px",
+              backgroundColor: "#fff",
+              margin: "4px 0",
+            }}
+          />
+          <div
+            style={{
+              width: "25px",
+              height: "3px",
+              backgroundColor: "#fff",
+              margin: "4px 0",
+            }}
+          />
+        </button>
+
+        {/* ドロップダウンメニュー */}
+        {menuOpen && (
+          <ul
+            style={{
+              position: "absolute",
+              top: "40px",
+              right: 0,
+              backgroundColor: "#fff",
+              color: "#000",
+              listStyle: "none",
+              margin: 0,
+              padding: "10px",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+              borderRadius: "4px",
+              zIndex: 1000,
+            }}
+          >
+            <li style={{ padding: "8px 0" }}>予約・閲覧履歴</li>
+            <li style={{ padding: "8px 0" }}>お気に入り</li>
+            <li style={{ padding: "8px 0" }}>レポート</li>
+            <li style={{ padding: "8px 0" }}>マイページ</li>
+            <li style={{ padding: "8px 0" }}>プラン</li>
+            <li style={{ padding: "8px 0" }}>ログアウト</li>
+          </ul>
+        )}
+      </div>
+    </header>    
     <div style={containerStyle}>
       {/* 検索フォーム */}
       <div style={boxStyle}>
-        <h1 style={{ fontSize: "24px", color: "#333", marginBottom: "20px" }}>
-          FortuneDinner
-        </h1>
-
         {/* ホームエンドポイント */}
         <h2>Flaskサーバーの起動確認</h2>
         <button onClick={fetchHome} style={buttonStyle}>

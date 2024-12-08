@@ -12,7 +12,7 @@ export default function Home() {
 
   const BACKEND_URL = "https://tech0-gen-8-step3-app-py-10.azurewebsites.net";
 
-    // GETリクエスト（/api/hello）
+  // GETリクエスト（/api/hello）
   const handleGetRequest = async () => {
     try {
       const res = await fetch(`${BACKEND_URL}/api/hello`, {
@@ -23,6 +23,7 @@ export default function Home() {
       setGetResponse(data.message);
     } catch (error) {
       console.error("GETリクエストエラー:", error);
+      setGetResponse("エラーが発生しました");
     }
   };
 
@@ -37,6 +38,7 @@ export default function Home() {
       setHomeResponse(data.message);
     } catch (error) {
       console.error("ホームエンドポイントエラー:", error);
+      setHomeResponse("エラーが発生しました");
     }
   };
 
@@ -114,13 +116,25 @@ export default function Home() {
 
         {/* ホームエンドポイント */}
         <h2>Flaskサーバーの起動確認</h2>
-        <button onClick={fetchHome}>ホームエンドポイントにアクセス</button>
-        {homeResponse && <p>サーバーからの応答: {homeResponse}</p>}
-  
+        <button onClick={fetchHome} style={buttonStyle}>
+          ホームエンドポイントにアクセス
+        </button>
+        {homeResponse ? (
+          <p>サーバーからの応答: {homeResponse}</p>
+        ) : (
+          <p>応答を待機中...</p>
+        )}
+
         {/* GETリクエスト */}
         <h2>GETリクエストを送信</h2>
-        <button onClick={handleGetRequest}>GETリクエストを送信</button>
-        {getResponse && <p>サーバーからのGET応答: {getResponse}</p>}
+        <button onClick={handleGetRequest} style={buttonStyle}>
+          GETリクエストを送信
+        </button>
+        {getResponse ? (
+          <p>サーバーからのGET応答: {getResponse}</p>
+        ) : (
+          <p>応答を待機中...</p>
+        )}
 
         {/* レストランデータ取得 */}
         <h2 style={{ fontSize: "16px", color: "#555", marginBottom: "20px" }}>

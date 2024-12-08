@@ -109,6 +109,18 @@ export default function Home() {
         <h1 style={{ fontSize: "24px", color: "#333", marginBottom: "20px" }}>
           FortuneDinner
         </h1>
+
+        {/* ホームエンドポイント */}
+        <h2>Flaskサーバーの起動確認</h2>
+        <button onClick={fetchHome}>ホームエンドポイントにアクセス</button>
+        {homeResponse && <p>サーバーからの応答: {homeResponse}</p>}
+  
+        {/* GETリクエスト */}
+        <h2>GETリクエストを送信</h2>
+        <button onClick={handleGetRequest}>GETリクエストを送信</button>
+        {getResponse && <p>サーバーからのGET応答: {getResponse}</p>}
+
+        {/* レストランデータ取得 */}
         <h2 style={{ fontSize: "16px", color: "#555", marginBottom: "20px" }}>
           会食用のお店を検索
         </h2>

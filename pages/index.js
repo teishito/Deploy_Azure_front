@@ -174,6 +174,12 @@ export default function Home() {
             <option value="和食">和食</option>
             <option value="イタリアン">イタリアン</option>
           </select>
+
+       {/* 詳細検索リンク */}
+        <p style={{ fontSize: '14px', textAlign: 'right', color: '#007BFF', cursor: 'pointer', margin: '10px 0' }}>
+          詳細検索はこちら
+        </p>
+            
         </div>
         <button onClick={handleSearch} style={buttonStyle}>
           検索する

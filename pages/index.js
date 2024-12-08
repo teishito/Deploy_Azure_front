@@ -1,54 +1,41 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function Home() {
-  // GETリクエスト（/api/hello）用の状態
-  const [getResponse, setGetResponse] = useState('');
-
-  const handleGetRequest = async () => {
-    const res = await fetch('https://tech0-gen-8-step3-app-py-10.azurewebsites.net/api/hello', {
-      method: 'GET',
-    });
-    const data = await res.json();
-
-    // GETリクエストの結果を更新
-    console.log("GETリクエストの結果:", data.message);
-    setGetResponse(data.message);
-  };
-
-  // ホームエンドポイント（/）用の状態
-  const [homeResponse, setHomeResponse] = useState('');
-
-  const fetchHome = async () => {
-    const res = await fetch('https://tech0-gen-8-step3-app-py-10.azurewebsites.net/', {
-      method: 'GET',
-    });
-    const data = await res.json();
-
-    // ホームエンドポイントの結果を更新
-    console.log("ホームエンドポイントの結果:", data.message);
-    setHomeResponse(data.message);
-  };
-
-  // レストランデータ取得用の状態管理
-  const [restaurants, setRestaurants] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [area, setArea] = useState("指定なし");
+  const [people, setPeople] = useState(2);
+  const [genre, setGenre] = useState("指定なし");
 
-  const fetchRestaurants = async () => {
-    setLoading(true); // ローディング状態を設定
+  const BACKEND_URL = "https://tech0-gen-8-step3-app-py-10.azurewebsites.net";
+
+  const handleSearch = async () => {
+    setLoading(true);
     try {
-      const res = await fetch('https://tech0-gen-8-step3-app-py-10.azurewebsites.net/api/restaurants', {
-        method: 'GET',
+      const res = await fetch(`${BACKEND_URL}/api/search`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          area: area === "指定なし" ? "" : area,
+          people,
+          genre: genre === "指定なし" ? "" : genre,
+        }),
       });
+      if (!res.ok) {
+        throw new Error("検索に失敗しました");
+      }
       const data = await res.json();
-      setRestaurants(data); // レストランデータを状態に保存
+      setSearchResults(data.results || []);
     } catch (error) {
-      console.error("エラーが発生しました:", error);
+      console.error("検索エラー:", error);
+      alert("検索中にエラーが発生しました");
     } finally {
-      setLoading(false); // ローディング状態を解除
+      setLoading(false);
     }
   };
-  
-  
+
   return (
     <div
       style={{
@@ -58,7 +45,6 @@ export default function Home() {
         padding: "20px",
       }}
     >
-      {/* 検索フォーム */}
       <div
         style={{
           backgroundColor: "#fff",
@@ -141,7 +127,6 @@ export default function Home() {
         </button>
       </div>
 
-      {/* 検索結果表示 */}
       <div
         style={{
           marginTop: "20px",
@@ -156,18 +141,6 @@ export default function Home() {
         <h2 style={{ fontSize: "20px", color: "#333", marginBottom: "10px" }}>
           検索結果
         </h2>
-        <div
-          style={{
-            marginBottom: "20px",
-            padding: "10px",
-            border: "1px solid #ccc",
-            borderRadius: "8px",
-          }}
-        >
-          <p style={{ margin: "5px 0" }}>エリア: {area}</p>
-          <p style={{ margin: "5px 0" }}>人数: {people}人</p>
-          <p style={{ margin: "5px 0" }}>ジャンル: {genre}</p>
-        </div>
         {loading ? (
           <p style={{ textAlign: "center", color: "#555" }}>検索中...</p>
         ) : searchResults.length > 0 ? (

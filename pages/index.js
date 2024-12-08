@@ -10,7 +10,35 @@ export default function Home() {
 
   const BACKEND_URL = "https://tech0-gen-8-step3-app-py-10.azurewebsites.net";
 
-  // レストランデータ取得と検索の統合
+    // GETリクエスト（/api/hello）
+  const handleGetRequest = async () => {
+    try {
+      const res = await fetch(`${BACKEND_URL}/api/hello`, {
+        method: "GET",
+      });
+      const data = await res.json();
+      console.log("GETリクエストの結果:", data.message);
+      setGetResponse(data.message);
+    } catch (error) {
+      console.error("GETリクエストエラー:", error);
+    }
+  };
+
+  // ホームエンドポイント（/）
+  const fetchHome = async () => {
+    try {
+      const res = await fetch(`${BACKEND_URL}/`, {
+        method: "GET",
+      });
+      const data = await res.json();
+      console.log("ホームエンドポイントの結果:", data.message);
+      setHomeResponse(data.message);
+    } catch (error) {
+      console.error("ホームエンドポイントエラー:", error);
+    }
+  };
+
+  // レストランデータ取得（/api/restaurants）
   const handleSearch = async () => {
     setLoading(true);
     try {

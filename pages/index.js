@@ -7,6 +7,8 @@ export default function Home() {
   const [area, setArea] = useState("指定なし");
   const [people, setPeople] = useState(2);
   const [genre, setGenre] = useState("指定なし");
+  const [getResponse, setGetResponse] = useState(""); // GETリクエストの応答
+  const [homeResponse, setHomeResponse] = useState(""); // ホームエンドポイントの応答
 
   const BACKEND_URL = "https://tech0-gen-8-step3-app-py-10.azurewebsites.net";
 

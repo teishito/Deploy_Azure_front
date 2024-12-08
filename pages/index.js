@@ -2,25 +2,29 @@ import { useState } from "react";
 
 export default function Home() {
   // 状態管理
+  const [getResponse, setGetResponse] = useState(""); // GETリクエストの応答
+  const [homeResponse, setHomeResponse] = useState(""); // ホームエンドポイントの応答
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [area, setArea] = useState("指定なし");
   const [people, setPeople] = useState(2);
   const [genre, setGenre] = useState("指定なし");
-  const [getResponse, setGetResponse] = useState(""); // GETリクエストの応答
-  const [homeResponse, setHomeResponse] = useState(""); // ホームエンドポイントの応答
 
   const BACKEND_URL = "https://tech0-gen-8-step3-app-py-10.azurewebsites.net";
 
   // GETリクエスト（/api/hello）
   const handleGetRequest = async () => {
     try {
+      console.log("GETリクエストを送信します...");
       const res = await fetch(`${BACKEND_URL}/api/hello`, {
         method: "GET",
       });
+      if (!res.ok) {
+        throw new Error(`GETリクエストが失敗しました: ${res.status}`);
+      }
       const data = await res.json();
-      console.log("GETリクエストの結果:", data.message);
-      setGetResponse(data.message);
+      console.log("GETリクエストの結果:", data);
+      setGetResponse(data.message || "応答の形式が不正です");
     } catch (error) {
       console.error("GETリクエストエラー:", error);
       setGetResponse("エラーが発生しました");
@@ -30,12 +34,16 @@ export default function Home() {
   // ホームエンドポイント（/）
   const fetchHome = async () => {
     try {
+      console.log("ホームエンドポイントにアクセスします...");
       const res = await fetch(`${BACKEND_URL}/`, {
         method: "GET",
       });
+      if (!res.ok) {
+        throw new Error(`ホームエンドポイントが失敗しました: ${res.status}`);
+      }
       const data = await res.json();
-      console.log("ホームエンドポイントの結果:", data.message);
-      setHomeResponse(data.message);
+      console.log("ホームエンドポイントの結果:", data);
+      setHomeResponse(data.message || "応答の形式が不正です");
     } catch (error) {
       console.error("ホームエンドポイントエラー:", error);
       setHomeResponse("エラーが発生しました");
@@ -46,6 +54,7 @@ export default function Home() {
   const handleSearch = async () => {
     setLoading(true);
     try {
+      console.log("レストランデータを検索します...");
       const res = await fetch(`${BACKEND_URL}/api/restaurants`, {
         method: "POST",
         headers: {
@@ -57,12 +66,11 @@ export default function Home() {
           genre: genre === "指定なし" ? "" : genre,
         }),
       });
-
       if (!res.ok) {
-        throw new Error("検索に失敗しました");
+        throw new Error(`レストラン検索が失敗しました: ${res.status}`);
       }
-
       const data = await res.json();
+      console.log("レストラン検索の結果:", data);
       setSearchResults(data.results || []);
     } catch (error) {
       console.error("検索エラー:", error);

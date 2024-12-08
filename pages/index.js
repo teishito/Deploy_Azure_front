@@ -40,25 +40,30 @@ export default function Home() {
     <div
       style={{
         fontFamily: "'Arial', sans-serif",
-        backgroundColor: "#f5f5f5",
-        minHeight: "100vh",
-        padding: "20px",
+        backgroundColor: '#f5f5f5',
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '20px',
       }}
     >
       <div
         style={{
-          backgroundColor: "#fff",
-          borderRadius: "8px",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-          padding: "20px",
-          maxWidth: "400px",
-          margin: "0 auto",
-          textAlign: "center",
+          backgroundColor: '#fff',
+          borderRadius: '8px',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+          padding: '20px',
+          width: '100%',
+          maxWidth: '400px',
         }}
       >
-        <h1 style={{ fontSize: "24px", color: "#333", marginBottom: "20px" }}>
-          会食用のお店を検索
+        <h1 style={{ fontSize: '24px', textAlign: 'center', color: '#333', marginBottom: '20px' }}>
+          FortuneDinner
         </h1>
+        <h2 style={{ fontSize: '16px', marginBottom: '10px', color: '#555' }}>会食用のお店を検索</h2>
+ 
         <div style={{ marginBottom: "10px" }}>
           <label>エリア</label>
           <select
@@ -157,6 +162,18 @@ export default function Home() {
           </p>
         )}
       </div>
+    </div>
+
+      {/* フッター */}
+      <footer
+        style={{
+          marginTop: '20px',
+          fontSize: '12px',
+          color: '#888',
+        }}
+      >
+        © 2024 FortuneDinner. All rights reserved.
+      </footer>
     </div>
   );
 }

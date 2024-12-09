@@ -366,23 +366,38 @@ export default function Home() {
                 <li
                   key={index}
                   style={{
-                    marginBottom: "10px",
-                    padding: "10px",
+                    marginBottom: "20px",
+                    padding: "15px",
                     border: "1px solid #ddd",
-                    borderRadius: "4px",
-                    textAlign: "left",
+                    borderRadius: "8px",
+                    backgroundColor: "#fff",
+                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                   }}
                 >
-                  <strong>{result.name}</strong> ({result.area})<br />
-                  評価: {result.rating} ({result.reviews}件のレビュー)<br />
-                  <a
-                    href={result.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ color: "#007BFF" }}
-                  >
-                    食べログリンク
-                  </a>
+                  {/* 店名と住所 */}
+                  <h3 style={{ margin: "0 0 10px 0", fontSize: "18px", color: "#333" }}>
+                    {result.name}（{result.address}）
+                  </h3>
+          
+                  {/* 説明 */}
+                  <p style={{ margin: "10px 0", fontSize: "14px", color: "#555" }}>
+                    説明: {result.description || "説明がありません"}
+                  </p>
+          
+                  {/* 価格 */}
+                  <p style={{ margin: "5px 0", fontSize: "14px", color: "#555" }}>
+                    価格: ¥{result.budget_min}〜¥{result.budget_max}
+                  </p>
+          
+                  {/* 食べログ評価 */}
+                  <p style={{ margin: "5px 0", fontSize: "14px", color: "#555" }}>
+                    食べログ評価: {result.tabelog_rating || "評価なし"}
+                  </p>
+          
+                  {/* Google Map評価 */}
+                  <p style={{ margin: "5px 0", fontSize: "14px", color: "#555" }}>
+                    Google Map評価: {result.google_rating || "評価なし"}
+                  </p>
                 </li>
               ))}
             </ul>

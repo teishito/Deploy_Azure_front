@@ -64,32 +64,32 @@ export default function Home() {
 
   // レストランデータ取得（/api/restaurants）
   const handleSearch = async () => {
-    setLoading(true);
-    try {
-      console.log("レストランデータを検索します...");
-      const res = await fetch(`${BACKEND_URL}/api/restaurants`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          area: area === "指定なし" ? "" : area,
-          people,
-          genre: genre === "指定なし" ? "" : genre,
-        }),
-      });
-      if (!res.ok) {
-        throw new Error(`レストラン検索が失敗しました: ${res.status}`);
+      setLoading(true);
+      try {
+          const res = await fetch(`${BACKEND_URL}/api/restaurants`, {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                  area: area === "指定なし" ? "" : area,
+                  people,
+                  genre: genre === "指定なし" ? "" : genre,
+              }),
+          });
+  
+          if (!res.ok) {
+              throw new Error(`レストラン検索が失敗しました: ${res.status}`);
+          }
+  
+          const data = await res.json();
+          setSearchResults(data.restaurants || []);
+      } catch (error) {
+          console.error("検索エラー:", error);
+          alert("検索中にエラーが発生しました");
+      } finally {
+          setLoading(false);
       }
-      const data = await res.json();
-      console.log("レストラン検索の結果:", data);
-      setSearchResults(data.results || []);
-    } catch (error) {
-      console.error("検索エラー:", error);
-      alert("検索中にエラーが発生しました");
-    } finally {
-      setLoading(false);
-    }
   };
   
   // スタイル設定

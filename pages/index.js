@@ -122,187 +122,188 @@ export default function Home() {
   };
 
   return (
-    <header
-      style={{
-        backgroundColor: "#000",
-        color: "#fff",
-        padding: "10px 20px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
-    >
-      <h1 style={{ fontSize: "20px", margin: 0 }}>FortuneDinner</h1>
-    </header>
+    <>
+      <header
+        style={{
+          backgroundColor: "#000",
+          color: "#fff",
+          padding: "10px 20px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <h1 style={{ fontSize: "20px", margin: 0 }}>FortuneDinner</h1>
+      </header>
 
-    <div style={containerStyle}>
-    
-      {/* 検索フォーム */}
-      <div style={boxStyle}>
-        {/* ホームエンドポイント */}
-        <h2 style={{ fontSize: "16px", color: "#555", marginBottom: "20px" }}>Flaskサーバーの起動確認</h2>
-        <button onClick={fetchHome} style={buttonStyle}>
-          ホームエンドポイントにアクセス
-        </button>
-        {homeResponse ? (
-          <p>サーバーからの応答: {homeResponse}</p>
-        ) : (
-          <p>応答を待機中...</p>
-        )}
-
-        {/* GETリクエスト */}
-        <h2 style={{ fontSize: "16px", color: "#555", marginBottom: "20px" }}>GETリクエストを送信</h2>
-        <button onClick={handleGetRequest} style={buttonStyle}>
-          GETリクエストを送信
-        </button>
-        {getResponse ? (
-          <p>サーバーからのGET応答: {getResponse}</p>
-        ) : (
-          <p>応答を待機中...</p>
-        )}
-
-        <h2>----------</h2>
-
-        {/* レストランデータ取得 */}
-        <h2 style={{ fontSize: "16px", color: "#555", marginBottom: "20px" }}>
-          会食用のお店を検索
-        </h2>
-        <div style={{ marginBottom: "10px" }}>
-          <label>エリア</label>
-          <select
-            value={area}
-            onChange={(e) => setArea(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "8px",
-              marginTop: "5px",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-            }}
-          >
-            <option value="指定なし">指定なし</option>
-            <option value="福岡県福岡市中央区">福岡市中央区</option>
-            <option value="福岡県福岡市博多区">福岡市博多区</option>
-            <option value="福岡県福岡市早良区">福岡市早良区</option>
-            <option value="福岡県福岡市東区">福岡市東区</option>
-            <option value="福岡県福岡市南区">福岡市南区</option>
-            <option value="福岡県福岡市西区">福岡市西区</option>
-            <option value="福岡県福岡市城南区">福岡市城南区</option>
-            <option value="福岡県北九州市小倉北区">北九州市小倉北区</option>
-          </select>
-        </div>
-        <div style={{ marginBottom: "10px" }}>
-          <label>人数</label>
-          <input
-            type="number"
-            value={people}
-            onChange={(e) => setPeople(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "8px",
-              marginTop: "5px",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-            }}
-          />
-        </div>
-        <div style={{ marginBottom: "10px" }}>
-          <label>ジャンル</label>
-          <select
-            value={genre}
-            onChange={(e) => setGenre(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "8px",
-              marginTop: "5px",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-            }}
-          >
-            <option value="指定なし">指定なし</option>
-            <option value="ビストロ">ビストロ</option>
-            <option value="焼き鳥">焼き鳥</option>
-            <option value="居酒屋">居酒屋</option>
-            <option value="寿司">寿司</option>
-            <option value="イタリアン">イタリアン</option>
-            <option value="餃子">餃子</option>
-            <option value="焼肉">焼肉</option>
-            <option value="フレンチ">フレンチ</option>
-            <option value="日本料理">日本料理</option>
-            <option value="鍋">鍋</option>
-            <option value="鉄板焼き">鉄板焼き</option>
-            <option value="ステーキ">ステーキ</option>
-            <option value="串揚げ">串揚げ</option>
-            <option value="しゃぶしゃぶ">しゃぶしゃぶ</option>
-            <option value="レストラン">レストラン</option>
-            <option value="そば">そば</option>
-            <option value="海鮮">海鮮</option>
-            <option value="水炊き">水炊き</option>
-            <option value="ジンギスカン">ジンギスカン</option>
-            <option value="うなぎ">うなぎ</option>
-            <option value="肉料理">肉料理</option>
-            <option value="中華料理">中華料理</option>
-            <option value="すっぽん">すっぽん</option>
-            <option value="韓国料理">韓国料理</option>
-            <option value="インド料理">インド料理</option>
-            <option value="もつ鍋">もつ鍋</option>
-            <option value="鳥料理">鳥料理</option>
-            <option value="ラーメン">ラーメン</option>
-            <option value="ダイニングバー">ダイニングバー</option>
-          </select>
-
-       {/* 詳細検索リンク */}
-        <p style={{ fontSize: '14px', textAlign: 'right', color: '#007BFF', cursor: 'pointer', margin: '10px 0' }}>
-          詳細検索はこちら
-        </p>
-            
-        </div>
-        <button onClick={handleSearch} style={buttonStyle}>
-          検索する
-        </button>
-      </div>
-
-      {/* 検索結果表示 */}
-      <div style={boxStyle}>
-        <h2 style={{ fontSize: "20px", color: "#333", marginBottom: "10px" }}>
-          検索結果
-        </h2>
-        {loading ? (
-          <p style={{ textAlign: "center", color: "#555" }}>検索中...</p>
-        ) : searchResults.length > 0 ? (
-          <ul style={{ padding: 0, listStyleType: "none" }}>
-            {searchResults.map((result, index) => (
-              <li
-                key={index}
-                style={{
-                  marginBottom: "10px",
-                  padding: "10px",
-                  border: "1px solid #ddd",
-                  borderRadius: "4px",
-                  textAlign: "left",
-                }}
-              >
-                <strong>{result.name}</strong> ({result.area})<br />
-                評価: {result.rating} ({result.reviews}件のレビュー)<br />
-                <a
-                  href={result.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: "#007BFF" }}
-                >
-                  食べログリンク
-                </a>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p style={{ textAlign: "center", color: "#555" }}>
-            該当するお店が見つかりませんでした。
+      <div style={containerStyle}>
+      
+        {/* 検索フォーム */}
+        <div style={boxStyle}>
+          {/* ホームエンドポイント */}
+          <h2 style={{ fontSize: "16px", color: "#555", marginBottom: "20px" }}>Flaskサーバーの起動確認</h2>
+          <button onClick={fetchHome} style={buttonStyle}>
+            ホームエンドポイントにアクセス
+          </button>
+          {homeResponse ? (
+            <p>サーバーからの応答: {homeResponse}</p>
+          ) : (
+            <p>応答を待機中...</p>
+          )}
+  
+          {/* GETリクエスト */}
+          <h2 style={{ fontSize: "16px", color: "#555", marginBottom: "20px" }}>GETリクエストを送信</h2>
+          <button onClick={handleGetRequest} style={buttonStyle}>
+            GETリクエストを送信
+          </button>
+          {getResponse ? (
+            <p>サーバーからのGET応答: {getResponse}</p>
+          ) : (
+            <p>応答を待機中...</p>
+          )}
+  
+          <h2>----------</h2>
+  
+          {/* レストランデータ取得 */}
+          <h2 style={{ fontSize: "16px", color: "#555", marginBottom: "20px" }}>
+            会食用のお店を検索
+          </h2>
+          <div style={{ marginBottom: "10px" }}>
+            <label>エリア</label>
+            <select
+              value={area}
+              onChange={(e) => setArea(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "8px",
+                marginTop: "5px",
+                border: "1px solid #ccc",
+                borderRadius: "4px",
+              }}
+            >
+              <option value="指定なし">指定なし</option>
+              <option value="福岡県福岡市中央区">福岡市中央区</option>
+              <option value="福岡県福岡市博多区">福岡市博多区</option>
+              <option value="福岡県福岡市早良区">福岡市早良区</option>
+              <option value="福岡県福岡市東区">福岡市東区</option>
+              <option value="福岡県福岡市南区">福岡市南区</option>
+              <option value="福岡県福岡市西区">福岡市西区</option>
+              <option value="福岡県福岡市城南区">福岡市城南区</option>
+              <option value="福岡県北九州市小倉北区">北九州市小倉北区</option>
+            </select>
+          </div>
+          <div style={{ marginBottom: "10px" }}>
+            <label>人数</label>
+            <input
+              type="number"
+              value={people}
+              onChange={(e) => setPeople(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "8px",
+                marginTop: "5px",
+                border: "1px solid #ccc",
+                borderRadius: "4px",
+              }}
+            />
+          </div>
+          <div style={{ marginBottom: "10px" }}>
+            <label>ジャンル</label>
+            <select
+              value={genre}
+              onChange={(e) => setGenre(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "8px",
+                marginTop: "5px",
+                border: "1px solid #ccc",
+                borderRadius: "4px",
+              }}
+            >
+              <option value="指定なし">指定なし</option>
+              <option value="ビストロ">ビストロ</option>
+              <option value="焼き鳥">焼き鳥</option>
+              <option value="居酒屋">居酒屋</option>
+              <option value="寿司">寿司</option>
+              <option value="イタリアン">イタリアン</option>
+              <option value="餃子">餃子</option>
+              <option value="焼肉">焼肉</option>
+              <option value="フレンチ">フレンチ</option>
+              <option value="日本料理">日本料理</option>
+              <option value="鍋">鍋</option>
+              <option value="鉄板焼き">鉄板焼き</option>
+              <option value="ステーキ">ステーキ</option>
+              <option value="串揚げ">串揚げ</option>
+              <option value="しゃぶしゃぶ">しゃぶしゃぶ</option>
+              <option value="レストラン">レストラン</option>
+              <option value="そば">そば</option>
+              <option value="海鮮">海鮮</option>
+              <option value="水炊き">水炊き</option>
+              <option value="ジンギスカン">ジンギスカン</option>
+              <option value="うなぎ">うなぎ</option>
+              <option value="肉料理">肉料理</option>
+              <option value="中華料理">中華料理</option>
+              <option value="すっぽん">すっぽん</option>
+              <option value="韓国料理">韓国料理</option>
+              <option value="インド料理">インド料理</option>
+              <option value="もつ鍋">もつ鍋</option>
+              <option value="鳥料理">鳥料理</option>
+              <option value="ラーメン">ラーメン</option>
+              <option value="ダイニングバー">ダイニングバー</option>
+            </select>
+  
+         {/* 詳細検索リンク */}
+          <p style={{ fontSize: '14px', textAlign: 'right', color: '#007BFF', cursor: 'pointer', margin: '10px 0' }}>
+            詳細検索はこちら
           </p>
-        )}
+              
+          </div>
+          <button onClick={handleSearch} style={buttonStyle}>
+            検索する
+          </button>
+        </div>
+  
+        {/* 検索結果表示 */}
+        <div style={boxStyle}>
+          <h2 style={{ fontSize: "20px", color: "#333", marginBottom: "10px" }}>
+            検索結果
+          </h2>
+          {loading ? (
+            <p style={{ textAlign: "center", color: "#555" }}>検索中...</p>
+          ) : searchResults.length > 0 ? (
+            <ul style={{ padding: 0, listStyleType: "none" }}>
+              {searchResults.map((result, index) => (
+                <li
+                  key={index}
+                  style={{
+                    marginBottom: "10px",
+                    padding: "10px",
+                    border: "1px solid #ddd",
+                    borderRadius: "4px",
+                    textAlign: "left",
+                  }}
+                >
+                  <strong>{result.name}</strong> ({result.area})<br />
+                  評価: {result.rating} ({result.reviews}件のレビュー)<br />
+                  <a
+                    href={result.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: "#007BFF" }}
+                  >
+                    食べログリンク
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p style={{ textAlign: "center", color: "#555" }}>
+              該当するお店が見つかりませんでした。
+            </p>
+          )}
+        </div>
       </div>
 
-      {/* フッター */}
       <footer
         style={{
           marginTop: "20px",
@@ -313,6 +314,6 @@ export default function Home() {
       >
         © 2024 FortuneDinner. All rights reserved.
       </footer>
-    </div>
+    </>
   );
 }

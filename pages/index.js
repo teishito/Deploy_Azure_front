@@ -1,11 +1,11 @@
 import { useState } from "react";
 
-export default function Header() {
-  const [menuOpen, setMenuOpen] = useState(false);
+//export default function Header() {
+//  const [menuOpen, setMenuOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
+//  const toggleMenu = () => {
+//    setMenuOpen(!menuOpen);
+//  };
   
 export default function Home() {
   // 状態管理

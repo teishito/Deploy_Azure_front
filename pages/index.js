@@ -182,31 +182,33 @@ export default function Home() {
             />
           </button>
   
-          {/* ドロップダウンメニュー */}
-          {menuOpen && (
-            <ul
-              style={{
-                position: "absolute",
-                top: "40px",
-                right: 0,
-                backgroundColor: "#fff",
-                color: "#000",
-                listStyle: "none",
-                margin: 0,
-                padding: "10px",
-                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-                borderRadius: "4px",
-                zIndex: 1000,
-              }}
-            >
-              <li style={{ padding: "8px 0", cursor: "pointer" }}>予約・閲覧履歴</li>
-              <li style={{ padding: "8px 0", cursor: "pointer" }}>お気に入り</li>
-              <li style={{ padding: "8px 0", cursor: "pointer" }}>レポート</li>
-              <li style={{ padding: "8px 0", cursor: "pointer" }}>マイページ</li>
-              <li style={{ padding: "8px 0", cursor: "pointer" }}>プラン</li>
-              <li style={{ padding: "8px 0", cursor: "pointer" }}>ログアウト</li>
-            </ul>
-          )}
+        {/* ドロップダウンメニュー */}
+        {menuOpen && (
+          <ul
+            style={{
+              position: "absolute",
+              top: "40px",
+              right: 0,
+              backgroundColor: "#fff",
+              color: "#000",
+              listStyle: "none",
+              margin: 0,
+              padding: "10px",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+              borderRadius: "4px",
+              zIndex: 1000,
+              minWidth: "150px", // メニューの最小幅を設定
+              whiteSpace: "nowrap", // テキストの折り返しを防止
+            }}
+          >
+            <li style={{ padding: "8px 0", cursor: "pointer" }}>予約・閲覧履歴</li>
+            <li style={{ padding: "8px 0", cursor: "pointer" }}>お気に入り</li>
+            <li style={{ padding: "8px 0", cursor: "pointer" }}>レポート</li>
+            <li style={{ padding: "8px 0", cursor: "pointer" }}>マイページ</li>
+            <li style={{ padding: "8px 0", cursor: "pointer" }}>プラン</li>
+            <li style={{ padding: "8px 0", cursor: "pointer" }}>ログアウト</li>
+          </ul>
+        )}
         </div>
       </header>
 

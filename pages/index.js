@@ -1,5 +1,12 @@
 import { useState } from "react";
 
+export default function Header() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+  
 export default function Home() {
   // 状態管理
   const [getResponse, setGetResponse] = useState(""); // GETリクエストの応答
@@ -79,13 +86,6 @@ export default function Home() {
       setLoading(false);
     }
   };
-
-  export default function Header() {
-    const [menuOpen, setMenuOpen] = useState(false);
-  
-    const toggleMenu = () => {
-      setMenuOpen(!menuOpen);
-    };
   
   // スタイル設定
   const containerStyle = {

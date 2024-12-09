@@ -44,7 +44,7 @@ export async function getServerSideProps(context) {
 
   try {
     const res = await fetch(
-      `http://localhost:5000/search?area=${area}&guests=${guests}&genre=${genre}&budgetMin=${budgetMin}&budgetMax=${budgetMax}&privateRoom=${privateRoom}&drinkIncluded=${drinkIncluded}`
+      `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/search?area=${area}&guests=${guests}&genre=${genre}&budgetMin=${budgetMin}&budgetMax=${budgetMax}&privateRoom=${privateRoom}&drinkIncluded=${drinkIncluded}`
     );
     if (!res.ok) {
       throw new Error("Failed to fetch data");

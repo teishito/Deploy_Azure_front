@@ -40,21 +40,14 @@ export default function Home() {
 
   // ホームエンドポイント（/）
   const fetchHome = async () => {
-    try {
-      console.log("ホームエンドポイントにアクセスします...");
-      const res = await fetch(`${BACKEND_URL}/`, {
-        method: "GET",
-      });
-      if (!res.ok) {
-        throw new Error(`ホームエンドポイントが失敗しました: ${res.status}`);
-      }
-      const data = await res.json();
-      console.log("ホームエンドポイントの結果:", data);
-      setHomeResponse(data.message || "応答の形式が不正です");
-    } catch (error) {
-      console.error("ホームエンドポイントエラー:", error);
-      setHomeResponse("エラーが発生しました");
-    }
+    const res = await fetch('https://tech0-gen-8-step3-app-py-10.azurewebsites.net/', {
+      method: 'GET',
+    });
+    const data = await res.json();
+
+    // ホームエンドポイントの結果を更新
+    console.log("ホームエンドポイントの結果:", data.message);
+    setHomeResponse(data.message);
   };
 
   // レストランデータ取得（/api/restaurants）
@@ -162,7 +155,7 @@ export default function Home() {
             <p>応答を待機中...</p>
           )}
   
-          <h2>----------</h2>
+          <h2>------------------------------</h2>
   
           {/* レストランデータ取得 */}
           <h2 style={{ fontSize: "16px", color: "#555", marginBottom: "20px" }}>
@@ -220,36 +213,50 @@ export default function Home() {
                 borderRadius: "4px",
               }}
             >
-              <option value="指定なし">指定なし</option>
-              <option value="ビストロ">ビストロ</option>
-              <option value="焼き鳥">焼き鳥</option>
-              <option value="居酒屋">居酒屋</option>
-              <option value="寿司">寿司</option>
-              <option value="イタリアン">イタリアン</option>
-              <option value="餃子">餃子</option>
-              <option value="焼肉">焼肉</option>
-              <option value="フレンチ">フレンチ</option>
-              <option value="日本料理">日本料理</option>
-              <option value="鍋">鍋</option>
-              <option value="鉄板焼き">鉄板焼き</option>
-              <option value="ステーキ">ステーキ</option>
-              <option value="串揚げ">串揚げ</option>
-              <option value="しゃぶしゃぶ">しゃぶしゃぶ</option>
-              <option value="レストラン">レストラン</option>
-              <option value="そば">そば</option>
-              <option value="海鮮">海鮮</option>
-              <option value="水炊き">水炊き</option>
-              <option value="ジンギスカン">ジンギスカン</option>
-              <option value="うなぎ">うなぎ</option>
-              <option value="肉料理">肉料理</option>
-              <option value="中華料理">中華料理</option>
-              <option value="すっぽん">すっぽん</option>
-              <option value="韓国料理">韓国料理</option>
-              <option value="インド料理">インド料理</option>
-              <option value="もつ鍋">もつ鍋</option>
-              <option value="鳥料理">鳥料理</option>
-              <option value="ラーメン">ラーメン</option>
-              <option value="ダイニングバー">ダイニングバー</option>
+            <option value="指定なし">指定なし</option>
+            
+            {/* 日本料理 */}
+            <option value="寿司">寿司</option>
+            <option value="日本料理">日本料理</option>
+            <option value="そば">そば</option>
+            <option value="うなぎ">うなぎ</option>
+            <option value="鍋">鍋</option>
+            <option value="水炊き">水炊き</option>
+            <option value="しゃぶしゃぶ">しゃぶしゃぶ</option>
+            <option value="すっぽん">すっぽん</option>
+            <option value="もつ鍋">もつ鍋</option>
+            
+            {/* グローバル料理 */}
+            <option value="イタリアン">イタリアン</option>
+            <option value="フレンチ">フレンチ</option>
+            <option value="韓国料理">韓国料理</option>
+            <option value="インド料理">インド料理</option>
+            <option value="中華料理">中華料理</option>
+            
+            {/* 肉料理 */}
+            <option value="焼肉">焼肉</option>
+            <option value="焼き鳥">焼き鳥</option>
+            <option value="鳥料理">鳥料理</option>
+            <option value="ステーキ">ステーキ</option>
+            <option value="肉料理">肉料理</option>
+            <option value="ジンギスカン">ジンギスカン</option>
+            
+            {/* バー・居酒屋 */}
+            <option value="居酒屋">居酒屋</option>
+            <option value="ダイニングバー">ダイニングバー</option>
+            
+            {/* カジュアル */}
+            <option value="ビストロ">ビストロ</option>
+            <option value="レストラン">レストラン</option>
+            <option value="餃子">餃子</option>
+            <option value="ラーメン">ラーメン</option>
+            
+            {/* 海鮮料理 */}
+            <option value="海鮮">海鮮</option>
+            
+            {/* その他 */}
+            <option value="鉄板焼き">鉄板焼き</option>
+            <option value="串揚げ">串揚げ</option>
             </select>
   
          {/* 詳細検索リンク */}

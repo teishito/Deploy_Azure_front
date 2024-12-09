@@ -26,7 +26,7 @@ export default function SearchForm() {
     const queryString = new URLSearchParams(query).toString();
   
     try {
-      const response = await fetch(`http://127.0.0.1:5000/search?${queryString}`, {
+      const response = await fetch(`https://tech0-gen-8-step3-app-node-10.azurewebsites.net/search?${queryString}`, {
         method: 'GET',
       });
     

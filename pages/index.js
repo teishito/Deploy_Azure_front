@@ -9,6 +9,10 @@ import { useState } from "react";
   
 export default function Home() {
   // 状態管理
+  const [menuOpen, setMenuOpen] = useState(false);
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
   const [getResponse, setGetResponse] = useState(""); // GETリクエストの応答
   const [homeResponse, setHomeResponse] = useState(""); // ホームエンドポイントの応答
   const [searchResults, setSearchResults] = useState([]);
@@ -16,6 +20,7 @@ export default function Home() {
   const [area, setArea] = useState("指定なし");
   const [people, setPeople] = useState(2);
   const [genre, setGenre] = useState("指定なし");
+
 
   const BACKEND_URL = "https://tech0-gen-8-step3-app-py-10.azurewebsites.net";
 
@@ -139,6 +144,70 @@ export default function Home() {
         }}
       >
         <h1 style={{ fontSize: "20px", margin: 0 }}>FortuneDinner</h1>
+
+        {/* ハンバーガーメニュー */}
+        <div style={{ position: "relative" }}>
+          <button
+            onClick={toggleMenu}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
+            {/* ハンバーガーアイコン */}
+            <div
+              style={{
+                width: "25px",
+                height: "3px",
+                backgroundColor: "#fff",
+                margin: "4px 0",
+              }}
+            />
+            <div
+              style={{
+                width: "25px",
+                height: "3px",
+                backgroundColor: "#fff",
+                margin: "4px 0",
+              }}
+            />
+            <div
+              style={{
+                width: "25px",
+                height: "3px",
+                backgroundColor: "#fff",
+                margin: "4px 0",
+              }}
+            />
+          </button>
+  
+          {/* ドロップダウンメニュー */}
+          {menuOpen && (
+            <ul
+              style={{
+                position: "absolute",
+                top: "40px",
+                right: 0,
+                backgroundColor: "#fff",
+                color: "#000",
+                listStyle: "none",
+                margin: 0,
+                padding: "10px",
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+                borderRadius: "4px",
+                zIndex: 1000,
+              }}
+            >
+              <li style={{ padding: "8px 0", cursor: "pointer" }}>予約・閲覧履歴</li>
+              <li style={{ padding: "8px 0", cursor: "pointer" }}>お気に入り</li>
+              <li style={{ padding: "8px 0", cursor: "pointer" }}>レポート</li>
+              <li style={{ padding: "8px 0", cursor: "pointer" }}>マイページ</li>
+              <li style={{ padding: "8px 0", cursor: "pointer" }}>プラン</li>
+              <li style={{ padding: "8px 0", cursor: "pointer" }}>ログアウト</li>
+            </ul>
+          )}
+        </div>
       </header>
 
       <div style={containerStyle}>

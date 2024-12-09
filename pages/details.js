@@ -212,18 +212,29 @@ export default function DetailsSearch() {
             <div className="w-full max-w-2xl mt-6 p-4">
                 {loading ? (
                     <p>検索中...</p>
+                ) : results.length === 0 ? (
+                    <p>条件に当てはまるお店はありません</p>
                 ) : (
-                    results.map((restaurant) => (
-                        <div key={restaurant.id} className="bg-white shadow p-4 rounded-lg mb-4">
-                            <h3 className="text-lg font-bold">{restaurant.name}</h3>
-                            <p>ジャンル: {restaurant.category}</p>
-                            <p>エリア: {restaurant.area}</p>
-                            <p>説明: {restaurant.description}</p>
+                    results.slice(0, 5).map((restaurant) => (
+                    <div key={restaurant.id} className="bg-white shadow p-4 rounded-lg mb-4 flex">
+                        <img
+                        src={restaurant.store_top_image}
+                        alt={restaurant.name}
+                        className="w-24 h-24 object-cover rounded-lg mr-4"
+                        />
+                        <div>
+                        <h3 className="text-lg font-bold">{restaurant.name}</h3>
+                        <p>ジャンル: {restaurant.category}</p>
+                        <p>エリア: {restaurant.area}</p>
+                        <p>食べログ評価: {restaurant.tabelog_rating}</p>
+                        <p>Google Map評価: {restaurant.google_rating}</p>
+                        <p>単価: ¥{restaurant.budget_min} ~ ¥{restaurant.budget_max}</p>
+                        <p>{restaurant.description}</p>
                         </div>
+                    </div>
                     ))
                 )}
-            </div>
-
+                </div>
             <Footer />
         </div>
     );

@@ -9,7 +9,6 @@ import { useState } from "react";
   
 export default function Home() {
   // 状態管理
-  const [menuOpen, setMenuOpen] = useState(false); // ハンバーガーメニューの状態
   const [getResponse, setGetResponse] = useState(""); // GETリクエストの応答
   const [homeResponse, setHomeResponse] = useState(""); // ホームエンドポイントの応答
   const [searchResults, setSearchResults] = useState([]);
@@ -122,94 +121,14 @@ export default function Home() {
     width: "100%",
   };
 
-  return (
-    <header
-      style={{
-        backgroundColor: "#000",
-        color: "#fff",
-        padding: "10px 20px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
-    >
-      {/* ロゴ */}
-      <h1
-        style={{
-          fontSize: "20px",
-          margin: 0,
-          fontWeight: "bold",
-        }}
-      >
-        FortuneDinner
-      </h1>
-
-      {/* ハンバーガーメニュー */}
-      <div style={{ position: "relative" }}>
-        <button
-          onClick={toggleMenu}
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-          }}
-        >
-          {/* ハンバーガーアイコン */}
-          <div
-            style={{
-              width: "25px",
-              height: "3px",
-              backgroundColor: "#fff",
-              margin: "4px 0",
-            }}
-          />
-          <div
-            style={{
-              width: "25px",
-              height: "3px",
-              backgroundColor: "#fff",
-              margin: "4px 0",
-            }}
-          />
-          <div
-            style={{
-              width: "25px",
-              height: "3px",
-              backgroundColor: "#fff",
-              margin: "4px 0",
-            }}
-          />
-        </button>
-
-        {/* ドロップダウンメニュー */}
-        {menuOpen && (
-          <ul
-            style={{
-              position: "absolute",
-              top: "40px",
-              right: 0,
-              backgroundColor: "#fff",
-              color: "#000",
-              listStyle: "none",
-              margin: 0,
-              padding: "10px",
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-              borderRadius: "4px",
-              zIndex: 1000,
-            }}
-          >
-            <li style={{ padding: "8px 0" }}>予約・閲覧履歴</li>
-            <li style={{ padding: "8px 0" }}>お気に入り</li>
-            <li style={{ padding: "8px 0" }}>レポート</li>
-            <li style={{ padding: "8px 0" }}>マイページ</li>
-            <li style={{ padding: "8px 0" }}>プラン</li>
-            <li style={{ padding: "8px 0" }}>ログアウト</li>
-          </ul>
-        )}
-      </div>
-    </header>    
+  return (   
     <div style={containerStyle}>
       {/* 検索フォーム */}
+      <div style={boxStyle}>
+        <h1 style={{ fontSize: "24px", color: "#333", marginBottom: "20px" }}>
+          FortuneDinner
+        </h1>
+
       <div style={boxStyle}>
         {/* ホームエンドポイント */}
         <h2 style={{ fontSize: "16px", color: "#555", marginBottom: "20px" }}>Flaskサーバーの起動確認</h2>

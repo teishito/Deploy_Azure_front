@@ -211,7 +211,7 @@ export default function Home() {
       {/* 検索フォーム */}
       <div style={boxStyle}>
         {/* ホームエンドポイント */}
-        <h2>Flaskサーバーの起動確認</h2>
+        <h2 style={{ fontSize: "16px", color: "#555", marginBottom: "20px" }}>Flaskサーバーの起動確認</h2>
         <button onClick={fetchHome} style={buttonStyle}>
           ホームエンドポイントにアクセス
         </button>
@@ -222,7 +222,7 @@ export default function Home() {
         )}
 
         {/* GETリクエスト */}
-        <h2>GETリクエストを送信</h2>
+        <h2 style={{ fontSize: "16px", color: "#555", marginBottom: "20px" }}>GETリクエストを送信</h2>
         <button onClick={handleGetRequest} style={buttonStyle}>
           GETリクエストを送信
         </button>
@@ -231,6 +231,8 @@ export default function Home() {
         ) : (
           <p>応答を待機中...</p>
         )}
+
+        <h2>----------</h2>
 
         {/* レストランデータ取得 */}
         <h2 style={{ fontSize: "16px", color: "#555", marginBottom: "20px" }}>

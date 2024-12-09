@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { AiOutlineHeart, AiFillHeart } from "react-icons/ai"; // アイコン用
   
 export default function Home() {
   // 状態管理
@@ -16,9 +15,9 @@ export default function Home() {
   const [people, setPeople] = useState(2);
   const [genre, setGenre] = useState("指定なし");
   
-  const [isFavorited, setIsFavorited] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
   const toggleFavorite = () => {
-    setIsFavorited(!isFavorited);
+    setIsFavorite(!isFavorite);
   };
 
   const BACKEND_URL = "https://tech0-gen-8-step3-app-py-10.azurewebsites.net";
@@ -374,24 +373,6 @@ export default function Home() {
                     position: "relative", // ハートの位置調整用
                   }}
                 >
-                  {/* ハートアイコン */}
-                  <button
-                    onClick={toggleFavorite}
-                    style={{
-                      position: "absolute",
-                      top: "10px",
-                      right: "10px",
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                    }}
-                  >
-                    {isFavorited ? (
-                      <AiFillHeart color="red" size={24} />
-                    ) : (
-                      <AiOutlineHeart color="gray" size={24} />
-                    )}
-                  </button>
 
                   {/* 店名と住所 */}
                   <h2 style={{ margin: "0 0 10px 0", fontSize: "18px", fontWeight: "bold" }}>
@@ -411,7 +392,24 @@ export default function Home() {
                   <p style={{ margin: "5px 0" }}>
                     <strong>Google Map評価:</strong> {restaurant.googleRating}
                   </p>
-            
+
+                  {/* お気に入りボタン */}
+                  <button 
+                    onClick={toggleFavorite} 
+                    style={{
+                      position: "absolute",
+                      top: "10px",
+                      right: "10px",
+                      background: "none",
+                      border: "none",
+                      color: isFavorite ? "red" : "gray",
+                      cursor: "pointer",
+                      fontSize: "16px",
+                    }}
+                  >
+                    {isFavorite ? "お気に入り解除" : "お気に入り"}
+                  </button>
+
                   {/* 詳細ページボタン */}
                   <a
                     href={restaurant.detailPageLink}

@@ -40,14 +40,26 @@ export default function Home() {
 
   // ホームエンドポイント（/）
   const fetchHome = async () => {
-    const res = await fetch('https://tech0-gen-8-step3-app-py-10.azurewebsites.net/', {
-      method: 'GET',
-    });
-    const data = await res.json();
-
-    // ホームエンドポイントの結果を更新
-    console.log("ホームエンドポイントの結果:", data.message);
-    setHomeResponse(data.message);
+    console.log("fetchHome関数が呼び出されました");
+    try {
+      const res = await fetch('https://tech0-gen-8-step3-app-py-10.azurewebsites.net/', {
+        method: 'GET',
+      });
+      console.log("HTTPリクエストが送信されました");
+  
+      if (!res.ok) {
+        throw new Error(`HTTPエラー: ${res.status} - ${res.statusText}`);
+      }
+  
+      const data = await res.json();
+      console.log("レスポンスを受信しました:", data);
+  
+      // サーバーからのレスポンスをセット
+      setHomeResponse(data.message || "応答の形式が不正です");
+    } catch (error) {
+      console.error("fetchHome関数内のエラー:", error);
+      setHomeResponse("エラーが発生しました");
+    }
   };
 
   // レストランデータ取得（/api/restaurants）

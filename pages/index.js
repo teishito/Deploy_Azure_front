@@ -121,14 +121,23 @@ export default function Home() {
     width: "100%",
   };
 
-  return (   
-    <div style={containerStyle}>
-      {/* 検索フォーム */}
-      <div style={boxStyle}>
-        <h1 style={{ fontSize: "24px", color: "#333", marginBottom: "20px" }}>
-          FortuneDinner
-        </h1>
+  return (
+    <header
+      style={{
+        backgroundColor: "#000",
+        color: "#fff",
+        padding: "10px 20px",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}
+    >
+      <h1 style={{ fontSize: "20px", margin: 0 }}>FortuneDinner</h1>
+    </header>
 
+    <div style={containerStyle}>
+    
+      {/* 検索フォーム */}
       <div style={boxStyle}>
         {/* ホームエンドポイント */}
         <h2 style={{ fontSize: "16px", color: "#555", marginBottom: "20px" }}>Flaskサーバーの起動確認</h2>

@@ -3,7 +3,6 @@ import SearchForm from "../components/SearchForm";
 import Header from "../components/Header";
 import Link from "next/link";
 
-
 export default function Home() {
   // 状態管理
   const [area, setArea] = useState("");
@@ -23,3 +22,21 @@ export default function Home() {
     // ここに検索ロジックを追加可能
   };
 
+  return (
+    <div>
+      <Header />
+      <SearchForm
+        area={area}
+        setArea={setArea}
+        guests={guests}
+        setGuests={setGuests}
+        genre={genre}
+        setGenre={setGenre}
+        handleSearch={handleSearch}
+      />
+      <Link href="/other-page">
+        <a>他のページへ</a>
+      </Link>
+    </div>
+  );
+}

@@ -404,13 +404,13 @@ export default function Home() {
                 
                   {/* 価格、評価 */}
                   <p style={{ margin: "10px 0" }}>
-                    <strong>価格:</strong> {result.price}
+                    <strong>価格:</strong> ¥{result.budget_min}〜¥{result.budget_max}
                   </p>
                   <p style={{ margin: "5px 0" }}>
-                    <strong>食べログ評価:</strong> {result.tabelogRating}
+                    <strong>食べログ評価:</strong> {result.tabelog_rating || "評価なし"}
                   </p>
                   <p style={{ margin: "5px 0" }}>
-                    <strong>Google Map評価:</strong> {result.googleRating}
+                    <strong>Google Map評価:</strong> {result.google_rating || "評価なし"}
                   </p>
                 
                   {/* 詳細ページボタン */}

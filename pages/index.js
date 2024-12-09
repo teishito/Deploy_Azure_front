@@ -376,7 +376,7 @@ export default function Home() {
 
                   {/* 店名と住所 */}
                   <h2 style={{ margin: "0 0 10px 0", fontSize: "18px", fontWeight: "bold" }}>
-                    {restaurant.name} （{result.address}）
+                    {result.name} （{result.address}）
                   </h2>
             
                   {/* 説明 */}
@@ -412,7 +412,7 @@ export default function Home() {
 
                   {/* 詳細ページボタン */}
                   <a
-                    href={restaurant.detailPageLink}
+                    href={result.detailPageLink}
                     style={{
                       display: "inline-block",
                       marginTop: "10px",

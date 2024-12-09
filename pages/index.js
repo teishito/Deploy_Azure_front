@@ -1,11 +1,5 @@
 import { useState } from "react";
-
-//export default function Header() {
-//  const [menuOpen, setMenuOpen] = useState(false);
-
-//  const toggleMenu = () => {
-//    setMenuOpen(!menuOpen);
-//  };
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai"; // アイコン用
   
 export default function Home() {
   // 状態管理
@@ -13,6 +7,7 @@ export default function Home() {
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
+  
   const [getResponse, setGetResponse] = useState(""); // GETリクエストの応答
   const [homeResponse, setHomeResponse] = useState(""); // ホームエンドポイントの応答
   const [searchResults, setSearchResults] = useState([]);
@@ -20,7 +15,11 @@ export default function Home() {
   const [area, setArea] = useState("指定なし");
   const [people, setPeople] = useState(2);
   const [genre, setGenre] = useState("指定なし");
-
+  
+  const [isFavorited, setIsFavorited] = useState(false);
+  const toggleFavorite = () => {
+    setIsFavorited(!isFavorited);
+  };
 
   const BACKEND_URL = "https://tech0-gen-8-step3-app-py-10.azurewebsites.net";
 
@@ -363,42 +362,73 @@ export default function Home() {
           ) : searchResults.length > 0 ? (
             <ul style={{ padding: 0, listStyleType: "none" }}>
               {searchResults.map((result, index) => (
-                <li
+                <div
                   key={index}
                   style={{
-                    marginBottom: "20px",
-                    padding: "15px",
-                    border: "1px solid #ddd",
-                    borderRadius: "8px",
                     backgroundColor: "#fff",
+                    borderRadius: "8px",
                     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                    padding: "20px",
+                    marginBottom: "20px",
+                    textAlign: "left", // 左寄せ
+                    position: "relative", // ハートの位置調整用
                   }}
                 >
+                  {/* ハートアイコン */}
+                  <button
+                    onClick={toggleFavorite}
+                    style={{
+                      position: "absolute",
+                      top: "10px",
+                      right: "10px",
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                    }}
+                  >
+                    {isFavorited ? (
+                      <AiFillHeart color="red" size={24} />
+                    ) : (
+                      <AiOutlineHeart color="gray" size={24} />
+                    )}
+                  </button>
+
                   {/* 店名と住所 */}
-                  <h3 style={{ margin: "0 0 10px 0", fontSize: "18px", color: "#333" }}>
-                    {result.name}（{result.address}）
-                  </h3>
-          
+                  <h2 style={{ margin: "0 0 10px 0", fontSize: "18px", fontWeight: "bold" }}>
+                    {restaurant.name} （{restaurant.address}）
+                  </h2>
+            
                   {/* 説明 */}
-                  <p style={{ margin: "10px 0", fontSize: "14px", color: "#555" }}>
-                    説明: {result.description || "説明がありません"}
+                  <p style={{ margin: "10px 0" }}>{restaurant.description}</p>
+            
+                  {/* 価格、評価 */}
+                  <p style={{ margin: "10px 0" }}>
+                    <strong>価格:</strong> {restaurant.price}
                   </p>
-          
-                  {/* 価格 */}
-                  <p style={{ margin: "5px 0", fontSize: "14px", color: "#555" }}>
-                    価格: ¥{result.budget_min}〜¥{result.budget_max}
+                  <p style={{ margin: "5px 0" }}>
+                    <strong>食べログ評価:</strong> {restaurant.tabelogRating}
                   </p>
-          
-                  {/* 食べログ評価 */}
-                  <p style={{ margin: "5px 0", fontSize: "14px", color: "#555" }}>
-                    食べログ評価: {result.tabelog_rating || "評価なし"}
+                  <p style={{ margin: "5px 0" }}>
+                    <strong>Google Map評価:</strong> {restaurant.googleRating}
                   </p>
-          
-                  {/* Google Map評価 */}
-                  <p style={{ margin: "5px 0", fontSize: "14px", color: "#555" }}>
-                    Google Map評価: {result.google_rating || "評価なし"}
-                  </p>
-                </li>
+            
+                  {/* 詳細ページボタン */}
+                  <a
+                    href={restaurant.detailPageLink}
+                    style={{
+                      display: "inline-block",
+                      marginTop: "10px",
+                      padding: "10px 20px",
+                      backgroundColor: "#007BFF",
+                      color: "#fff",
+                      textDecoration: "none",
+                      borderRadius: "4px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    詳細ページへ
+                  </a>
+                </div>
               ))}
             </ul>
           ) : (

@@ -27,7 +27,10 @@ export default function Header() {
 
   return (
     <header className="bg-black text-white w-full py-4 flex justify-between items-center px-6">
-      <h1 className="text-xl font-bold">FortuneDinner</h1>
+      {/* 「FortuneDinner」をトップページへのリンクに変更 */}
+      <Link href="/">
+        <h1 className="text-xl font-bold cursor-pointer">FortuneDinner</h1>
+      </Link>
       <button
         className="text-white focus:outline-none"
         onClick={toggleMenu}
@@ -49,7 +52,7 @@ export default function Header() {
                 href="/menus/reservation-history"
                 className="text-black hover:text-blue-600"
               >
-                予約・閲覧履歴
+                予約履歴
               </Link>
             </li>
             <li className="mb-2">
@@ -67,21 +70,6 @@ export default function Header() {
               >
                 レポート
               </button>
-            </li>
-            <li className="mb-2">
-              <Link href="/mypage" className="text-black hover:text-blue-600">
-                マイページ
-              </Link>
-            </li>
-            <li className="mb-2">
-              <Link href="/plans" className="text-black hover:text-blue-600">
-                プラン
-              </Link>
-            </li>
-            <li>
-              <Link href="/logout" className="text-black hover:text-blue-600">
-                ログアウト
-              </Link>
             </li>
           </ul>
         </div>

@@ -376,21 +376,21 @@ export default function Home() {
 
                   {/* 店名と住所 */}
                   <h2 style={{ margin: "0 0 10px 0", fontSize: "18px", fontWeight: "bold" }}>
-                    {restaurant.name} （{restaurant.address}）
+                    {restaurant.name} （{result.address}）
                   </h2>
             
                   {/* 説明 */}
-                  <p style={{ margin: "10px 0" }}>{restaurant.description}</p>
+                  <p style={{ margin: "10px 0" }}>{result.description}</p>
             
                   {/* 価格、評価 */}
                   <p style={{ margin: "10px 0" }}>
-                    <strong>価格:</strong> {restaurant.price}
+                    <strong>価格:</strong> {result.price}
                   </p>
                   <p style={{ margin: "5px 0" }}>
-                    <strong>食べログ評価:</strong> {restaurant.tabelogRating}
+                    <strong>食べログ評価:</strong> {result.tabelogRating}
                   </p>
                   <p style={{ margin: "5px 0" }}>
-                    <strong>Google Map評価:</strong> {restaurant.googleRating}
+                    <strong>Google Map評価:</strong> {result.googleRating}
                   </p>
 
                   {/* お気に入りボタン */}

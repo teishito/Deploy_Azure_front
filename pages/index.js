@@ -15,11 +15,14 @@ export default function Home() {
   const [people, setPeople] = useState(2);
   const [genre, setGenre] = useState("指定なし");
   
-  const [isFavorite, setIsFavorite] = useState(false);
-  const toggleFavorite = () => {
-    setIsFavorite(!isFavorite);
+  const [favorites, setFavorites] = useState([]);
+  const toggleFavorite = (restaurant) => {
+    setFavorites((prevFavorites) =>
+      prevFavorites.includes(restaurant)
+        ? prevFavorites.filter((fav) => fav !== restaurant) // 既にお気に入りの場合は削除
+        : [...prevFavorites, restaurant] // 追加
+    );
   };
-
   const BACKEND_URL = "https://tech0-gen-8-step3-app-py-10.azurewebsites.net";
 
   // GETリクエスト（/api/hello）

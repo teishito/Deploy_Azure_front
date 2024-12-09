@@ -9,6 +9,7 @@ import { useState } from "react";
   
 export default function Home() {
   // 状態管理
+  const [menuOpen, setMenuOpen] = useState(false); // ハンバーガーメニューの状態
   const [getResponse, setGetResponse] = useState(""); // GETリクエストの応答
   const [homeResponse, setHomeResponse] = useState(""); // ホームエンドポイントの応答
   const [searchResults, setSearchResults] = useState([]);

@@ -361,7 +361,7 @@ export default function Home() {
           ) : searchResults.length > 0 ? (
             <ul style={{ padding: 0, listStyleType: "none" }}>
               {searchResults.map((result, index) => (
-                <div
+                 <div
                   key={index}
                   style={{
                     backgroundColor: "#fff",
@@ -373,15 +373,32 @@ export default function Home() {
                     position: "relative", // ハートの位置調整用
                   }}
                 >
-
+                  {/* お気に入りボタン */}
+                  <button
+                    onClick={() => toggleFavorite(result)}
+                    style={{
+                      position: "absolute",
+                      top: "10px",
+                      right: "10px",
+                      background: "none",
+                      border: "none",
+                      color: favorites.includes(result) ? "red" : "gray",
+                      cursor: "pointer",
+                      fontSize: "16px",
+                    }}
+                  >
+                    {favorites.includes(result) ? "お気に入り解除" : "お気に入り"}
+                  </button>
+                
                   {/* 店名と住所 */}
-                  <h2 style={{ margin: "0 0 10px 0", fontSize: "18px", fontWeight: "bold" }}>
-                    {result.name} （{result.address}）
+                  <h2 style={{ margin: "40px 0 10px 0", fontSize: "18px", fontWeight: "bold" }}>
+                    {result.name}
                   </h2>
-            
+                  <p style={{ marginBottom: "10px", color: "#555" }}>{result.address}</p>
+                
                   {/* 説明 */}
                   <p style={{ margin: "10px 0" }}>{result.description}</p>
-            
+                
                   {/* 価格、評価 */}
                   <p style={{ margin: "10px 0" }}>
                     <strong>価格:</strong> {result.price}
@@ -392,24 +409,7 @@ export default function Home() {
                   <p style={{ margin: "5px 0" }}>
                     <strong>Google Map評価:</strong> {result.googleRating}
                   </p>
-
-                  {/* お気に入りボタン */}
-                  <button 
-                    onClick={toggleFavorite} 
-                    style={{
-                      position: "absolute",
-                      top: "10px",
-                      right: "10px",
-                      background: "none",
-                      border: "none",
-                      color: isFavorite ? "red" : "gray",
-                      cursor: "pointer",
-                      fontSize: "16px",
-                    }}
-                  >
-                    {isFavorite ? "お気に入り解除" : "お気に入り"}
-                  </button>
-
+                
                   {/* 詳細ページボタン */}
                   <a
                     href={result.detailPageLink}

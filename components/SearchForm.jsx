@@ -24,23 +24,26 @@ export default function SearchForm() {
     };
   
     const queryString = new URLSearchParams(query).toString();
-  
+
     try {
       const response = await fetch(`https://tech0-gen-8-step3-app-node-10.azurewebsites.net/search?${queryString}`, {
         method: 'GET',
       });
     
       if (!response.ok) {
+        if (response.status === 404) {
+          console.error("エンドポイントが見つかりません。URLを確認してください。");
+        } else {
+          console.error(`エラーが発生しました: ${response.statusText}`);
+        }
         throw new Error("Failed to fetch data");
       }
     
       const data = await response.json();
       console.log("検索結果:", data);
-      // 結果を次のページに渡す処理（例: ルート遷移）を実装
     } catch (error) {
-      console.error("検索リクエストでエラーが発生しました:", error);
+      console.error("検索リクエストでエラーが発生しました:", error.message);
     }
-  };
   
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center p-4">

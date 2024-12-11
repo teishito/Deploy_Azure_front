@@ -5,11 +5,27 @@ import { useRouter } from "next/router";
 export default function ReportDetails() {
     const [isPopupOpen, setPopupOpen] = useState(false); // ポップアップ状態管理
     const [isMounted, setIsMounted] = useState(false); // クライアントでのマウント確認
+    const [reportData, setReportData] = useState({
+        purposeAchievement: 5,
+        relationshipWithPartner: 5,
+        dinnerMemo: "",
+        overallSatisfaction: 5,
+        atmosphere: 5,
+        taste: 5,
+        speed: 5,
+        hospitality: 5,
+        storeReview: "",
+    }); // フォームデータの状態管理
+
     const router = useRouter();
 
     useEffect(() => {
         setIsMounted(true); // クライアントサイドでのみ実行
     }, []);
+
+    const handleSliderChange = (key, value) => {
+        setReportData({ ...reportData, [key]: value });
+    };
 
     const handlePopupOpen = () => {
         setPopupOpen(true); // ポップアップを表示
@@ -17,7 +33,14 @@ export default function ReportDetails() {
 
     const handlePopupClose = () => {
         setPopupOpen(false); // ポップアップを閉じる
-        router.push("/report-result"); // 背景画面に遷移
+        router.push("/menus/report-result"); // 背景画面に遷移
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log("Submitted Data:", reportData);
+        handlePopupOpen();
+        // 必要に応じてサーバーへPOSTリクエストを送信する処理を追加
     };
 
     // サーバー側で何も描画しないようにする
@@ -34,22 +57,137 @@ export default function ReportDetails() {
                         <p>会食日時 : 0月0日</p>
                         <p>会食目的 : 商談フェーズの促進</p>
                     </div>
-                    <div className="mb-6">
-                        <h2 className="text-lg font-bold">会食への評価を入力</h2>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">
-                                目的達成度
-                            </label>
-                            <input type="range" min="1" max="10" className="w-full" />
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        {/* 会食への評価 */}
+                        <h3 className="text-lg font-semibold">会食への評価を入力</h3>
+                        <div className="space-y-4">
+                            <div>
+                                <label>目的達成度</label>
+                                <input
+                                    type="range"
+                                    min="1"
+                                    max="10"
+                                    value={reportData.purposeAchievement}
+                                    onChange={(e) =>
+                                        handleSliderChange("purposeAchievement", e.target.value)
+                                    }
+                                    className="w-full"
+                                />
+                            </div>
+                            <div>
+                                <label>会食相手との関係性</label>
+                                <input
+                                    type="range"
+                                    min="1"
+                                    max="10"
+                                    value={reportData.relationshipWithPartner}
+                                    onChange={(e) =>
+                                        handleSliderChange("relationshipWithPartner", e.target.value)
+                                    }
+                                    className="w-full"
+                                />
+                            </div>
+                            <div>
+                                <label>会食メモ</label>
+                                <textarea
+                                    value={reportData.dinnerMemo}
+                                    onChange={(e) =>
+                                        handleSliderChange("dinnerMemo", e.target.value)
+                                    }
+                                    className="w-full border rounded-lg p-2"
+                                    rows="3"
+                                />
+                            </div>
                         </div>
-                        {/* 他のスライダーや入力項目 */}
-                    </div>
-                    <button
-                        className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800"
-                        onClick={handlePopupOpen} // 提出ボタンでポップアップ表示
-                    >
-                        提出する
-                    </button>
+
+                        {/* お店への評価 */}
+                        <h3 className="text-lg font-semibold">お店への評価を入力</h3>
+                        <div className="space-y-4">
+                            <div>
+                                <label>全体的な満足度</label>
+                                <input
+                                    type="range"
+                                    min="1"
+                                    max="10"
+                                    value={reportData.overallSatisfaction}
+                                    onChange={(e) =>
+                                        handleSliderChange("overallSatisfaction", e.target.value)
+                                    }
+                                    className="w-full"
+                                />
+                            </div>
+                            <div>
+                                <label>お店の雰囲気</label>
+                                <input
+                                    type="range"
+                                    min="1"
+                                    max="10"
+                                    value={reportData.atmosphere}
+                                    onChange={(e) =>
+                                        handleSliderChange("atmosphere", e.target.value)
+                                    }
+                                    className="w-full"
+                                />
+                            </div>
+                            <div>
+                                <label>食事・味</label>
+                                <input
+                                    type="range"
+                                    min="1"
+                                    max="10"
+                                    value={reportData.taste}
+                                    onChange={(e) =>
+                                        handleSliderChange("taste", e.target.value)
+                                    }
+                                    className="w-full"
+                                />
+                            </div>
+                            <div>
+                                <label>食事・提供スピード</label>
+                                <input
+                                    type="range"
+                                    min="1"
+                                    max="10"
+                                    value={reportData.speed}
+                                    onChange={(e) =>
+                                        handleSliderChange("speed", e.target.value)
+                                    }
+                                    className="w-full"
+                                />
+                            </div>
+                            <div>
+                                <label>接客</label>
+                                <input
+                                    type="range"
+                                    min="1"
+                                    max="10"
+                                    value={reportData.hospitality}
+                                    onChange={(e) =>
+                                        handleSliderChange("hospitality", e.target.value)
+                                    }
+                                    className="w-full"
+                                />
+                            </div>
+                            <div>
+                                <label>お店へのレビュー</label>
+                                <textarea
+                                    value={reportData.storeReview}
+                                    onChange={(e) =>
+                                        handleSliderChange("storeReview", e.target.value)
+                                    }
+                                    className="w-full border rounded-lg p-2"
+                                    rows="3"
+                                />
+                            </div>
+                        </div>
+
+                        <button
+                            type="submit"
+                            className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800"
+                        >
+                            提出する
+                        </button>
+                    </form>
                 </div>
             </main>
 

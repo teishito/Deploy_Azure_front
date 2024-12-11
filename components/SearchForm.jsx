@@ -6,7 +6,7 @@ import Footer from "../components/Footer";
 
 export default function SearchForm() {
   const [area, setArea] = useState(""); // エリア
-  const [guests, setGuests] = useState(""); // 人数
+  const [guests, setGuests] = useState(2); // 人数
   const [genre, setGenre] = useState(""); // ジャンル
   const [budgetMin, setBudgetMin] = useState(""); // 予算下限
   const [budgetMax, setBudgetMax] = useState(""); // 予算上限
@@ -14,7 +14,7 @@ export default function SearchForm() {
   const [drinkIncluded, setDrinkIncluded] = useState(""); // 飲み放題希望
   const router = useRouter();
 
-  const handleSearch = async (e) => {
+  const handleSearch = (e) => {
     e.preventDefault();
 
     // 検索クエリを作成
@@ -28,26 +28,11 @@ export default function SearchForm() {
       drinkIncluded: drinkIncluded || "",
     };
 
-    try {
-      // APIを呼び出して結果を取得
-      const response = await fetch(
-        `/search?area=${encodeURIComponent(query.area)}&guests=${encodeURIComponent(query.guests)}&genre=${encodeURIComponent(query.genre)}&budgetMin=${encodeURIComponent(query.budgetMin)}&budgetMax=${encodeURIComponent(query.budgetMax)}&privateRoom=${encodeURIComponent(query.privateRoom)}&drinkIncluded=${encodeURIComponent(query.drinkIncluded)}`
-      );
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      console.log("検索結果:", data);
-
-      // 検索結果ページにリダイレクト
-      router.push({
-        pathname: "/results",
-        query: query,
-      });
-    } catch (error) {
-      console.error("検索中にエラーが発生しました:", error);
-      alert("検索に失敗しました。もう一度お試しください。");
-    }
+    // 検索結果ページにリダイレクト
+    router.push({
+      pathname: "/results", // 結果ページのパス
+      query: query,
+    });
   };
 
   return (
@@ -143,18 +128,18 @@ export default function SearchForm() {
               <option value="串揚げ">串揚げ</option>
             </select>
           </div>
-          
+
           {/* 詳細検索 */}
           <div className="text-center">
             <Link href="/details" className="text-sm text-blue-600 hover:underline">
               詳細検索はこちら
             </Link>
           </div>
-          
+
           {/* 検索ボタン */}
           <button
             type="submit"
-            className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-700 transition"
+            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
           >
             お店を検索する
           </button>

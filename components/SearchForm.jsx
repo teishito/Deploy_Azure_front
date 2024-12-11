@@ -6,7 +6,7 @@ import Footer from "../components/Footer";
 
 export default function SearchForm() {
   const [area, setArea] = useState(""); // エリア
-  const [guests, setGuests] = useState(2); // 人数
+  const [guests, setGuests] = useState(""); // 人数
   const [genre, setGenre] = useState(""); // ジャンル
   const [budgetMin, setBudgetMin] = useState(""); // 予算下限
   const [budgetMax, setBudgetMax] = useState(""); // 予算上限
@@ -31,7 +31,7 @@ export default function SearchForm() {
     try {
       // APIを呼び出して結果を取得
       const response = await fetch(
-        `/search?area=${query.area}&guests=${query.guests}&genre=${query.genre}&budgetMin=${query.budgetMin}&budgetMax=${query.budgetMax}&privateRoom=${query.privateRoom}&drinkIncluded=${query.drinkIncluded}`
+        `/search?area=${encodeURIComponent(query.area)}&guests=${encodeURIComponent(query.guests)}&genre=${encodeURIComponent(query.genre)}&budgetMin=${encodeURIComponent(query.budgetMin)}&budgetMax=${encodeURIComponent(query.budgetMax)}&privateRoom=${encodeURIComponent(query.privateRoom)}&drinkIncluded=${encodeURIComponent(query.drinkIncluded)}`
       );
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -143,14 +143,14 @@ export default function SearchForm() {
               <option value="串揚げ">串揚げ</option>
             </select>
           </div>
-
+          
           {/* 詳細検索 */}
           <div className="text-center">
             <Link href="/details" className="text-sm text-blue-600 hover:underline">
               詳細検索はこちら
             </Link>
           </div>
-
+          
           {/* 検索ボタン */}
           <button
             type="submit"

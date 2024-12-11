@@ -8,42 +8,14 @@ export default function SearchForm() {
   const [area, setArea] = useState("");
   const [guests, setGuests] = useState(2);
   const [genre, setGenre] = useState("");
-
   const router = useRouter();
 
-  const handleSearch = async (e) => {
+  const handleSearch = (e) => {
     e.preventDefault();
-
-    const query = {
-      area: area || "",
-      guests: guests || "",
-      genre: genre || ""
-    };
-
-    const queryString = new URLSearchParams(query).toString();
-
-    try {
-      const response = await fetch(
-        `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/search?${queryString}`,
-        {
-          method: "GET",
-        }
-      );
-
-      if (!response.ok) {
-        if (response.status === 404) {
-          console.error("エンドポイントが見つかりません。URLを確認してください。");
-        } else {
-          console.error(`エラーが発生しました: ${response.statusText}`);
-        }
-        throw new Error("Failed to fetch data");
-      }
-
-      const data = await response.json();
-      console.log("検索結果:", data);
-    } catch (error) {
-      console.error("検索リクエストでエラーが発生しました:", error.message);
-    }
+    router.push({
+      pathname: "/results",
+      query: { area, guests, genre },
+    });
   };
 
   return (
@@ -59,17 +31,29 @@ export default function SearchForm() {
               onChange={(e) => setArea(e.target.value)}
               className="w-full border border-gray-300 rounded-lg p-2"
             >
-              <option value="">指定なし</option>
-              <option value="福岡県福岡市中央区">福岡市中央区</option>
-              <option value="福岡県福岡市博多区">福岡市博多区</option>
-              <option value="福岡県福岡市早良区">福岡市早良区</option>
-              <option value="福岡県福岡市東区">福岡市東区</option>
-              <option value="福岡県福岡市南区">福岡市南区</option>
-              <option value="福岡県福岡市西区">福岡市西区</option>
-              <option value="福岡県福岡市城南区">福岡市城南区</option>
-              <option value="福岡県北九州市小倉北区">北九州市小倉北区</option>
+              <option value="">エリアを選択</option>
+              <option value="博多">博多</option>
+              <option value="中央">中央</option>
+              <option value="小倉北">小倉北</option>
+              <option value="久留米">久留米</option>
+              <option value="北九州">北九州</option>
+              <option value="福岡">福岡</option>
+              <option value="大牟田">大牟田</option>
+              <option value="飯塚">飯塚</option>
+              <option value="筑紫野">筑紫野</option>
+              <option value="糸島">糸島</option>
+              <option value="直方">直方</option>
+              <option value="田川">田川</option>
+              <option value="行橋">行橋</option>
+              <option value="八女">八女</option>
+              <option value="柳川">柳川</option>
+              <option value="春日">春日</option>
+              <option value="朝倉">朝倉</option>
+              <option value="宗像">宗像</option>
+              <option value="大野城">大野城</option>
             </select>
           </div>
+
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -93,23 +77,14 @@ export default function SearchForm() {
               onChange={(e) => setGenre(e.target.value)}
               className="w-full border border-gray-300 rounded-lg p-2"
             >
-              <option value="">指定なし</option>
-              <option value="寿司">寿司</option>
-              <option value="日本料理">日本料理</option>
-              <option value="そば">そば</option>
-              <option value="うなぎ">うなぎ</option>
-              <option value="鍋">鍋</option>
-              <option value="水炊き">水炊き</option>
-              <option value="しゃぶしゃぶ">しゃぶしゃぶ</option>
-              <option value="イタリアン">イタリアン</option>
-              <option value="フレンチ">フレンチ</option>
-              <option value="中華料理">中華料理</option>
+              <option value="">選択してください</option>
+              <option value="和食">和食</option>
+              <option value="洋食">洋食</option>
             </select>
           </div>
 
           <div className="text-center">
-            <Link href="/details" className="text-sm text-blue-600 hover:underline">
-              詳細検索はこちら
+            <Link href="/details" className="text-sm text-blue-600 hover:underline">詳細検索はこちら
             </Link>
           </div>
 
@@ -121,7 +96,7 @@ export default function SearchForm() {
           </button>
         </form>
       </main>
-      <Footer />
+    <Footer />
     </div>
   );
 }

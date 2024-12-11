@@ -1,8 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
-  reactStrictMode: true, // React Strict Modeを有効に
 };
 
 module.exports = nextConfig
-
+module.exports = {
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'https://tech0-gen-8-step3-app-node-10.azurewebsites.net/api/:path*' // バックエンドのURL
+      },
+    ];
+  },
+};

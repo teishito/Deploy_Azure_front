@@ -43,6 +43,8 @@ export default function DetailsSearch() {
 
             <main className="w-full max-w-md bg-white rounded-lg shadow-lg mt-6 p-6">
                 <form onSubmit={handleSearch} className="space-y-4">
+                    <h2 className="text-lg font-bold text-center">会食用のお店を検索</h2>
+
                     {/* エリア */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700">エリア</label>

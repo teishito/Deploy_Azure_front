@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -10,13 +11,12 @@ export default function DetailsSearch() {
     const [budgetMax, setBudgetMax] = useState("");
     const [privateRoom, setPrivateRoom] = useState("");
     const [drinkIncluded, setDrinkIncluded] = useState("");
-    const [results, setResults] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
-    const handleSearch = async (e) => {
+    const handleSearch = (e) => {
         e.preventDefault();
-        setLoading(true);
 
+        // クエリパラメータを作成
         const query = {
             area: area || "",
             guests: guests || "",
@@ -24,24 +24,14 @@ export default function DetailsSearch() {
             budgetMin: budgetMin || "",
             budgetMax: budgetMax || "",
             privateRoom: privateRoom || "",
-            drinkIncluded: drinkIncluded || ""
+            drinkIncluded: drinkIncluded || "",
         };
 
-        const queryString = new URLSearchParams(query).toString();
-
-        try {
-            const response = await fetch(`https://tech0-gen-8-step3-app-node-10.azurewebsites.net/search?${queryString}`);
-            if (!response.ok) {
-                throw new Error("Failed to fetch data");
-            }
-            const data = await response.json();
-            setResults(data);
-        } catch (error) {
-            console.error("Error fetching data:", error);
-            setResults([]);
-        } finally {
-            setLoading(false);
-        }
+        // 検索結果ページに遷移
+        router.push({
+            pathname: "/results",
+            query: query,
+        });
     };
 
     return (
@@ -61,7 +51,7 @@ export default function DetailsSearch() {
                             onChange={(e) => setArea(e.target.value)}
                             className="w-full border border-gray-300 rounded-lg p-2"
                         >
-                            <option value="指定なし">指定なし</option>
+                            <option value="">指定なし</option>
                             <option value="福岡県福岡市中央区">福岡市中央区</option>
                             <option value="福岡県福岡市博多区">福岡市博多区</option>
                             <option value="福岡県福岡市早良区">福岡市早良区</option>
@@ -70,7 +60,6 @@ export default function DetailsSearch() {
                             <option value="福岡県福岡市西区">福岡市西区</option>
                             <option value="福岡県福岡市城南区">福岡市城南区</option>
                             <option value="福岡県北九州市小倉北区">北九州市小倉北区</option>
-                            {/* その他のエリア */}
                         </select>
                     </div>
 
@@ -94,43 +83,16 @@ export default function DetailsSearch() {
                             onChange={(e) => setGenre(e.target.value)}
                             className="w-full border border-gray-300 rounded-lg p-2"
                         >
-                            <option value="指定なし">指定なし</option>
-                            {/* 日本料理 */}
+                            <option value="">指定なし</option>
                             <option value="寿司">寿司</option>
                             <option value="日本料理">日本料理</option>
                             <option value="そば">そば</option>
                             <option value="うなぎ">うなぎ</option>
                             <option value="鍋">鍋</option>
-                            <option value="水炊き">水炊き</option>
-                            <option value="しゃぶしゃぶ">しゃぶしゃぶ</option>
-                            <option value="すっぽん">すっぽん</option>
-                            <option value="もつ鍋">もつ鍋</option>
-                            {/* グローバル料理 */}
-                            <option value="イタリアン">イタリアン</option>
-                            <option value="フレンチ">フレンチ</option>
-                            <option value="韓国料理">韓国料理</option>
-                            <option value="インド料理">インド料理</option>
-                            <option value="中華料理">中華料理</option>
-                            {/* 肉料理 */}
                             <option value="焼肉">焼肉</option>
-                            <option value="焼き鳥">焼き鳥</option>
-                            <option value="鳥料理">鳥料理</option>
-                            <option value="ステーキ">ステーキ</option>
-                            <option value="肉料理">肉料理</option>
-                            <option value="ジンギスカン">ジンギスカン</option>
-                            {/* バー・居酒屋 */}
                             <option value="居酒屋">居酒屋</option>
-                            <option value="ダイニングバー">ダイニングバー</option>
-                            {/* カジュアル */}
-                            <option value="ビストロ">ビストロ</option>
-                            <option value="レストラン">レストラン</option>
-                            <option value="餃子">餃子</option>
-                            <option value="ラーメン">ラーメン</option>
-                            {/* 海鮮料理 */}
-                            <option value="海鮮">海鮮</option>
-                            {/* その他 */}
-                            <option value="鉄板焼き">鉄板焼き</option>
-                            <option value="串揚げ">串揚げ</option>
+                            <option value="フレンチ">フレンチ</option>
+                            <option value="イタリアン">イタリアン</option>
                         </select>
                     </div>
 
@@ -208,33 +170,6 @@ export default function DetailsSearch() {
                     </button>
                 </form>
             </main>
-
-            <div className="w-full max-w-2xl mt-6 p-4">
-                {loading ? (
-                    <p>検索中...</p>
-                ) : results.length === 0 ? (
-                    <p>条件に当てはまるお店はありません</p>
-                ) : (
-                    results.slice(0, 5).map((restaurant) => (
-                    <div key={restaurant.id} className="bg-white shadow p-4 rounded-lg mb-4 flex">
-                        <img
-                        src={restaurant.store_top_image}
-                        alt={restaurant.name}
-                        className="w-24 h-24 object-cover rounded-lg mr-4"
-                        />
-                        <div>
-                        <h3 className="text-lg font-bold">{restaurant.name}</h3>
-                        <p>ジャンル: {restaurant.category}</p>
-                        <p>エリア: {restaurant.area}</p>
-                        <p>食べログ評価: {restaurant.tabelog_rating}</p>
-                        <p>Google Map評価: {restaurant.google_rating}</p>
-                        <p>単価: ¥{restaurant.budget_min} ~ ¥{restaurant.budget_max}</p>
-                        <p>{restaurant.description}</p>
-                        </div>
-                    </div>
-                    ))
-                )}
-                </div>
             <Footer />
         </div>
     );

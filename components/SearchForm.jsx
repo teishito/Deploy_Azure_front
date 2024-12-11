@@ -4,7 +4,6 @@ import Link from "next/link";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-
 export default function SearchForm() {
   const [area, setArea] = useState(""); // エリア
   const [guests, setGuests] = useState(2); // 人数
@@ -15,7 +14,7 @@ export default function SearchForm() {
   const [drinkIncluded, setDrinkIncluded] = useState(""); // 飲み放題希望
   const router = useRouter();
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
 
     // 検索クエリを作成
@@ -29,11 +28,26 @@ export default function SearchForm() {
       drinkIncluded: drinkIncluded || "",
     };
 
-    // 検索結果ページにリダイレクト
-    router.push({
-      pathname: "/results", // 結果ページのパス
-      query: query,
-    });
+    try {
+      // APIを呼び出して結果を取得
+      const response = await fetch(
+        `/search?area=${query.area}&guests=${query.guests}&genre=${query.genre}&budgetMin=${query.budgetMin}&budgetMax=${query.budgetMax}&privateRoom=${query.privateRoom}&drinkIncluded=${query.drinkIncluded}`
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log("検索結果:", data);
+
+      // 検索結果ページにリダイレクト
+      router.push({
+        pathname: "/results",
+        query: query,
+      });
+    } catch (error) {
+      console.error("検索中にエラーが発生しました:", error);
+      alert("検索に失敗しました。もう一度お試しください。");
+    }
   };
 
   return (
@@ -51,7 +65,7 @@ export default function SearchForm() {
               onChange={(e) => setArea(e.target.value)}
               className="w-full border border-gray-300 rounded-lg p-2"
             >
-              <option value="">指定なし</option>
+              <option value="指定なし">指定なし</option>
               <option value="福岡県福岡市中央区">福岡市中央区</option>
               <option value="福岡県福岡市博多区">福岡市博多区</option>
               <option value="福岡県福岡市早良区">福岡市早良区</option>
@@ -83,12 +97,50 @@ export default function SearchForm() {
               onChange={(e) => setGenre(e.target.value)}
               className="w-full border border-gray-300 rounded-lg p-2"
             >
-              <option value="">指定なし</option>
+              <option value="指定なし">指定なし</option>
+              
+              {/* 日本料理 */}
               <option value="寿司">寿司</option>
               <option value="日本料理">日本料理</option>
-              <option value="焼肉">焼肉</option>
+              <option value="そば">そば</option>
+              <option value="うなぎ">うなぎ</option>
+              <option value="鍋">鍋</option>
+              <option value="水炊き">水炊き</option>
+              <option value="しゃぶしゃぶ">しゃぶしゃぶ</option>
+              <option value="すっぽん">すっぽん</option>
+              <option value="もつ鍋">もつ鍋</option>
+              
+              {/* グローバル料理 */}
               <option value="イタリアン">イタリアン</option>
               <option value="フレンチ">フレンチ</option>
+              <option value="韓国料理">韓国料理</option>
+              <option value="インド料理">インド料理</option>
+              <option value="中華料理">中華料理</option>
+              
+              {/* 肉料理 */}
+              <option value="焼肉">焼肉</option>
+              <option value="焼き鳥">焼き鳥</option>
+              <option value="鳥料理">鳥料理</option>
+              <option value="ステーキ">ステーキ</option>
+              <option value="肉料理">肉料理</option>
+              <option value="ジンギスカン">ジンギスカン</option>
+              
+              {/* バー・居酒屋 */}
+              <option value="居酒屋">居酒屋</option>
+              <option value="ダイニングバー">ダイニングバー</option>
+              
+              {/* カジュアル */}
+              <option value="ビストロ">ビストロ</option>
+              <option value="レストラン">レストラン</option>
+              <option value="餃子">餃子</option>
+              <option value="ラーメン">ラーメン</option>
+              
+              {/* 海鮮料理 */}
+              <option value="海鮮">海鮮</option>
+              
+              {/* その他 */}
+              <option value="鉄板焼き">鉄板焼き</option>
+              <option value="串揚げ">串揚げ</option>
             </select>
           </div>
 
@@ -102,7 +154,7 @@ export default function SearchForm() {
           {/* 検索ボタン */}
           <button
             type="submit"
-            className="ww-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition"
+            className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-700 transition"
           >
             お店を検索する
           </button>

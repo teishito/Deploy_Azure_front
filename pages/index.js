@@ -16,6 +16,12 @@ export default function Home() {
   const [translateInput, setTranslateInput] = useState("");
   const [translateResponse, setTranslateResponse] = useState("");
 
+    // handleSearch関数の定義
+  const handleSearch = () => {
+    // 検索処理をここに記述
+    console.log(`Searching for area: ${area}, guests: ${guests}, genre: ${genre}`);
+  };
+  
   return (
     <div>
       <Header />

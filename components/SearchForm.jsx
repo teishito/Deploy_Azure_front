@@ -5,25 +5,44 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 export default function SearchForm() {
-  const [area, setArea] = useState("");
-  const [guests, setGuests] = useState(2);
-  const [genre, setGenre] = useState("");
+  const [area, setArea] = useState(""); // エリア
+  const [guests, setGuests] = useState(2); // 人数
+  const [genre, setGenre] = useState(""); // ジャンル
+  const [budgetMin, setBudgetMin] = useState(""); // 予算下限
+  const [budgetMax, setBudgetMax] = useState(""); // 予算上限
+  const [privateRoom, setPrivateRoom] = useState(""); // 個室希望
+  const [drinkIncluded, setDrinkIncluded] = useState(""); // 飲み放題希望
   const router = useRouter();
 
   const handleSearch = (e) => {
     e.preventDefault();
+
+    // 検索クエリを作成
+    const query = {
+      area: area || "",
+      guests: guests || "",
+      genre: genre || "",
+      budgetMin: budgetMin || "",
+      budgetMax: budgetMax || "",
+      privateRoom: privateRoom || "",
+      drinkIncluded: drinkIncluded || "",
+    };
+
+    // 検索結果ページにリダイレクト
     router.push({
-      pathname: "/results",
-      query: { area, guests, genre },
+      pathname: "/results", // 結果ページのパス
+      query: query,
     });
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center p-4">
+      <Header />
       <main className="w-full max-w-md bg-white rounded-lg shadow-lg mt-6 p-6">
         <form onSubmit={handleSearch} className="space-y-6">
           <h2 className="text-lg font-bold text-center">会食用のお店を検索</h2>
 
+          {/* エリア */}
           <div className="relative mb-4">
             <label className="block text-sm font-medium text-gray-700 mb-1">エリア</label>
             <select
@@ -31,34 +50,21 @@ export default function SearchForm() {
               onChange={(e) => setArea(e.target.value)}
               className="w-full border border-gray-300 rounded-lg p-2"
             >
-              <option value="">エリアを選択</option>
-              <option value="博多">博多</option>
-              <option value="中央">中央</option>
-              <option value="小倉北">小倉北</option>
-              <option value="久留米">久留米</option>
-              <option value="北九州">北九州</option>
-              <option value="福岡">福岡</option>
-              <option value="大牟田">大牟田</option>
-              <option value="飯塚">飯塚</option>
-              <option value="筑紫野">筑紫野</option>
-              <option value="糸島">糸島</option>
-              <option value="直方">直方</option>
-              <option value="田川">田川</option>
-              <option value="行橋">行橋</option>
-              <option value="八女">八女</option>
-              <option value="柳川">柳川</option>
-              <option value="春日">春日</option>
-              <option value="朝倉">朝倉</option>
-              <option value="宗像">宗像</option>
-              <option value="大野城">大野城</option>
+              <option value="">指定なし</option>
+              <option value="福岡県福岡市中央区">福岡市中央区</option>
+              <option value="福岡県福岡市博多区">福岡市博多区</option>
+              <option value="福岡県福岡市早良区">福岡市早良区</option>
+              <option value="福岡県福岡市東区">福岡市東区</option>
+              <option value="福岡県福岡市南区">福岡市南区</option>
+              <option value="福岡県福岡市西区">福岡市西区</option>
+              <option value="福岡県福岡市城南区">福岡市城南区</option>
+              <option value="福岡県北九州市小倉北区">北九州市小倉北区</option>
             </select>
           </div>
 
-
+          {/* 人数 */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              人数
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">人数</label>
             <input
               type="number"
               value={guests}
@@ -68,26 +74,31 @@ export default function SearchForm() {
             />
           </div>
 
+          {/* ジャンル */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              ジャンル
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">ジャンル</label>
             <select
               value={genre}
               onChange={(e) => setGenre(e.target.value)}
               className="w-full border border-gray-300 rounded-lg p-2"
             >
-              <option value="">選択してください</option>
-              <option value="和食">和食</option>
-              <option value="洋食">洋食</option>
+              <option value="">指定なし</option>
+              <option value="寿司">寿司</option>
+              <option value="日本料理">日本料理</option>
+              <option value="焼肉">焼肉</option>
+              <option value="イタリアン">イタリアン</option>
+              <option value="フレンチ">フレンチ</option>
             </select>
           </div>
 
+          {/* 詳細検索 */}
           <div className="text-center">
-            <Link href="/details" className="text-sm text-blue-600 hover:underline">詳細検索はこちら
+            <Link href="/details" className="text-sm text-blue-600 hover:underline">
+              詳細検索はこちら
             </Link>
           </div>
 
+          {/* 検索ボタン */}
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
@@ -96,7 +107,7 @@ export default function SearchForm() {
           </button>
         </form>
       </main>
-    <Footer />
+      <Footer />
     </div>
   );
 }

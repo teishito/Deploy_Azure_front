@@ -102,7 +102,7 @@ export default function SearchForm() {
           {/* 検索ボタン */}
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-gray-700 transition"
+            className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-700 transition"
           >
             お店を検索する
           </button>

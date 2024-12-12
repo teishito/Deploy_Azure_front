@@ -22,7 +22,7 @@ export default function Home() {
         genre,
       }).toString();
 
-      const response = await fetch(`/search?${query}`);
+      const response = await fetch(`/results?${query}`);
       if (!response.ok) {
         throw new Error("検索に失敗しました");
       }

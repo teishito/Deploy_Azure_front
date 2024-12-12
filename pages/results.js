@@ -34,7 +34,7 @@ export default function Results() {
 
       try {
         const response = await fetch(
-          `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results?${query}`
+          `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/search?${query}`
         );
         if (!response.ok) {
           if (response.status === 404) {

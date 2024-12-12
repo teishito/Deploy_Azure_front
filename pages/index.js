@@ -107,11 +107,11 @@ export default function Home() {
       </div>
 
       {/* 他ページリンク */}
-      //<Link href="/other-page">
-        //<a className="mt-6 inline-block text-blue-600 hover:underline">
-          //他のページへ
-        //</a>
-      //</Link>
+      <Link href="/other-page">
+        <a className="mt-6 inline-block text-blue-600 hover:underline">
+          他のページへ
+        </a>
+      </Link>
     </div>
   );
 }

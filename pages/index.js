@@ -1,5 +1,5 @@
 import { useState } from "react";
-import SearchForm from "../components/SimpleSearchForm";
+import SimpleSearchForm from "../components/SimpleSearchForm";
 import Link from "next/link";
 
 export default function Home() {

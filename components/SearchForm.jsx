@@ -17,17 +17,17 @@ export default function SearchForm() {
   const handleSearch = async (e) => {
     e.preventDefault();
   
-    // クエリを整理
+    // 初期値や未入力項目を除外するクエリ作成
     const query = Object.fromEntries(
       Object.entries({
-        area,
-        guests,
-        genre,
+        area: area !== "指定なし" ? area : "",       // エリアが「指定なし」以外の場合のみ含める
+        guests: guests !== 2 ? guests : "",          // 人数がデフォルト値（2）以外の場合のみ含める
+        genre: genre !== "指定なし" ? genre : "",    // ジャンルが「指定なし」以外の場合のみ含める
         budgetMin,
         budgetMax,
         privateRoom,
         drinkIncluded,
-      }).filter(([_, value]) => value !== "")
+      }).filter(([_, value]) => value !== "" && value !== null) // 空文字列やnullを除外
     );
   
     try {
@@ -40,6 +40,7 @@ export default function SearchForm() {
       console.error("Navigation error:", error);
     }
   };
+
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center p-4">

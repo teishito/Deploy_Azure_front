@@ -5,29 +5,52 @@ import Footer from "../components/Footer";
 
 export default function Results() {
   const router = useRouter();
-  const { area, guests, genre, budgetMin, budgetMax, privateRoom, drinkIncluded } = router.query;
+  const {
+    area = "",
+    guests = "",
+    genre = "",
+    budgetMin = "",
+    budgetMax = "",
+    privateRoom = "",
+    drinkIncluded = "",
+  } = router.query;
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchResults = async () => {
       setLoading(true);
-      const query = new URLSearchParams({
-        area: area || "",
-        guests: guests || "",
-        genre: genre || "",
-        budgetMin: budgetMin || "",
-        budgetMax: budgetMax || "",
-        privateRoom: privateRoom || "",
-        drinkIncluded: drinkIncluded || "",
-      }).toString();
+      const query = new URLSearchParams(
+        Object.entries({
+          area,
+          guests,
+          genre,
+          budgetMin,
+          budgetMax,
+          privateRoom,
+          drinkIncluded,
+        }).filter(([_, value]) => value)
+      ).toString();
 
       try {
-        const response = await fetch(`https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results?${query}`); // Flask APIのエンドポイント
-        if (!response.ok) throw new Error("Failed to fetch data");
+        const response = await fetch(
+          `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results?${query}`
+        );
+        if (!response.ok) {
+          if (response.status === 404) {
+            setResults([]);
+          } else {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+        }
+
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new Error("Invalid response format");
+        }
 
         const data = await response.json();
-        setResults(data.slice(0, 5)); // 結果を最大5件に制限
+        setResults(data.slice(0, 5));
       } catch (error) {
         console.error("Error fetching search results:", error);
         setResults([]);
@@ -54,7 +77,8 @@ export default function Results() {
           results.map((restaurant) => (
             <div key={restaurant.id} className="bg-white shadow p-4 rounded-lg mb-4 flex">
               <img
-                src={restaurant.store_top_image || "/placeholder.png"} // 画像がない場合にプレースホルダーを表示
+                src={restaurant.store_top_image || "/placeholder.png"}
+                onError={(e) => { e.target.src = "/placeholder.png"; }}
                 alt={restaurant.name}
                 className="w-24 h-24 object-cover rounded-lg mr-4"
               />

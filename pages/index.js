@@ -1,5 +1,5 @@
 import { useState } from "react";
-import SearchForm from "../components/SearchForm";
+import SearchForm from "../components/SimpleSearchForm";
 import Link from "next/link";
 
 export default function Home() {
@@ -38,7 +38,7 @@ export default function Home() {
 
   return (
     <div>
-      <SearchForm
+      <SimpleSearchForm
         area={area}
         setArea={setArea}
         guests={guests}

@@ -14,10 +14,10 @@ export default function SearchForm() {
   const [drinkIncluded, setDrinkIncluded] = useState(""); // 飲み放題希望
   const router = useRouter();
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
-
-    // 検索クエリを作成
+  
+    // クエリを整理
     const query = Object.fromEntries(
       Object.entries({
         area,
@@ -29,12 +29,16 @@ export default function SearchForm() {
         drinkIncluded,
       }).filter(([_, value]) => value !== "")
     );
-
-    // 検索結果ページにリダイレクト
-    router.push({
-      pathname: "/results", // 結果ページのパス
-      query: query,
-    });
+  
+    try {
+      // 検索結果ページに遷移
+      router.push({
+        pathname: "/results",
+        query: query,
+      });
+    } catch (error) {
+      console.error("Navigation error:", error);
+    }
   };
 
   return (

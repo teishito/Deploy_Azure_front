@@ -5,9 +5,9 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 export default function SearchForm() {
-  const [area, setArea] = useState(""); // エリア
+  const [area, setArea] = useState("指定なし"); // エリア
   const [guests, setGuests] = useState(2); // 人数
-  const [genre, setGenre] = useState(""); // ジャンル
+  const [genre, setGenre] = useState("指定なし"); // ジャンル
   const [budgetMin, setBudgetMin] = useState(""); // 予算下限
   const [budgetMax, setBudgetMax] = useState(""); // 予算上限
   const [privateRoom, setPrivateRoom] = useState(""); // 個室希望
@@ -18,15 +18,17 @@ export default function SearchForm() {
     e.preventDefault();
 
     // 検索クエリを作成
-    const query = {
-      area: area || "",
-      guests: guests || "",
-      genre: genre || "",
-      budgetMin: budgetMin || "",
-      budgetMax: budgetMax || "",
-      privateRoom: privateRoom || "",
-      drinkIncluded: drinkIncluded || "",
-    };
+    const query = Object.fromEntries(
+      Object.entries({
+        area,
+        guests,
+        genre,
+        budgetMin,
+        budgetMax,
+        privateRoom,
+        drinkIncluded,
+      }).filter(([_, value]) => value !== "")
+    );
 
     // 検索結果ページにリダイレクト
     router.push({
@@ -131,8 +133,8 @@ export default function SearchForm() {
 
           {/* 詳細検索 */}
           <div className="text-center">
-            <Link href="/details" className="text-sm text-blue-600 hover:underline">
-              詳細検索はこちら
+             <Link href="/details">
+              <a className="text-sm text-blue-600 hover:underline">詳細検索はこちら</a>
             </Link>
           </div>
 

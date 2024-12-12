@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
@@ -12,17 +13,15 @@ export default function SimpleSearchForm() {
   const handleSearch = async (e) => {
     e.preventDefault();
 
-    // クエリパラメータの生成
     const query = Object.fromEntries(
       Object.entries({
-        area: area !== "指定なし" ? area : "",       // エリアが「指定なし」以外の場合のみ含める
-        guests: guests !== 2 ? guests : "",          // 人数がデフォルト値（2）以外の場合のみ含める
-        genre: genre !== "指定なし" ? genre : "",    // ジャンルが「指定なし」以外の場合のみ含める
-      }).filter(([_, value]) => value !== "" && value !== null) // 空文字列やnullを除外
+        area: area !== "指定なし" ? area : "",
+        guests: guests !== 2 ? guests : "",
+        genre: genre !== "指定なし" ? genre : "",
+      }).filter(([_, value]) => value !== "" && value !== null)
     );
 
     try {
-      // 検索結果ページに遷移
       router.push({
         pathname: "/results",
         query: query,
@@ -50,14 +49,14 @@ export default function SimpleSearchForm() {
               className="w-full border border-gray-300 rounded-lg p-2"
             >
               <option value="指定なし">指定なし</option>
-              <option value="福岡県福岡市中央区">福岡市中央区</option>
-              <option value="福岡県福岡市博多区">福岡市博多区</option>
-              <option value="福岡県福岡市早良区">福岡市早良区</option>
-              <option value="福岡県福岡市東区">福岡市東区</option>
-              <option value="福岡県福岡市南区">福岡市南区</option>
-              <option value="福岡県福岡市西区">福岡市西区</option>
-              <option value="福岡県福岡市城南区">福岡市城南区</option>
-              <option value="福岡県北九州市小倉北区">北九州市小倉北区</option>
+              <option value="福岡県福岡市中央区">福岡県福岡市中央区</option>
+              <option value="福岡県福岡市博多区">福岡県福岡市博多区</option>
+              <option value="福岡県福岡市早良区">福岡県福岡市早良区</option>
+              <option value="福岡県福岡市東区">福岡県福岡市東区</option>
+              <option value="福岡県福岡市南区">福岡県福岡市南区</option>
+              <option value="福岡県福岡市西区">福岡県福岡市西区</option>
+              <option value="福岡県福岡市城南区">福岡県福岡市城南区</option>
+              <option value="福岡県北九州市小倉北区">福岡県北九州市小倉北区</option>
             </select>
           </div>
 
@@ -133,19 +132,12 @@ export default function SimpleSearchForm() {
             </select>
           </div>
 
-          {/* 詳細検索 */}
-          <div className="text-center">
-             <Link href="/details">
-              <a className="text-sm text-blue-600 hover:underline">詳細検索はこちら</a>
-            </Link>
-          </div>
-
           {/* 検索ボタン */}
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
           >
-            お店を検索する          
+            お店を検索する
           </button>
         </form>
       </main>

@@ -1,45 +1,44 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 export default function Home() {
-  const [area, setArea] = useState("指定なし"); // エリア
-  const [guests, setGuests] = useState(2); // 人数
-  const [genre, setGenre] = useState("指定なし"); // ジャンル
-  const [searchResults, setSearchResults] = useState([]); // 検索結果
-  const [loading, setLoading] = useState(false); // ローディング状態
-  const [error, setError] = useState(""); // エラーメッセージ
+  // 状態管理
+  const [area, setArea] = useState("指定なし");
+  const [guests, setGuests] = useState(2);
+  const [genre, setGenre] = useState("指定なし");
+  const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
+  // 検索処理
   const handleSearch = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
-    const query = Object.fromEntries(
-      Object.entries({
-        area: area !== "指定なし" ? area : "",
-        guests: guests !== 2 ? guests : "",
-        genre: genre !== "指定なし" ? genre : "",
-      }).filter(([_, value]) => value !== "" && value !== null)
-    );
-
     try {
-      const response = await fetch(`/results?${new URLSearchParams(query).toString()}`);
-      const contentType = response.headers.get("content-type");
+      const response = await fetch(
+        "https://tech0-gen-8-step3-app-py-10.azurewebsites.net/api/restaurants",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            area: area === "指定なし" ? "" : area,
+            genre: genre === "指定なし" ? "" : genre,
+            people: guests,
+          }),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error(`HTTPエラー: ${response.status}`);
-      }
-
-      if (!contentType || !contentType.includes("application/json")) {
-        throw new Error("サーバーから予期しない形式のレスポンスが返されました");
+        throw new Error(`Server error: ${response.status}`);
       }
 
       const data = await response.json();
-      setSearchResults(data.results || []);
+      setSearchResults(data.restaurants || []);
     } catch (err) {
-      console.error("検索エラー:", err);
-      setError(err.message || "エラーが発生しました");
+      setError(err.message || "検索に失敗しました");
     } finally {
       setLoading(false);
     }
@@ -54,7 +53,9 @@ export default function Home() {
 
           {/* エリア */}
           <div className="relative mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">エリア</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              エリア
+            </label>
             <select
               value={area}
               onChange={(e) => setArea(e.target.value)}
@@ -74,7 +75,9 @@ export default function Home() {
 
           {/* 人数 */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">人数</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              人数
+            </label>
             <input
               type="number"
               value={guests}
@@ -87,13 +90,17 @@ export default function Home() {
 
           {/* ジャンル */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">ジャンル</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              ジャンル
+            </label>
             <select
               value={genre}
               onChange={(e) => setGenre(e.target.value)}
               className="w-full border border-gray-300 rounded-lg p-2"
             >
               <option value="指定なし">指定なし</option>
+              
+              {/* 日本料理 */}
               <option value="寿司">寿司</option>
               <option value="日本料理">日本料理</option>
               <option value="そば">そば</option>
@@ -101,12 +108,40 @@ export default function Home() {
               <option value="鍋">鍋</option>
               <option value="水炊き">水炊き</option>
               <option value="しゃぶしゃぶ">しゃぶしゃぶ</option>
+              <option value="すっぽん">すっぽん</option>
               <option value="もつ鍋">もつ鍋</option>
+              
+              {/* グローバル料理 */}
               <option value="イタリアン">イタリアン</option>
               <option value="フレンチ">フレンチ</option>
               <option value="韓国料理">韓国料理</option>
               <option value="インド料理">インド料理</option>
               <option value="中華料理">中華料理</option>
+              
+              {/* 肉料理 */}
+              <option value="焼肉">焼肉</option>
+              <option value="焼き鳥">焼き鳥</option>
+              <option value="鳥料理">鳥料理</option>
+              <option value="ステーキ">ステーキ</option>
+              <option value="肉料理">肉料理</option>
+              <option value="ジンギスカン">ジンギスカン</option>
+              
+              {/* バー・居酒屋 */}
+              <option value="居酒屋">居酒屋</option>
+              <option value="ダイニングバー">ダイニングバー</option>
+              
+              {/* カジュアル */}
+              <option value="ビストロ">ビストロ</option>
+              <option value="レストラン">レストラン</option>
+              <option value="餃子">餃子</option>
+              <option value="ラーメン">ラーメン</option>
+              
+              {/* 海鮮料理 */}
+              <option value="海鮮">海鮮</option>
+              
+              {/* その他 */}
+              <option value="鉄板焼き">鉄板焼き</option>
+              <option value="串揚げ">串揚げ</option>
             </select>
           </div>
 
@@ -118,29 +153,29 @@ export default function Home() {
             お店を検索する
           </button>
         </form>
-      </main>
 
-      {/* 検索結果 */}
-      <section className="w-full max-w-md bg-white rounded-lg shadow-lg mt-6 p-6">
-        {loading ? (
-          <p>検索中...</p>
-        ) : error ? (
-          <p className="text-red-500">{error}</p>
-        ) : searchResults.length > 0 ? (
-          <ul className="space-y-4">
-            {searchResults.map((result) => (
-              <li key={result.id} className="border-b pb-4">
-                <h3 className="text-lg font-bold">{result.name}</h3>
-                <p>住所: {result.address}</p>
-                <p>ジャンル: {result.category}</p>
-                <p>予算: ¥{result.budget_min} ~ ¥{result.budget_max}</p>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>該当するお店が見つかりませんでした。</p>
-        )}
-      </section>
+        {/* 検索結果 */}
+        <div className="mt-6">
+          {loading && <p>検索中...</p>}
+          {error && <p className="text-red-500">{error}</p>}
+          {!loading && searchResults.length > 0 && (
+            <ul className="space-y-4">
+              {searchResults.map((result) => (
+                <li key={result.id} className="bg-gray-100 p-4 rounded-lg shadow">
+                  <h3 className="text-lg font-bold">{result.name}</h3>
+                  <p>エリア: {result.area}</p>
+                  <p>ジャンル: {result.category}</p>
+                  <p>予算: ¥{result.budget_min} ~ ¥{result.budget_max}</p>
+                  <p>評価: {result.google_rating || "N/A"}</p>
+                </li>
+              ))}
+            </ul>
+          )}
+          {!loading && searchResults.length === 0 && !error && (
+            <p className="text-gray-500">条件に一致するお店が見つかりませんでした。</p>
+          )}
+        </div>
+      </main>
       <Footer />
     </div>
   );

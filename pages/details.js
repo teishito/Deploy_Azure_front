@@ -24,7 +24,7 @@ export default function DetailsSearch() {
     setError("");
     setSearchResults([]);
 
-    // 予算のバリデーション
+    // バリデーション: 予算の下限と上限
     if (budgetMin && budgetMax && Number(budgetMin) > Number(budgetMax)) {
       setError("予算の下限は上限以下に設定してください。");
       setLoading(false);
@@ -32,6 +32,7 @@ export default function DetailsSearch() {
     }
 
     try {
+      // APIリクエスト
       const res = await fetch(`${BACKEND_URL}/api/detailrestaurants`, {
         method: "POST",
         headers: {
@@ -53,10 +54,12 @@ export default function DetailsSearch() {
       }
 
       const data = await res.json();
+      console.log("API レスポンス:", data); // デバッグ用
+
       setSearchResults(data.restaurants || []);
     } catch (err) {
       setError("検索中にエラーが発生しました。");
-      console.error(err);
+      console.error("エラー詳細:", err);
     } finally {
       setLoading(false);
     }
@@ -76,13 +79,13 @@ export default function DetailsSearch() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
       <header className="bg-black text-white py-2 text-center fixed top-0 w-full z-50">
         <h1 className="text-lg font-bold">詳細検索</h1>
       </header>
 
-      <main className="flex-grow mt-20 p-4 bg-gray-50 flex justify-center">
+      <main className="flex-grow mt-20 p-4 flex justify-center">
         <div className="w-full max-w-md bg-white rounded-lg shadow p-6">
           <form onSubmit={handleSearch} className="space-y-4">
             <h2 className="text-lg font-bold text-center">会食用のお店を検索</h2>
@@ -95,15 +98,16 @@ export default function DetailsSearch() {
                 onChange={(e) => setArea(e.target.value)}
                 className="w-full border border-gray-300 rounded-lg p-2"
               >
-              <option value="指定なし">指定なし</option>
-              <option value="福岡県福岡市中央区">福岡県福岡市中央区</option>
-              <option value="福岡県福岡市博多区">福岡県福岡市博多区</option>
-              <option value="福岡県福岡市早良区">福岡県福岡市早良区</option>
-              <option value="福岡県福岡市東区">福岡県福岡市東区</option>
-              <option value="福岡県福岡市南区">福岡県福岡市南区</option>
-              <option value="福岡県福岡市西区">福岡県福岡市西区</option>
-              <option value="福岡県福岡市城南区">福岡県福岡市城南区</option>
-              <option value="福岡県北九州市小倉北区">福岡県北九州市小倉北区</option>
+                <option value="指定なし">指定なし</option>
+                <option value="福岡県福岡市中央区">福岡県福岡市中央区</option>
+                <option value="福岡県福岡市博多区">福岡県福岡市博多区</option>
+                <option value="福岡県福岡市早良区">福岡県福岡市早良区</option>
+                <option value="福岡県福岡市東区">福岡県福岡市東区</option>
+                <option value="福岡県福岡市南区">福岡県福岡市南区</option>
+                <option value="福岡県福岡市西区">福岡県福岡市西区</option>
+                <option value="福岡県福岡市城南区">福岡県福岡市城南区</option>
+                <option value="福岡県北九州市小倉北区">福岡県北九州市小倉北区</option>
+                {/* 他のエリア */}
               </select>
             </div>
 
@@ -127,117 +131,59 @@ export default function DetailsSearch() {
                 onChange={(e) => setGenre(e.target.value)}
                 className="w-full border border-gray-300 rounded-lg p-2"
               >
-              <option value="指定なし">指定なし</option>
-              
-              {/* 日本料理 */}
-              <option value="寿司">寿司</option>
-              <option value="日本料理">日本料理</option>
-              <option value="そば">そば</option>
-              <option value="うなぎ">うなぎ</option>
-              <option value="鍋">鍋</option>
-              <option value="水炊き">水炊き</option>
-              <option value="しゃぶしゃぶ">しゃぶしゃぶ</option>
-              <option value="すっぽん">すっぽん</option>
-              <option value="もつ鍋">もつ鍋</option>
-              
-              {/* グローバル料理 */}
-              <option value="イタリアン">イタリアン</option>
-              <option value="フレンチ">フレンチ</option>
-              <option value="韓国料理">韓国料理</option>
-              <option value="インド料理">インド料理</option>
-              <option value="中華料理">中華料理</option>
-              
-              {/* 肉料理 */}
-              <option value="焼肉">焼肉</option>
-              <option value="焼き鳥">焼き鳥</option>
-              <option value="鳥料理">鳥料理</option>
-              <option value="ステーキ">ステーキ</option>
-              <option value="肉料理">肉料理</option>
-              <option value="ジンギスカン">ジンギスカン</option>
-              
-              {/* バー・居酒屋 */}
-              <option value="居酒屋">居酒屋</option>
-              <option value="ダイニングバー">ダイニングバー</option>
-              
-              {/* カジュアル */}
-              <option value="ビストロ">ビストロ</option>
-              <option value="レストラン">レストラン</option>
-              <option value="餃子">餃子</option>
-              <option value="ラーメン">ラーメン</option>
-              
-              {/* 海鮮料理 */}
-              <option value="海鮮">海鮮</option>
-              
-              {/* その他 */}
-              <option value="鉄板焼き">鉄板焼き</option>
-              <option value="串揚げ">串揚げ</option>
+                <option value="指定なし">指定なし</option>
+                
+                {/* 日本料理 */}
+                <option value="寿司">寿司</option>
+                <option value="日本料理">日本料理</option>
+                <option value="そば">そば</option>
+                <option value="うなぎ">うなぎ</option>
+                <option value="鍋">鍋</option>
+                <option value="水炊き">水炊き</option>
+                <option value="しゃぶしゃぶ">しゃぶしゃぶ</option>
+                <option value="すっぽん">すっぽん</option>
+                <option value="もつ鍋">もつ鍋</option>
+                
+                {/* グローバル料理 */}
+                <option value="イタリアン">イタリアン</option>
+                <option value="フレンチ">フレンチ</option>
+                <option value="韓国料理">韓国料理</option>
+                <option value="インド料理">インド料理</option>
+                <option value="中華料理">中華料理</option>
+                
+                {/* 肉料理 */}
+                <option value="焼肉">焼肉</option>
+                <option value="焼き鳥">焼き鳥</option>
+                <option value="鳥料理">鳥料理</option>
+                <option value="ステーキ">ステーキ</option>
+                <option value="肉料理">肉料理</option>
+                <option value="ジンギスカン">ジンギスカン</option>
+                
+                {/* バー・居酒屋 */}
+                <option value="居酒屋">居酒屋</option>
+                <option value="ダイニングバー">ダイニングバー</option>
+                
+                {/* カジュアル */}
+                <option value="ビストロ">ビストロ</option>
+                <option value="レストラン">レストラン</option>
+                <option value="餃子">餃子</option>
+                <option value="ラーメン">ラーメン</option>
+                
+                {/* 海鮮料理 */}
+                <option value="海鮮">海鮮</option>
+                
+                {/* その他 */}
+                <option value="鉄板焼き">鉄板焼き</option>
+                <option value="串揚げ">串揚げ</option>
+
               </select>
             </div>
 
-            {/* 予算 */}
-            <div className="flex space-x-2">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">予算 (下限)</label>
-                <input
-                  type="number"
-                  value={budgetMin}
-                  onChange={(e) => setBudgetMin(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg p-2"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">予算 (上限)</label>
-                <input
-                  type="number"
-                  value={budgetMax}
-                  onChange={(e) => setBudgetMax(e.target.value)}
-                  className="w-full border border-gray-300 rounded-lg p-2"
-                />
-              </div>
-            </div>
-
-            {/* 個室 */}
-            <div className="flex space-x-2">
-              <button
-                type="button"
-                onClick={() => setPrivateRoom(privateRoom === "有" ? "" : "有")}
-                className={`w-1/2 py-2 rounded-lg ${
-                  privateRoom === "有" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
-                }`}
-              >
-                個室: 有
-              </button>
-              <button
-                type="button"
-                onClick={() => setPrivateRoom(privateRoom === "無" ? "" : "無")}
-                className={`w-1/2 py-2 rounded-lg ${
-                  privateRoom === "無" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
-                }`}
-              >
-                個室: 無
-              </button>
-            </div>
-
-            {/* 飲み放題 */}
-            <div className="flex space-x-2">
-              <button
-                type="button"
-                onClick={() => setDrinkIncluded(drinkIncluded === "有" ? "" : "有")}
-                className={`w-1/2 py-2 rounded-lg ${
-                  drinkIncluded === "有" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
-                }`}
-              >
-                飲み放題: 有
-              </button>
-              <button
-                type="button"
-                onClick={() => setDrinkIncluded(drinkIncluded === "無" ? "" : "無")}
-                className={`w-1/2 py-2 rounded-lg ${
-                  drinkIncluded === "無" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
-                }`}
-              >
-                飲み放題: 無
-              </button>
+            {/* 簡易検索 */}
+            <div className="text-center">
+               <Link href="/">
+                <a className="text-sm text-blue-600 hover:underline">簡易検索はこちら</a>
+              </Link>
             </div>
 
             {/* ボタン */}

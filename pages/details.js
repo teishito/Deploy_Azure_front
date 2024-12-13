@@ -9,8 +9,10 @@ export default function DetailsSearch() {
   const [genre, setGenre] = useState("");
   const [budgetMin, setBudgetMin] = useState("");
   const [budgetMax, setBudgetMax] = useState("");
-  const [privateRoom, setPrivateRoom] = useState("");
-  const [drinkIncluded, setDrinkIncluded] = useState("");
+  const [budgetMin, setBudgetMin] = useState(2000);
+  const [budgetMax, setBudgetMax] = useState(5000);
+  const [privateRoom, setPrivateRoom] = useState("無"); // デフォルト値を "無" に設定
+  const [drinkIncluded, setDrinkIncluded] = useState("無"); // デフォルト値を "無" に設定
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");

@@ -16,7 +16,7 @@ export default function DetailsSearch() {
   const [error, setError] = useState("");
   const [favorites, setFavorites] = useState([]);
 
-  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://example.com";
+  const BACKEND_URL = "https://tech0-gen-8-step3-app-py-10.azurewebsites.net";
 
   // お気に入りを復元
   useEffect(() => {

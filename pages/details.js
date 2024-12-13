@@ -32,7 +32,7 @@ export default function DetailsSearch() {
     }
 
     try {
-      const res = await fetch(`${BACKEND_URL}/api/restaurants`, {
+      const res = await fetch(`${BACKEND_URL}/api/detailrestaurants`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

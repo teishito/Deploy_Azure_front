@@ -26,40 +26,40 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-black text-white w-full py-4 fixed top-0 left-0 flex justify-between items-center px-6 z-50 shadow-md">
-      <Link href="/">
-        <h1 className="text-xl font-bold cursor-pointer" aria-label="Home">
-          FortuneDinner
-        </h1>
-      </Link>
-      <button
-        className="text-white focus:outline-none"
-        onClick={toggleMenu}
-        aria-label="Toggle Menu"
-      >
-        <div className="space-y-1">
-          <div className="w-6 h-0.5 bg-white"></div>
-          <div className="w-6 h-0.5 bg-white"></div>
-          <div className="w-6 h-0.5 bg-white"></div>
-        </div>
-      </button>
+    <header className="fixed top-0 left-0 w-full bg-black text-white py-4 z-50 shadow-md">
+      <div className="flex justify-between items-center px-6">
+        {/* ロゴ */}
+        <Link href="/">
+          <h1 className="text-xl font-bold cursor-pointer" aria-label="Home">
+            FortuneDinner
+          </h1>
+        </Link>
 
+        {/* ハンバーガーメニュー */}
+        <button
+          className="text-white focus:outline-none"
+          onClick={toggleMenu}
+          aria-label="Toggle Menu"
+        >
+          <div className="space-y-1">
+            <div className="w-6 h-0.5 bg-white"></div>
+            <div className="w-6 h-0.5 bg-white"></div>
+            <div className="w-6 h-0.5 bg-white"></div>
+          </div>
+        </button>
+      </div>
+
+      {/* メニュー */}
       {menuOpen && (
         <div className="absolute top-14 right-4 bg-white shadow-lg rounded-md p-4 z-50">
           <ul>
             <li className="mb-2">
-              <Link
-                href="/menus/reservation-history"
-                className="text-black hover:text-blue-600"
-              >
+              <Link href="/menus/reservation-history" className="text-black hover:text-blue-600">
                 予約履歴
               </Link>
             </li>
             <li className="mb-2">
-              <Link
-                href="/favorites"
-                className="text-black hover:text-blue-600"
-              >
+              <Link href="/favorites" className="text-black hover:text-blue-600">
                 お気に入り
               </Link>
             </li>
@@ -76,6 +76,7 @@ export default function Header() {
         </div>
       )}
 
+      {/* ポップアップ */}
       {isPopupOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
@@ -95,9 +96,7 @@ export default function Header() {
             <h2 className="text-lg font-bold mb-4">レポートとは？</h2>
             <ul className="mb-4 text-sm text-gray-700">
               <li>・あなたの会食をより最適化するためのレポートをします</li>
-              <li>
-                ・会食後のフィードバックに基づき、次回以降のお店提案を改善します
-              </li>
+              <li>・会食後のフィードバックに基づき、次回以降のお店提案を改善します</li>
             </ul>
             <button
               onClick={handleUnderstandClick}

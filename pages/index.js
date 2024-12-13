@@ -199,6 +199,13 @@ export default function Home() {
             </select>
           </div>
 
+          {/* 詳細検索 */}
+          <div className="text-center">
+             <Link href="/details">
+              <a className="text-sm text-blue-600 hover:underline">詳細検索はこちら</a>
+            </Link>
+          </div>
+  
           {/* ボタン */}
           <button
             type="submit"

@@ -112,16 +112,6 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center p-4">
       <Header />
-      {/* ホームエンドポイント */}
-      <h2 style={{ fontSize: "16px", color: "#555", marginBottom: "20px" }}>Flaskサーバーの起動確認</h2>
-      <button onClick={fetchHome} style={buttonStyle}>
-        ホームエンドポイントにアクセス
-      </button>
-      {homeResponse ? (
-        <p>サーバーからの応答: {homeResponse}</p>
-      ) : (
-        <p>応答を待機中...</p>
-      )}
       <main className="w-full max-w-md bg-white rounded-lg shadow-lg mt-6 p-6">
         <form onSubmit={handleSearch} className="space-y-6">
           <h2 className="text-lg font-bold text-center">会食用のお店を検索</h2>

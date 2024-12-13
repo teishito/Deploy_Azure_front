@@ -7,8 +7,6 @@ export default function DetailsSearch() {
   const [area, setArea] = useState("");
   const [guests, setGuests] = useState(2);
   const [genre, setGenre] = useState("");
-  const [budgetMin, setBudgetMin] = useState("");
-  const [budgetMax, setBudgetMax] = useState("");
   const [budgetMin, setBudgetMin] = useState(2000); // デフォルト値を 2000 に設定
   const [budgetMax, setBudgetMax] = useState(5000); // デフォルト値を 5000 に設定
   const [privateRoom, setPrivateRoom] = useState("無"); // デフォルト値を "無" に設定

@@ -71,9 +71,6 @@ export default function DetailsSearch() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
-      <header className="bg-black text-white py-4 text-center fixed top-0 w-full z-50">
-        <h1 className="text-lg font-bold">FortuneDinner - 詳細検索</h1>
-      </header>
 
       <main className="flex-grow mt-20 p-4 flex justify-center">
         <div className="w-full max-w-md bg-white rounded-lg shadow p-6">

@@ -1,40 +1,41 @@
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router"; // router をインポート
+import { useRouter } from "next/router";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isPopupOpen, setPopupOpen] = useState(false); // ポップアップ状態を管理
-  const router = useRouter(); // router を使用
+  const [isPopupOpen, setPopupOpen] = useState(false);
+  const router = useRouter();
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
 
   const handlePopupOpen = () => {
-    setMenuOpen(false); // メニューを閉じる
-    setPopupOpen(true); // ポップアップを開く
+    setMenuOpen(false);
+    setPopupOpen(true);
   };
 
   const handlePopupClose = () => {
-    setPopupOpen(false); // ポップアップを閉じる
+    setPopupOpen(false);
   };
 
   const handleUnderstandClick = () => {
-    setPopupOpen(false); // ポップアップを閉じる
-    router.push("/menus/report-details"); // report-details.js へ遷移
+    setPopupOpen(false);
+    router.push("/menus/report-details");
   };
 
   return (
-    <header className="bg-black text-white w-full py-4 flex justify-between items-center px-6">
-      {/* 「FortuneDinner」をトップページへのリンクに変更 */}
+    <header className="bg-black text-white w-full py-4 fixed top-0 left-0 flex justify-between items-center px-6 z-50 shadow-md">
       <Link href="/">
-        <h1 className="text-xl font-bold cursor-pointer">FortuneDinner</h1>
+        <h1 className="text-xl font-bold cursor-pointer" aria-label="Home">
+          FortuneDinner
+        </h1>
       </Link>
       <button
         className="text-white focus:outline-none"
         onClick={toggleMenu}
-        aria-label="Menu"
+        aria-label="Toggle Menu"
       >
         <div className="space-y-1">
           <div className="w-6 h-0.5 bg-white"></div>
@@ -43,7 +44,6 @@ export default function Header() {
         </div>
       </button>
 
-      {/* メニュー */}
       {menuOpen && (
         <div className="absolute top-14 right-4 bg-white shadow-lg rounded-md p-4 z-50">
           <ul>
@@ -65,8 +65,9 @@ export default function Header() {
             </li>
             <li className="mb-2">
               <button
-                onClick={handlePopupOpen} // ポップアップを開く
+                onClick={handlePopupOpen}
                 className="text-black hover:text-blue-600"
+                aria-label="Open Report Popup"
               >
                 レポート
               </button>
@@ -75,14 +76,19 @@ export default function Header() {
         </div>
       )}
 
-      {/* ポップアップ */}
       {isPopupOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg relative max-w-sm w-full">
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+          onClick={handlePopupClose}
+        >
+          <div
+            className="bg-white p-6 rounded-lg shadow-lg relative max-w-sm w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               onClick={handlePopupClose}
               className="absolute top-2 right-2 text-black"
-              aria-label="Close"
+              aria-label="Close Popup"
             >
               ×
             </button>
@@ -94,8 +100,9 @@ export default function Header() {
               </li>
             </ul>
             <button
-              onClick={handleUnderstandClick} // 修正済み: 了解ボタンクリックで遷移
+              onClick={handleUnderstandClick}
               className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800"
+              aria-label="Understand and Proceed"
             >
               了解
             </button>

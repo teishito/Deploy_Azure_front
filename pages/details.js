@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"; // useEffect をインポート
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -7,23 +7,24 @@ export default function DetailsSearch() {
   const [area, setArea] = useState("");
   const [guests, setGuests] = useState(2);
   const [genre, setGenre] = useState("");
-  const [budgetMin, setBudgetMin] = useState(2000); // デフォルト値を 2000 に設定
-  const [budgetMax, setBudgetMax] = useState(5000); // デフォルト値を 5000 に設定
-  const [privateRoom, setPrivateRoom] = useState(""); // 初期値を設定しない
-  const [drinkIncluded, setDrinkIncluded] = useState(""); // 初期値を設定しない
+  const [budgetMin, setBudgetMin] = useState(2000);
+  const [budgetMax, setBudgetMax] = useState(5000);
+  const [privateRoom, setPrivateRoom] = useState("");
+  const [drinkIncluded, setDrinkIncluded] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [favorites, setFavorites] = useState([]);
 
-  const BACKEND_URL = "https://tech0-gen-8-step3-app-py-10.azurewebsites.net";
+  const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "https://example.com";
 
-  // 初回ロード時にお気に入りを復元
+  // お気に入りを復元
   useEffect(() => {
     const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
     setFavorites(storedFavorites);
   }, []);
 
-  // お気に入りの永続化
+  // お気に入りを永続化
   useEffect(() => {
     localStorage.setItem("favorites", JSON.stringify(favorites));
   }, [favorites]);
@@ -35,93 +36,52 @@ export default function DetailsSearch() {
         : [...prevFavorites, restaurant]
     );
   };
-  
-  // GETリクエスト（/api/hello）
-  const handleGetRequest = async () => {
-    try {
-      const res = await fetch(`${BACKEND_URL}/api/hello`, {
-        method: "GET",
-      });
-      if (!res.ok) throw new Error(`GETリクエスト失敗: ${res.status}`);
-      const data = await res.json();
-      setGetResponse(data.message || "応答形式が不正です");
-    } catch (error) {
-      console.error("GETリクエストエラー:", error);
-      setGetResponse("エラーが発生しました");
-    }
-  };
 
-  // ホームエンドポイント（/）
-  const fetchHome = async () => {
-    console.log("fetchHome関数が呼び出されました");
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    setSearchResults([]);
+
     try {
-      const res = await fetch('https://tech0-gen-8-step3-app-py-10.azurewebsites.net/', {
-        method: 'GET',
+      const res = await fetch(`${BACKEND_URL}/api/detailrestaurants`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          area,
+          genre,
+          people: guests,
+          budgetMin,
+          budgetMax,
+          privateRoom,
+          drinkIncluded,
+        }),
       });
-      console.log("HTTPリクエストが送信されました");
-  
+
       if (!res.ok) {
-        throw new Error(`HTTPエラー: ${res.status} - ${res.statusText}`);
+        throw new Error(`検索が失敗しました: ${res.status}`);
       }
-  
+
       const data = await res.json();
-      console.log("レスポンスを受信しました:", data);
-  
-      // サーバーからのレスポンスをセット
-      setHomeResponse(data.message || "応答の形式が不正です");
-    } catch (error) {
-      console.error("fetchHome関数内のエラー:", error);
-      setHomeResponse("エラーが発生しました");
+      setSearchResults(data.restaurants || []);
+    } catch (err) {
+      setError("検索中にエラーが発生しました。");
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
-
-  // レストランデータ取得
-const handleSearch = async (e) => {
-  e.preventDefault();
-  setLoading(true);
-  setError("");
-  setSearchResults([]);
-
-  try {
-    const res = await fetch(`${BACKEND_URL}/api/detailrestaurants`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        area,
-        genre,
-        people: guests,
-        budgetMin,
-        budgetMax,
-        privateRoom,
-        drinkIncluded,
-      }),
-    });
-
-    if (!res.ok) {
-      throw new Error(`検索が失敗しました: ${res.status}`);
-    }
-
-    const data = await res.json();
-    setSearchResults(data.restaurants || []);
-  } catch (err) {
-    setError("検索中にエラーが発生しました。");
-    console.error(err); // エラーをコンソールに出力
-  } finally {
-    setLoading(false);
-  }
-};
-
 
   const resetFilters = () => {
     setArea("");
     setGuests(2);
     setGenre("");
-    setBudgetMin(2000); // デフォルト値をリセット時にも適用
-    setBudgetMax(5000); // デフォルト値をリセット時にも適用
-    setPrivateRoom(""); // 初期値をリセット
-    setDrinkIncluded(""); // 初期値をリセット
+    setBudgetMin(2000);
+    setBudgetMax(5000);
+    setPrivateRoom("");
+    setDrinkIncluded("");
     setSearchResults([]);
     setError("");
   };
@@ -152,7 +112,6 @@ const handleSearch = async (e) => {
                 <option value="福岡県福岡市西区">福岡県福岡市西区</option>
                 <option value="福岡県福岡市城南区">福岡県福岡市城南区</option>
                 <option value="福岡県北九州市小倉北区">福岡県北九州市小倉北区</option>
-                {/* 他のエリア */}
               </select>
             </div>
 
@@ -230,7 +189,7 @@ const handleSearch = async (e) => {
                 <input
                   type="number"
                   value={budgetMin}
-                  onChange={(e) => setBudgetMin(e.target.value)}
+                  onChange={(e) => setBudgetMin(Number(e.target.value))}
                   className="w-full border border-gray-300 rounded-lg p-2"
                 />
               </div>
@@ -239,12 +198,12 @@ const handleSearch = async (e) => {
                 <input
                   type="number"
                   value={budgetMax}
-                  onChange={(e) => setBudgetMax(e.target.value)}
+                  onChange={(e) => setBudgetMax(Number(e.target.value))}
                   className="w-full border border-gray-300 rounded-lg p-2"
                 />
               </div>
             </div>
-            
+
             {/* 個室 */}
             <div className="flex space-x-2">
               <button
@@ -266,7 +225,7 @@ const handleSearch = async (e) => {
                 個室: 無
               </button>
             </div>
-  
+
             {/* 飲み放題 */}
             <div className="flex space-x-2">
               <button
@@ -291,7 +250,7 @@ const handleSearch = async (e) => {
 
             {/* 簡易検索 */}
             <div className="text-center">
-               <Link href="/">
+              <Link href="/">
                 <a className="text-sm text-blue-600 hover:underline">簡易検索はこちら</a>
               </Link>
             </div>
@@ -313,38 +272,6 @@ const handleSearch = async (e) => {
               </button>
             </div>
           </form>
-
-          {/* 検索結果 */}
-          <div className="mt-6">
-            {loading && <p>検索中...</p>}
-            {error && <p className="text-red-500">{error}</p>}
-            {!loading && searchResults.length > 0 && (
-              <ul className="space-y-4">
-                {searchResults.map((result, index) => (
-                  <li
-                    key={index}
-                    className="bg-gray-100 p-4 rounded-lg shadow relative"
-                  >
-                    <button
-                      onClick={() => toggleFavorite(result)}
-                      className={`absolute top-2 right-2 ${
-                        favorites.includes(result) ? "text-red-500" : "text-gray-500"
-                      }`}
-                    >
-                      {favorites.includes(result) ? "お気に入り解除" : "お気に入り"}
-                    </button>
-                    <h3 className="text-lg font-bold">{result.name}</h3>
-                    <p>エリア: {result.area}</p>
-                    <p>ジャンル: {result.category}</p>
-                    <p>予算: ¥{result.budget_min} ~ ¥{result.budget_max}</p>
-                  </li>
-                ))}
-              </ul>              
-            )}
-            {!loading && searchResults.length === 0 && !error && (
-              <p className="text-gray-500">条件に一致するお店が見つかりませんでした。</p>
-            )}
-          </div>
         </div>
       </main>
 

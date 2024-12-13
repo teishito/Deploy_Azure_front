@@ -36,7 +36,7 @@ export default function Home() {
         : [...prevFavorites, restaurant]
     );
   };
-
+  
   // GETリクエスト（/api/hello）
   const handleGetRequest = async () => {
     try {
@@ -54,13 +54,24 @@ export default function Home() {
 
   // ホームエンドポイント（/）
   const fetchHome = async () => {
+    console.log("fetchHome関数が呼び出されました");
     try {
-      const res = await fetch(`${BACKEND_URL}/`, { method: "GET" });
-      if (!res.ok) throw new Error(`HTTPエラー: ${res.status}`);
+      const res = await fetch('https://tech0-gen-8-step3-app-py-10.azurewebsites.net/', {
+        method: 'GET',
+      });
+      console.log("HTTPリクエストが送信されました");
+  
+      if (!res.ok) {
+        throw new Error(`HTTPエラー: ${res.status} - ${res.statusText}`);
+      }
+  
       const data = await res.json();
-      setHomeResponse(data.message || "応答形式が不正です");
+      console.log("レスポンスを受信しました:", data);
+  
+      // サーバーからのレスポンスをセット
+      setHomeResponse(data.message || "応答の形式が不正です");
     } catch (error) {
-      console.error("fetchHomeエラー:", error);
+      console.error("fetchHome関数内のエラー:", error);
       setHomeResponse("エラーが発生しました");
     }
   };
@@ -101,6 +112,16 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center p-4">
       <Header />
+      {/* ホームエンドポイント */}
+      <h2 style={{ fontSize: "16px", color: "#555", marginBottom: "20px" }}>Flaskサーバーの起動確認</h2>
+      <button onClick={fetchHome} style={buttonStyle}>
+        ホームエンドポイントにアクセス
+      </button>
+      {homeResponse ? (
+        <p>サーバーからの応答: {homeResponse}</p>
+      ) : (
+        <p>応答を待機中...</p>
+      )}
       <main className="w-full max-w-md bg-white rounded-lg shadow-lg mt-6 p-6">
         <form onSubmit={handleSearch} className="space-y-6">
           <h2 className="text-lg font-bold text-center">会食用のお店を検索</h2>

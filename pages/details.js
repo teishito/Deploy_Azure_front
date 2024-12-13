@@ -240,7 +240,7 @@ export default function DetailsSearch() {
 
           {/* 詳細検索 */}
           <div className="text-center">
-             <Link href="/index">
+             <Link href="/">
               <a className="text-sm text-blue-600 hover:underline">簡易検索はこちら</a>
             </Link>
           </div>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react"; // useEffect をインポート
 import Link from "next/link";
 import Header from "../components/Header";
 import Footer from "../components/Footer";

@@ -243,12 +243,12 @@ export default function DetailsSearch() {
                 />
               </div>
             </div>
-
+            
             {/* 個室 */}
             <div className="flex space-x-2">
               <button
                 type="button"
-                onClick={() => setPrivateRoom(privateRoom === "有" ? "" : "有")}
+                onClick={() => setPrivateRoom("有")}
                 className={`w-1/2 py-2 rounded-lg ${
                   privateRoom === "有" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
                 }`}
@@ -257,7 +257,7 @@ export default function DetailsSearch() {
               </button>
               <button
                 type="button"
-                onClick={() => setPrivateRoom(privateRoom === "無" ? "" : "無")}
+                onClick={() => setPrivateRoom("無")}
                 className={`w-1/2 py-2 rounded-lg ${
                   privateRoom === "無" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
                 }`}
@@ -270,7 +270,7 @@ export default function DetailsSearch() {
             <div className="flex space-x-2">
               <button
                 type="button"
-                onClick={() => setDrinkIncluded(drinkIncluded === "有" ? "" : "有")}
+                onClick={() => setDrinkIncluded("有")}
                 className={`w-1/2 py-2 rounded-lg ${
                   drinkIncluded === "有" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
                 }`}
@@ -279,7 +279,7 @@ export default function DetailsSearch() {
               </button>
               <button
                 type="button"
-                onClick={() => setDrinkIncluded(drinkIncluded === "無" ? "" : "無")}
+                onClick={() => setDrinkIncluded("無")}
                 className={`w-1/2 py-2 rounded-lg ${
                   drinkIncluded === "無" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
                 }`}

@@ -9,8 +9,8 @@ export default function DetailsSearch() {
   const [genre, setGenre] = useState("");
   const [budgetMin, setBudgetMin] = useState(2000); // デフォルト値を 2000 に設定
   const [budgetMax, setBudgetMax] = useState(5000); // デフォルト値を 5000 に設定
-  const [privateRoom, setPrivateRoom] = useState("有"); // 初期値を "有" に設定
-  const [drinkIncluded, setDrinkIncluded] = useState("有"); // 初期値を "有" に設定
+  const [privateRoom, setPrivateRoom] = useState(""); // 初期値を設定しない
+  const [drinkIncluded, setDrinkIncluded] = useState(""); // 初期値を設定しない
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -76,42 +76,43 @@ export default function DetailsSearch() {
   };
 
   // レストランデータ取得
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
-    setSearchResults([]);
+const handleSearch = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setError("");
+  setSearchResults([]);
 
-    try {
-      const res = await fetch(`${BACKEND_URL}/api/detailrestaurants`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          area,
-          genre,
-          people: guests,
-          budgetMin,
-          budgetMax,
-          privateRoom: privateRoom === "有" ? "有" : "無",
-          drinkIncluded: drinkIncluded === "有" ? "有" : "無",
-        }),
-      });
+  try {
+    const res = await fetch(`${BACKEND_URL}/api/detailrestaurants`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        area,
+        genre,
+        people: guests,
+        budgetMin,
+        budgetMax,
+        privateRoom,
+        drinkIncluded,
+      }),
+    });
 
-      if (!res.ok) {
-        throw new Error(`検索が失敗しました: ${res.status}`);
-      }
-
-      const data = await res.json();
-      setSearchResults(data.restaurants || []);
-    } catch (err) {
-      setError("検索中にエラーが発生しました。");
-      console.error(err);
-    } finally {
-      setLoading(false);
+    if (!res.ok) {
+      throw new Error(`検索が失敗しました: ${res.status}`);
     }
-  };
+
+    const data = await res.json();
+    setSearchResults(data.restaurants || []);
+  } catch (err) {
+    setError("検索中にエラーが発生しました。");
+    console.error(err); // エラーをコンソールに出力
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const resetFilters = () => {
     setArea("");
@@ -119,8 +120,8 @@ export default function DetailsSearch() {
     setGenre("");
     setBudgetMin(2000); // デフォルト値をリセット時にも適用
     setBudgetMax(5000); // デフォルト値をリセット時にも適用
-    setPrivateRoom("有"); // 初期値をリセット
-    setDrinkIncluded("有"); // 初期値をリセット
+    setPrivateRoom(""); // 初期値をリセット
+    setDrinkIncluded(""); // 初期値をリセット
     setSearchResults([]);
     setError("");
   };
@@ -248,8 +249,8 @@ export default function DetailsSearch() {
             <div className="flex space-x-2">
               <button
                 type="button"
-                onClick={() => setPrivateRoom("有")}
-                className={`w-1/2 py-2 rounded-lg ${
+                onClick={() => setPrivateRoom(privateRoom === "有" ? "" : "有")}
+                className={`w-1/2 py-2 text-sm rounded-lg ${
                   privateRoom === "有" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
                 }`}
               >
@@ -257,21 +258,21 @@ export default function DetailsSearch() {
               </button>
               <button
                 type="button"
-                onClick={() => setPrivateRoom("無")}
-                className={`w-1/2 py-2 rounded-lg ${
+                onClick={() => setPrivateRoom(privateRoom === "無" ? "" : "無")}
+                className={`w-1/2 py-2 text-sm rounded-lg ${
                   privateRoom === "無" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
                 }`}
               >
                 個室: 無
               </button>
             </div>
-
+  
             {/* 飲み放題 */}
             <div className="flex space-x-2">
               <button
                 type="button"
-                onClick={() => setDrinkIncluded("有")}
-                className={`w-1/2 py-2 rounded-lg ${
+                onClick={() => setDrinkIncluded(drinkIncluded === "有" ? "" : "有")}
+                className={`w-1/2 py-2 text-sm rounded-lg ${
                   drinkIncluded === "有" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
                 }`}
               >
@@ -279,8 +280,8 @@ export default function DetailsSearch() {
               </button>
               <button
                 type="button"
-                onClick={() => setDrinkIncluded("無")}
-                className={`w-1/2 py-2 rounded-lg ${
+                onClick={() => setDrinkIncluded(drinkIncluded === "無" ? "" : "無")}
+                className={`w-1/2 py-2 text-sm rounded-lg ${
                   drinkIncluded === "無" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
                 }`}
               >

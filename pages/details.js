@@ -9,8 +9,8 @@ export default function DetailsSearch() {
   const [genre, setGenre] = useState("");
   const [budgetMin, setBudgetMin] = useState("");
   const [budgetMax, setBudgetMax] = useState("");
-  const [budgetMin, setBudgetMin] = useState(2000);
-  const [budgetMax, setBudgetMax] = useState(5000);
+  const [budgetMin, setBudgetMin] = useState(2000); // デフォルト値を 2000 に設定
+  const [budgetMax, setBudgetMax] = useState(5000); // デフォルト値を 5000 に設定
   const [privateRoom, setPrivateRoom] = useState("無"); // デフォルト値を "無" に設定
   const [drinkIncluded, setDrinkIncluded] = useState("無"); // デフォルト値を "無" に設定
   const [searchResults, setSearchResults] = useState([]);
@@ -119,10 +119,10 @@ export default function DetailsSearch() {
     setArea("");
     setGuests(2);
     setGenre("");
-    setBudgetMin("");
-    setBudgetMax("");
-    setPrivateRoom("");
-    setDrinkIncluded("");
+    setBudgetMin(2000); // デフォルト値をリセット時にも適用
+    setBudgetMax(5000); // デフォルト値をリセット時にも適用
+    setPrivateRoom("無"); // リセット時の初期値
+    setDrinkIncluded("無"); // リセット時の初期値
     setSearchResults([]);
     setError("");
   };

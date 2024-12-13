@@ -272,6 +272,37 @@ export default function DetailsSearch() {
               </button>
             </div>
           </form>
+          {/* 検索結果 */}
+          <div className="mt-6">
+            {loading && <p>検索中...</p>}
+            {error && <p className="text-red-500">{error}</p>}
+            {!loading && searchResults.length > 0 && (
+              <ul className="space-y-4">
+                {searchResults.map((result, index) => (
+                  <li
+                    key={index}
+                    className="bg-gray-100 p-4 rounded-lg shadow relative"
+                  >
+                    <button
+                      onClick={() => toggleFavorite(result)}
+                      className={`absolute top-2 right-2 ${
+                        favorites.includes(result) ? "text-red-500" : "text-gray-500"
+                      }`}
+                    >
+                      {favorites.includes(result) ? "お気に入り解除" : "お気に入り"}
+                    </button>
+                    <h3 className="text-lg font-bold">{result.name}</h3>
+                    <p>エリア: {result.area}</p>
+                    <p>ジャンル: {result.category}</p>
+                    <p>予算: ¥{result.budget_min} ~ ¥{result.budget_max}</p>
+                  </li>
+                ))}
+              </ul>              
+            )}
+            {!loading && searchResults.length === 0 && !error && (
+              <p className="text-gray-500">条件に一致するお店が見つかりませんでした。</p>
+            )}
+          </div>
         </div>
       </main>
 

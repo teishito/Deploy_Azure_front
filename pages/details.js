@@ -19,6 +19,65 @@ export default function DetailsSearch() {
 
   const BACKEND_URL = "https://tech0-gen-8-step3-app-py-10.azurewebsites.net";
 
+  // 初回ロード時にお気に入りを復元
+  useEffect(() => {
+    const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    setFavorites(storedFavorites);
+  }, []);
+
+  // お気に入りの永続化
+  useEffect(() => {
+    localStorage.setItem("favorites", JSON.stringify(favorites));
+  }, [favorites]);
+
+  const toggleFavorite = (restaurant) => {
+    setFavorites((prevFavorites) =>
+      prevFavorites.includes(restaurant)
+        ? prevFavorites.filter((fav) => fav !== restaurant)
+        : [...prevFavorites, restaurant]
+    );
+  };
+  
+  // GETリクエスト（/api/hello）
+  const handleGetRequest = async () => {
+    try {
+      const res = await fetch(`${BACKEND_URL}/api/hello`, {
+        method: "GET",
+      });
+      if (!res.ok) throw new Error(`GETリクエスト失敗: ${res.status}`);
+      const data = await res.json();
+      setGetResponse(data.message || "応答形式が不正です");
+    } catch (error) {
+      console.error("GETリクエストエラー:", error);
+      setGetResponse("エラーが発生しました");
+    }
+  };
+
+  // ホームエンドポイント（/）
+  const fetchHome = async () => {
+    console.log("fetchHome関数が呼び出されました");
+    try {
+      const res = await fetch('https://tech0-gen-8-step3-app-py-10.azurewebsites.net/', {
+        method: 'GET',
+      });
+      console.log("HTTPリクエストが送信されました");
+  
+      if (!res.ok) {
+        throw new Error(`HTTPエラー: ${res.status} - ${res.statusText}`);
+      }
+  
+      const data = await res.json();
+      console.log("レスポンスを受信しました:", data);
+  
+      // サーバーからのレスポンスをセット
+      setHomeResponse(data.message || "応答の形式が不正です");
+    } catch (error) {
+      console.error("fetchHome関数内のエラー:", error);
+      setHomeResponse("エラーが発生しました");
+    }
+  };
+
+  // レストランデータ取得
   const handleSearch = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -262,15 +321,26 @@ export default function DetailsSearch() {
             {error && <p className="text-red-500">{error}</p>}
             {!loading && searchResults.length > 0 && (
               <ul className="space-y-4">
-                {searchResults.map((result) => (
-                  <li key={result.id} className="bg-gray-100 p-4 rounded-lg shadow">
+                {searchResults.map((result, index) => (
+                  <li
+                    key={index}
+                    className="bg-gray-100 p-4 rounded-lg shadow relative"
+                  >
+                    <button
+                      onClick={() => toggleFavorite(result)}
+                      className={`absolute top-2 right-2 ${
+                        favorites.includes(result) ? "text-red-500" : "text-gray-500"
+                      }`}
+                    >
+                      {favorites.includes(result) ? "お気に入り解除" : "お気に入り"}
+                    </button>
                     <h3 className="text-lg font-bold">{result.name}</h3>
                     <p>エリア: {result.area}</p>
                     <p>ジャンル: {result.category}</p>
                     <p>予算: ¥{result.budget_min} ~ ¥{result.budget_max}</p>
                   </li>
                 ))}
-              </ul>
+              </ul>              
             )}
             {!loading && searchResults.length === 0 && !error && (
               <p className="text-gray-500">条件に一致するお店が見つかりませんでした。</p>

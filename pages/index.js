@@ -26,6 +26,9 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
+      <main className="max-w-screen-lg mx-auto py-6 px-4">
+        <SearchForm onSearch={handleSearch} />
+      </main>
       <Footer />
     </div>
   );

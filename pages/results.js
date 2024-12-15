@@ -5,6 +5,8 @@ import Footer from "../components/Footer";
 
 export default function Results() {
   const router = useRouter();
+  const area = useSearchParams().get("area");
+  console.log(area);
   const {
     area = "",
     guests = "",

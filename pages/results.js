@@ -1,4 +1,3 @@
-import { useSearchParams } from 'next/navigation';
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
@@ -6,10 +5,8 @@ import Footer from "../components/Footer";
 
 export default function Results() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const area = searchParams.get("area");
-
   const {
+    area = "",
     guests = "",
     genre = "",
     budgetMin = "",
@@ -24,34 +21,35 @@ export default function Results() {
   useEffect(() => {
     const fetchResults = async () => {
       setLoading(true);
-      const query = new URLSearchParams(
-        Object.entries({
-          area,
-          guests,
-          genre,
-          budgetMin,
-          budgetMax,
-          privateRoom,
-          drinkIncluded,
-        }).filter(([_, value]) => value) // 空の値を除外
-      ).toString();
+
+      const requestBody = {
+        area,
+        guests,
+        genre,
+        budgetMin,
+        budgetMax,
+        privateRoom,
+        drinkIncluded,
+      };
 
       try {
         const response = await fetch(
-          `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results?${query}`
+          "https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(requestBody),
+          }
         );
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const contentType = response.headers.get("content-type");
-        if (!contentType || !contentType.includes("application/json")) {
-          throw new Error("Invalid response format");
-        }
-
         const data = await response.json();
-        setResults(data.slice(0, 5)); // 必要に応じてスライス
+        setResults(data.results || []); // レスポンスに合わせて更新
       } catch (error) {
         console.error("Error fetching search results:", error);
         setResults([]);
@@ -60,8 +58,8 @@ export default function Results() {
       }
     };
 
-    if (router.isReady) fetchResults();
-  }, [router.isReady, area, guests, genre, budgetMin, budgetMax, privateRoom, drinkIncluded]);
+    fetchResults();
+  }, [area, guests, genre, budgetMin, budgetMax, privateRoom, drinkIncluded]);
 
   const handleDetail = (id) => {
     router.push(`/restaurant/${id}`);

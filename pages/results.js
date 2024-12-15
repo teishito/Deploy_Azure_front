@@ -38,11 +38,8 @@ export default function Results() {
         const response = await fetch(
           `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results?${query}`
         );
-        if (!response.ok) {
-          if (response.status === 404) {
-            setResults([]);
-          } else {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        if (response.ok) {
+          setResults(response);
           }
         }
 

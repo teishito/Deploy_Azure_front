@@ -4,8 +4,14 @@ export default function Ad() {
   const footerLink = "https://prtimes.jp/main/html/rd/p/000000682.000017692.html";
 
   return (
-    <div style={{ marginTop: "20px", textAlign: "center" }}>
-      <h5>広告</h5>
+    <div
+      style={{
+        marginTop: "40px", // フッターとの余白を確保
+        paddingBottom: "20px", // 下に余白を追加してより調整
+        textAlign: "center",
+      }}
+    >
+      <h5 style={{ marginBottom: "10px" }}>広告</h5>
       <a href={footerLink} target="_blank" rel="noopener noreferrer">
         <img
           src={footerImageUrl}

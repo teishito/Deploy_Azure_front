@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
+import Ad from "../components/Ad";
 import Footer from "../components/Footer";
 
 export default function Results() {
@@ -22,7 +23,6 @@ export default function Results() {
     const fetchResults = async () => {
       setLoading(true);
 
-      // クエリパラメータを生成
       const query = new URLSearchParams({
         area,
         guests,
@@ -34,19 +34,22 @@ export default function Results() {
       }).toString();
 
       try {
-        // GETリクエストを送信
         const response = await fetch(
-          `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results?${query}`
+          `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results?${query}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
         );
 
-        // レスポンスのエラーチェック
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        // レスポンスのJSONをパース
         const data = await response.json();
-        setResults(data.restaurants || []); // レスポンス形式に合わせて更新
+        setResults(data.restaurants || []); // レスポンスに合わせて更新
       } catch (error) {
         console.error("Error fetching search results:", error);
         setResults([]);
@@ -55,20 +58,8 @@ export default function Results() {
       }
     };
 
-    // データ取得
-    if (router.isReady) {
-      fetchResults();
-    }
-  }, [
-    router.isReady,
-    area,
-    guests,
-    genre,
-    budgetMin,
-    budgetMax,
-    privateRoom,
-    drinkIncluded,
-  ]);
+    fetchResults();
+  }, [area, guests, genre, budgetMin, budgetMax, privateRoom, drinkIncluded]);
 
   const handleDetail = (id) => {
     router.push(`/restaurant/${id}`);
@@ -83,10 +74,7 @@ export default function Results() {
           <p>検索中...</p>
         ) : results.length > 0 ? (
           results.map((restaurant) => (
-            <div
-              key={restaurant.id}
-              className="bg-white shadow p-4 rounded-lg mb-4 flex"
-            >
+            <div key={restaurant.id} className="bg-white shadow p-4 rounded-lg mb-4 flex">
               <img
                 src={restaurant.store_top_image || "/placeholder.png"}
                 onError={(e) => {
@@ -117,6 +105,7 @@ export default function Results() {
           <p className="text-gray-500">条件に当てはまるお店はありませんでした。</p>
         )}
       </main>
+      <Ad />
       <Footer />
     </div>
   );

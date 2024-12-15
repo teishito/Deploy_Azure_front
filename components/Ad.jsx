@@ -1,6 +1,6 @@
 export default function Ad() {
   const footerImageUrl =
-    "https://prcdn.freetls.fastly.net/release_image/17692/690/17692-690-7240e9b8cae51139bcb28176bf5d3d19-1256x897.png?width=1950&height=1350&quality=85%2C75&format=jpeg&auto=webp&fit=bounds&bg-color=fff";
+    "https://prcdn.freetls.fastly.net/release_image/17692/682/17692-682-f34e9af01af09312c77d588504087517-1075x650.jpg?width=1950&height=1350&quality=85%2C75&format=jpeg&auto=webp&fit=bounds&bg-color=fff";
   const footerLink = "https://prtimes.jp/main/html/rd/p/000000682.000017692.html";
 
   return (

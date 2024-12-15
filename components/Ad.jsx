@@ -4,24 +4,15 @@ export default function Ad() {
   const footerLink = "https://prtimes.jp/main/html/rd/p/000000682.000017692.html";
 
   return (
-    <div className="ad-section">
-      {/* 区切り線 */}
-      <hr className="my-6 border-gray-300" />
-      
-      {/* 広告タイトル */}
-      <h5 className="text-center text-lg font-medium">広告</h5>
-      
-      {/* 広告画像リンク */}
-      <div className="text-center mt-4">
-        <a href={footerLink} target="_blank" rel="noopener noreferrer">
-          <img
-            src={footerImageUrl}
-            alt="Footer Image"
-            style={{ height: "200px", objectFit: "contain" }}
-            className="mx-auto"
-          />
-        </a>
-      </div>
+    <div style={{ marginTop: "20px", textAlign: "center" }}>
+      <h5>広告</h5>
+      <a href={footerLink} target="_blank" rel="noopener noreferrer">
+        <img
+          src={footerImageUrl}
+          alt="Ad Image"
+          style={{ height: "200px", margin: "0 auto" }}
+        />
+      </a>
     </div>
   );
 }

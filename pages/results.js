@@ -17,12 +17,15 @@ export default function Results() {
 
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchResults = async () => {
       setLoading(true);
+      setError("");
 
-      const requestBody = {
+      // クエリパラメータのオブジェクト作成
+      const queryParams = {
         area,
         guests,
         genre,
@@ -32,15 +35,17 @@ export default function Results() {
         drinkIncluded,
       };
 
+      // クエリパラメータをURL形式に変換
+      const queryString = new URLSearchParams(queryParams).toString();
+
       try {
         const response = await fetch(
-          "https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results",
+          `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results?${queryString}`,
           {
-            method: "POST",
+            method: "GET",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(requestBody),
           }
         );
 
@@ -49,17 +54,17 @@ export default function Results() {
         }
 
         const data = await response.json();
-        setResults(data.results || []); // レスポンスに合わせて更新
-      } catch (error) {
-        console.error("Error fetching search results:", error);
-        setResults([]);
+        setResults(data.restaurants || []); // サーバーのレスポンスを反映
+      } catch (err) {
+        console.error("Error fetching search results:", err);
+        setError("検索結果を取得できませんでした。");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchResults();
-  }, [area, guests, genre, budgetMin, budgetMax, privateRoom, drinkIncluded]);
+    if (router.isReady) fetchResults();
+  }, [router.isReady, area, guests, genre, budgetMin, budgetMax, privateRoom, drinkIncluded]);
 
   const handleDetail = (id) => {
     router.push(`/restaurant/${id}`);
@@ -72,12 +77,16 @@ export default function Results() {
         <h1 className="text-lg font-bold mb-4">検索結果</h1>
         {loading ? (
           <p>検索中...</p>
+        ) : error ? (
+          <p className="text-red-500">{error}</p>
         ) : results.length > 0 ? (
           results.map((restaurant) => (
             <div key={restaurant.id} className="bg-white shadow p-4 rounded-lg mb-4 flex">
               <img
                 src={restaurant.store_top_image || "/placeholder.png"}
-                onError={(e) => { e.target.src = "/placeholder.png"; }}
+                onError={(e) => {
+                  e.target.src = "/placeholder.png";
+                }}
                 alt={restaurant.name}
                 className="w-24 h-24 object-cover rounded-lg mr-4"
               />

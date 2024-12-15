@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 import { useRouter } from "next/router";
 
 export default function ReportDetails() {
@@ -33,7 +34,10 @@ export default function ReportDetails() {
 
     const handlePopupClose = () => {
         setPopupOpen(false); // ポップアップを閉じる
-        router.push("/menus/report-result"); // 背景画面に遷移
+        router.push({
+            pathname: "/menus/report-result",
+            query: reportData,
+        });
     };
 
     const handleSubmit = (e) => {
@@ -73,6 +77,12 @@ export default function ReportDetails() {
                                     }
                                     className="w-full"
                                 />
+                                 {/* 目盛りを表示 */}
+                                <div className="flex justify-between text-sm text-gray-500 mt-1">
+                                    {Array.from({ length: 11 }, (_, i) => (
+                                        <span key={i}>{i}</span>
+                                    ))}
+                                </div>
                             </div>
                             <div>
                                 <label>会食相手との関係性</label>
@@ -86,6 +96,12 @@ export default function ReportDetails() {
                                     }
                                     className="w-full"
                                 />
+                                 {/* 目盛りを表示 */}
+                                <div className="flex justify-between text-sm text-gray-500 mt-1">
+                                    {Array.from({ length: 11 }, (_, i) => (
+                                        <span key={i}>{i}</span>
+                                    ))}
+                                </div>
                             </div>
                             <div>
                                 <label>会食メモ</label>
@@ -115,6 +131,12 @@ export default function ReportDetails() {
                                     }
                                     className="w-full"
                                 />
+                                 {/* 目盛りを表示 */}
+                                <div className="flex justify-between text-sm text-gray-500 mt-1">
+                                    {Array.from({ length: 11 }, (_, i) => (
+                                        <span key={i}>{i}</span>
+                                    ))}
+                                </div>
                             </div>
                             <div>
                                 <label>お店の雰囲気</label>
@@ -128,6 +150,12 @@ export default function ReportDetails() {
                                     }
                                     className="w-full"
                                 />
+                                 {/* 目盛りを表示 */}
+                                <div className="flex justify-between text-sm text-gray-500 mt-1">
+                                    {Array.from({ length: 11 }, (_, i) => (
+                                        <span key={i}>{i}</span>
+                                    ))}
+                                </div>
                             </div>
                             <div>
                                 <label>食事・味</label>
@@ -141,6 +169,12 @@ export default function ReportDetails() {
                                     }
                                     className="w-full"
                                 />
+                                 {/* 目盛りを表示 */}
+                                <div className="flex justify-between text-sm text-gray-500 mt-1">
+                                    {Array.from({ length: 11 }, (_, i) => (
+                                        <span key={i}>{i}</span>
+                                    ))}
+                                </div>
                             </div>
                             <div>
                                 <label>食事・提供スピード</label>
@@ -154,6 +188,12 @@ export default function ReportDetails() {
                                     }
                                     className="w-full"
                                 />
+                                 {/* 目盛りを表示 */}
+                                <div className="flex justify-between text-sm text-gray-500 mt-1">
+                                    {Array.from({ length: 11 }, (_, i) => (
+                                        <span key={i}>{i}</span>
+                                    ))}
+                                </div>
                             </div>
                             <div>
                                 <label>接客</label>
@@ -167,6 +207,12 @@ export default function ReportDetails() {
                                     }
                                     className="w-full"
                                 />
+                                 {/* 目盛りを表示 */}
+                                <div className="flex justify-between text-sm text-gray-500 mt-1">
+                                    {Array.from({ length: 11 }, (_, i) => (
+                                        <span key={i}>{i}</span>
+                                    ))}
+                                </div>
                             </div>
                             <div>
                                 <label>お店へのレビュー</label>

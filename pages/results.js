@@ -10,12 +10,6 @@ export default function Results() {
   const [favorites, setFavorites] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // ローカルストレージからお気に入りを読み込む
-  useEffect(() => {
-    const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || [];
-    setFavorites(storedFavorites);
-  }, []);  
-
   useEffect(() => {
     const fetchResults = async () => {
       setLoading(true);
@@ -30,7 +24,7 @@ export default function Results() {
       }).toString();
 
       try {
-        const response = await fetch(`http://127.0.0.1:5000/result?${query}`);
+        const response = await fetch(`https://tech0-gen-8-step3-app-node-10.azurewebsites.net/result?${query}`);
         if (!response.ok) throw new Error("Failed to fetch data");
 
         const data = await response.json();

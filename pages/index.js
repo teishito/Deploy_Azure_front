@@ -22,3 +22,11 @@ export default function Home() {
     console.log("検索条件:", { area, guests, genre });
     // ここに検索ロジックを追加可能
   };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      <Footer />
+    </div>
+  );
+}

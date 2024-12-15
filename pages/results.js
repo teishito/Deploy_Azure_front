@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Header from "../components/Header";
 import Ad from "../components/Ad";
+import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 export default function Results() {
@@ -23,33 +23,43 @@ export default function Results() {
     const fetchResults = async () => {
       setLoading(true);
 
-      const query = new URLSearchParams({
-        area,
-        guests,
-        genre,
-        budgetMin,
-        budgetMax,
-        privateRoom,
-        drinkIncluded,
-      }).toString();
+      // クエリパラメータを作成
+      const query = new URLSearchParams(
+        Object.entries({
+          area,
+          guests,
+          genre,
+          budgetMin,
+          budgetMax,
+          privateRoom,
+          drinkIncluded,
+        }).filter(([_, value]) => value) // 空の値を除外
+      ).toString();
 
       try {
+        // リクエスト送信
         const response = await fetch(
-          `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results?${query}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
+          `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results?${query}`
         );
 
+        // レスポンスをデバッグログに出力
+        console.log("Response status:", response.status);
+        console.log("Response content type:", response.headers.get("content-type"));
+
+        // レスポンスの検証
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new Error("Invalid response format");
+        }
+
+        // JSONデータを取得
         const data = await response.json();
-        setResults(data.restaurants || []); // レスポンスに合わせて更新
+        console.log("Fetched data:", data);
+        setResults(data.results || []);
       } catch (error) {
         console.error("Error fetching search results:", error);
         setResults([]);
@@ -58,8 +68,10 @@ export default function Results() {
       }
     };
 
-    fetchResults();
-  }, [area, guests, genre, budgetMin, budgetMax, privateRoom, drinkIncluded]);
+    if (router.isReady) {
+      fetchResults();
+    }
+  }, [router.isReady, area, guests, genre, budgetMin, budgetMax, privateRoom, drinkIncluded]);
 
   const handleDetail = (id) => {
     router.push(`/restaurant/${id}`);
@@ -89,9 +101,7 @@ export default function Results() {
                 <p>エリア: {restaurant.area}</p>
                 <p>食べログ評価: {restaurant.tabelog_rating}</p>
                 <p>Google Map評価: {restaurant.google_rating}</p>
-                <p>
-                  単価: ¥{restaurant.budget_min} ~ ¥{restaurant.budget_max}
-                </p>
+                <p>単価: ¥{restaurant.budget_min} ~ ¥{restaurant.budget_max}</p>
                 <button
                   onClick={() => handleDetail(restaurant.id)}
                   className="mt-2 bg-blue-600 text-white py-1 px-4 rounded-lg hover:bg-blue-700"

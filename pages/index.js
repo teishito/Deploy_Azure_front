@@ -1,6 +1,7 @@
 import { useState } from "react";
 import SearchForm from "../components/SearchForm";
 import Header from "../components/Header";
+import Footer from "../components/Ad";
 import Footer from "../components/Footer";
 import Link from "next/link";
 
@@ -30,6 +31,7 @@ export default function Home() {
       <main className="max-w-screen-lg mx-auto py-6 px-4">
         <SearchForm onSearch={handleSearch} />
       </main>
+      <Ad />
       <Footer />
     </div>
   );

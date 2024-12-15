@@ -9,7 +9,6 @@ export default function Results() {
   const area = useSearchParams().get("area");
   console.log(area);
   const {
-    area = "",
     guests = "",
     genre = "",
     budgetMin = "",

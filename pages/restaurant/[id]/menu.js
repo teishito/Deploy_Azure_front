@@ -120,7 +120,7 @@ export async function getServerSideProps(context) {
     const { id } = context.params;
 
     try {
-        const res = await fetch(`http://127.0.0.1:5000/restaurant/${id}/menu`);
+        const res = await fetch(`https://tech0-gen-8-step3-app-node-10.azurewebsites.net/restaurant/${id}/menu`);
         if (!res.ok) {
             throw new Error('Failed to fetch');
         }

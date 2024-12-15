@@ -6,8 +6,9 @@ import Footer from "../components/Footer";
 
 export default function Results() {
   const router = useRouter();
-  const area = useSearchParams().get("area");
-  console.log(area);
+  const searchParams = useSearchParams();
+  const area = searchParams.get("area");
+
   const {
     guests = "",
     genre = "",
@@ -16,6 +17,7 @@ export default function Results() {
     privateRoom = "",
     drinkIncluded = "",
   } = router.query;
+
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -31,7 +33,7 @@ export default function Results() {
           budgetMax,
           privateRoom,
           drinkIncluded,
-        }).filter(([_, value]) => value)
+        }).filter(([_, value]) => value) // 空の値を除外
       ).toString();
 
       try {
@@ -50,21 +52,6 @@ export default function Results() {
 
         const data = await response.json();
         setResults(data.slice(0, 5)); // 必要に応じてスライス
-      } catch (error) {
-        console.error("Error fetching search results:", error);
-        setResults([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-        const contentType = response.headers.get("content-type");
-        if (!contentType || !contentType.includes("application/json")) {
-          throw new Error("Invalid response format");
-        }
-
-        const data = await response.json();
-        setResults(data.slice(0, 5));
       } catch (error) {
         console.error("Error fetching search results:", error);
         setResults([]);

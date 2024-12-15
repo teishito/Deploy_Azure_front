@@ -14,22 +14,25 @@ export default function Results() {
   useEffect(() => {
     const fetchResults = async () => {
       setLoading(true);
-      const query = new URLSearchParams({
-        area,
-        guests,
-        genre,
-        budgetMin,
-        budgetMax,
-        privateRoom,
-        drinkIncluded,
-      }).toString();
-
       try {
-        const response = await fetch(`https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results?${query}`);
-        
+        // クエリパラメータをバックエンドに送信
+        const response = await fetch('/api/process_query', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            area,
+            guests,
+            genre,
+            budgetMin,
+            budgetMax,
+            privateRoom,
+            drinkIncluded,
+          }),
+        });
+
         if (response.ok) {
           const data = await response.json();
-          setResults(data.restaurants || []); // Update according to your API response
+          setResults(data.restaurants || []); // 検索結果を設定
         } else {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -41,8 +44,10 @@ export default function Results() {
       }
     };
 
-    fetchResults();
-  }, [area, guests, genre, budgetMin, budgetMax, privateRoom, drinkIncluded]);
+    if (router.isReady) {
+      fetchResults(); // パラメータが準備できてから実行
+    }
+  }, [router.isReady, area, guests, genre, budgetMin, budgetMax, privateRoom, drinkIncluded]);
 
   const handleDetail = (id) => {
     router.push(`/restaurant/${id}`);

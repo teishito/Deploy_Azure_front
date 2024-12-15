@@ -38,10 +38,25 @@ export default function Results() {
         const response = await fetch(
           `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results?${query}`
         );
-        if (response.ok) {
-          setResults(response);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
+
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new Error("Invalid response format");
         }
+
+        const data = await response.json();
+        setResults(data.slice(0, 5)); // 必要に応じてスライス
+      } catch (error) {
+        console.error("Error fetching search results:", error);
+        setResults([]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
         const contentType = response.headers.get("content-type");
         if (!contentType || !contentType.includes("application/json")) {

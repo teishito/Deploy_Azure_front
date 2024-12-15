@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SearchForm from "../components/SearchForm";
 import Header from "../components/Header";
-import Footer from "../components/Ad";
+import Ad from "../components/Ad";
 import Footer from "../components/Footer";
 import Link from "next/link";
 

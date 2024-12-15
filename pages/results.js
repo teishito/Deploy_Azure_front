@@ -17,15 +17,13 @@ export default function Results() {
 
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchResults = async () => {
       setLoading(true);
-      setError("");
 
-      // クエリパラメータのオブジェクト作成
-      const queryParams = {
+      // クエリパラメータを生成
+      const query = new URLSearchParams({
         area,
         guests,
         genre,
@@ -33,38 +31,44 @@ export default function Results() {
         budgetMax,
         privateRoom,
         drinkIncluded,
-      };
-
-      // クエリパラメータをURL形式に変換
-      const queryString = new URLSearchParams(queryParams).toString();
+      }).toString();
 
       try {
+        // GETリクエストを送信
         const response = await fetch(
-          `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results?${queryString}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
+          `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results?${query}`
         );
 
+        // レスポンスのエラーチェック
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
+        // レスポンスのJSONをパース
         const data = await response.json();
-        setResults(data.restaurants || []); // サーバーのレスポンスを反映
-      } catch (err) {
-        console.error("Error fetching search results:", err);
-        setError("検索結果を取得できませんでした。");
+        setResults(data.restaurants || []); // レスポンス形式に合わせて更新
+      } catch (error) {
+        console.error("Error fetching search results:", error);
+        setResults([]);
       } finally {
         setLoading(false);
       }
     };
 
-    if (router.isReady) fetchResults();
-  }, [router.isReady, area, guests, genre, budgetMin, budgetMax, privateRoom, drinkIncluded]);
+    // データ取得
+    if (router.isReady) {
+      fetchResults();
+    }
+  }, [
+    router.isReady,
+    area,
+    guests,
+    genre,
+    budgetMin,
+    budgetMax,
+    privateRoom,
+    drinkIncluded,
+  ]);
 
   const handleDetail = (id) => {
     router.push(`/restaurant/${id}`);
@@ -77,11 +81,12 @@ export default function Results() {
         <h1 className="text-lg font-bold mb-4">検索結果</h1>
         {loading ? (
           <p>検索中...</p>
-        ) : error ? (
-          <p className="text-red-500">{error}</p>
         ) : results.length > 0 ? (
           results.map((restaurant) => (
-            <div key={restaurant.id} className="bg-white shadow p-4 rounded-lg mb-4 flex">
+            <div
+              key={restaurant.id}
+              className="bg-white shadow p-4 rounded-lg mb-4 flex"
+            >
               <img
                 src={restaurant.store_top_image || "/placeholder.png"}
                 onError={(e) => {
@@ -96,7 +101,9 @@ export default function Results() {
                 <p>エリア: {restaurant.area}</p>
                 <p>食べログ評価: {restaurant.tabelog_rating}</p>
                 <p>Google Map評価: {restaurant.google_rating}</p>
-                <p>単価: ¥{restaurant.budget_min} ~ ¥{restaurant.budget_max}</p>
+                <p>
+                  単価: ¥{restaurant.budget_min} ~ ¥{restaurant.budget_max}
+                </p>
                 <button
                   onClick={() => handleDetail(restaurant.id)}
                   className="mt-2 bg-blue-600 text-white py-1 px-4 rounded-lg hover:bg-blue-700"

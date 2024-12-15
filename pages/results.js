@@ -40,7 +40,7 @@ export default function Results() {
         );
         if (response.ok) {
           setResults(response);
-          }
+        }
         }
 
         const contentType = response.headers.get("content-type");

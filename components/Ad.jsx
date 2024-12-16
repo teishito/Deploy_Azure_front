@@ -22,21 +22,21 @@ export default function Ad() {
         <img
           src={footerImageUrl}
           alt="Ad Image"
-          style={{ width: "150px", margin: "10px auto" }}
+          style={{ width: "250px", margin: "10px auto" }}
         />
       </a>
       <a href={footerLink2} target="_blank" rel="noopener noreferrer">
         <img
           src={footerImageUrl2}
           alt="Ad Image"
-          style={{ width: "150px", margin: "10px auto" }}
+          style={{ width: "250px", margin: "10px auto" }}
         />
       </a>
      <a href={footerLink3} target="_blank" rel="noopener noreferrer">
         <img
           src={footerImageUrl3}
           alt="Ad Image"
-          style={{ width: "150px", margin: "10px auto" }}
+          style={{ width: "250px", margin: "10px auto" }}
         />
       </a>
     </div>

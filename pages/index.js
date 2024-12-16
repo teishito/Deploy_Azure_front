@@ -20,7 +20,7 @@ export default function Home() {
     try {
       // API呼び出し（検索条件をクエリとして送信）
       const query = new URLSearchParams({ area, guests, genre }).toString();
-      const response = await fetch(`http://127.0.0.1:5000/results?${query}`);
+      const response = await fetch(`https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results?${query}`);
 
       if (!response.ok) throw new Error("検索結果の取得に失敗しました。");
 

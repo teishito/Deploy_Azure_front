@@ -5,7 +5,7 @@ import Ad from "../components/Ad";
 import Footer from "../components/Footer";
 
 export default function Results() {
-  const searchParams = useSearchParams(); // クエリパラメータを取得
+  const searchParams = useSearchParams();
   const area = searchParams.get('area') || '';
   const guests = searchParams.get('guests') || '';
   const genre = searchParams.get('genre') || '';
@@ -16,20 +16,12 @@ export default function Results() {
 
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  const buildQueryParams = (params) => {
-    const query = new URLSearchParams();
-    Object.keys(params).forEach((key) => {
-      if (params[key]) query.append(key, params[key]); // 値が空でない場合のみ追加
-    });
-    return query.toString();
-  };
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchResults = async () => {
       try {
-        const query = buildQueryParams({
+        const query = new URLSearchParams({
           area,
           guests,
           genre,
@@ -37,32 +29,39 @@ export default function Results() {
           budgetMax,
           privateRoom,
           drinkIncluded,
-        });
+        }).toString();
+
         const response = await fetch(
           `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results?${query}`
         );
-    
+
         if (!response.ok) {
-          const contentType = response.headers.get("Content-Type");
-          if (contentType && contentType.includes("text/html")) {
-            throw new Error("HTML response received instead of JSON");
-          }
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-    
+
         const data = await response.json();
         setResults(data);
       } catch (err) {
-        setError(`エラー: ${err.message}`);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
     };
-    
-    fetchResults();
-  }, [area, guests, genre, budgetMin, budgetMax, privateRoom, drinkIncluded]); // クエリパラメータが変更されるたびにフェッチ
 
-  if (loading) return <p className="text-center mt-6">読み込み中...</p>;
-  if (error) return <p className="text-center text-red-500 mt-6">エラー: {error}</p>;
-  if (results.length === 0) return <p className="text-center mt-6">該当するお店が見つかりませんでした。</p>;
+    fetchResults();
+  }, [area, guests, genre, budgetMin, budgetMax, privateRoom, drinkIncluded]);
+
+  if (loading) {
+    return <p className="text-center mt-6">読み込み中...</p>;
+  }
+
+  if (error) {
+    return <p className="text-center text-red-500 mt-6">エラー: {error}</p>;
+  }
+
+  if (results.length === 0) {
+    return <p className="text-center mt-6">該当するお店が見つかりませんでした。</p>;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">

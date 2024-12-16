@@ -16,13 +16,13 @@ export default function SearchForm() {
     e.preventDefault();
   
     const query = new URLSearchParams({
-      area,
-      guests,
-      genre,
-      budgetMin,
-      budgetMax,
-      privateRoom,
-      drinkIncluded,
+      area: encodeURIComponent(area || ""),
+      guests: guests || "",
+      genre: encodeURIComponent(genre || ""),
+      budgetMin: budgetMin || "",
+      budgetMax: budgetMax || "",
+      privateRoom: privateRoom || "",
+      drinkIncluded: drinkIncluded || "",
     }).toString();
   
     router.push(`/results?${query}`);

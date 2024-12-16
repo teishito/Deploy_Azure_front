@@ -26,6 +26,8 @@ export default function Results() {
         drinkIncluded: searchParams.get("drinkIncluded") || "",
       };
     
+      console.log("送信するフィルタ:", filters);
+    
       try {
         const response = await fetch(
           `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results`,
@@ -36,14 +38,19 @@ export default function Results() {
           }
         );
     
+        console.log("レスポンスステータス:", response.status);
+    
         if (!response.ok) {
-          console.error(`HTTP Error: ${response.status}`);
-          throw new Error("検索結果を取得できませんでした。");
+          const errorText = await response.text();
+          console.error("エラーレスポンス:", errorText);
+          throw new Error(`HTTP Error: ${response.status}`);
         }
     
         const data = await response.json();
+        console.log("受信したデータ:", data);
         setResults(data.restaurants || []);
       } catch (err) {
+        console.error("エラーが発生しました:", err);
         setError(err.message);
       } finally {
         setLoading(false);

@@ -15,8 +15,7 @@ export default function Results() {
   useEffect(() => {
     const fetchResults = async () => {
       setLoading(true);
-
-      // クエリパラメータをJSON形式に変換
+    
       const filters = {
         area: searchParams.get("area") || "",
         genre: searchParams.get("genre") || "",
@@ -26,7 +25,7 @@ export default function Results() {
         privateRoom: searchParams.get("privateRoom") || "",
         drinkIncluded: searchParams.get("drinkIncluded") || "",
       };
-
+    
       try {
         const response = await fetch(
           `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results`,
@@ -36,9 +35,12 @@ export default function Results() {
             body: JSON.stringify(filters),
           }
         );
-
-        if (!response.ok) throw new Error("検索結果を取得できませんでした。");
-
+    
+        if (!response.ok) {
+          console.error(`HTTP Error: ${response.status}`);
+          throw new Error("検索結果を取得できませんでした。");
+        }
+    
         const data = await response.json();
         setResults(data.restaurants || []);
       } catch (err) {
@@ -50,6 +52,8 @@ export default function Results() {
 
     fetchResults();
   }, [searchParams]);
+
+  
 
   if (loading) return <p className="text-center mt-6">読み込み中...</p>;
   if (error) return <p className="text-center text-red-500 mt-6">{error}</p>;

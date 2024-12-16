@@ -7,7 +7,7 @@ export default function Ad() {
     <div
       style={{
         marginTop: "40px", // フッターとの余白を確保
-        paddingBottom: "20px", // 下に余白を追加してより調整
+        paddingBottom: "100px", // 下に余白を追加してより調整
         textAlign: "center",
       }}
     >

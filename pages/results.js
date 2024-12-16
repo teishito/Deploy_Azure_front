@@ -41,18 +41,22 @@ export default function Results() {
         const response = await fetch(
           `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results?${query}`
         );
+    
         if (!response.ok) {
+          const contentType = response.headers.get("Content-Type");
+          if (contentType && contentType.includes("text/html")) {
+            throw new Error("HTML response received instead of JSON");
+          }
           throw new Error(`HTTP error! status: ${response.status}`);
         }
+    
         const data = await response.json();
-        setResults(data); // 結果をステートに設定
+        setResults(data);
       } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+        setError(`エラー: ${err.message}`);
       }
     };
-
+    
     fetchResults();
   }, [area, guests, genre, budgetMin, budgetMax, privateRoom, drinkIncluded]); // クエリパラメータが変更されるたびにフェッチ
 

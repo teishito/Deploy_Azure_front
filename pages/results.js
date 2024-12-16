@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
+import Ad from "../components/Ad";
 import Footer from "../components/Footer";
 
 export default function Results() {
@@ -135,6 +136,7 @@ export default function Results() {
           <p className="text-gray-500">条件に当てはまるお店はありませんでした。</p>
         )}
       </main>
+      <Ad />
       <Footer />
     </div>
   );

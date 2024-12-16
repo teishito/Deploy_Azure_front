@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Header from "../components/Header";
+import Ad from "../components/Ad";
 import Footer from "../components/Footer";
 
 export default function DetailsSearch() {
@@ -169,6 +170,7 @@ export default function DetailsSearch() {
                     </button>
                 </form>
             </main>
+            <Ad />        
             <Footer />
         </div>
     );

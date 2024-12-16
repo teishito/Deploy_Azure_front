@@ -24,9 +24,7 @@ export default function Results() {
   useEffect(() => {
     const fetchResults = async () => {
       setLoading(true);
-      setError("");
       try {
-        // クエリパラメータをURLに組み立てる
         const query = new URLSearchParams({
           area,
           guests,
@@ -46,7 +44,7 @@ export default function Results() {
         }
 
         const data = await response.json();
-        setResults(data);
+        setResults(data.restaurants || []);
       } catch (err) {
         setError(err.message || "エラーが発生しました");
       } finally {
@@ -58,39 +56,15 @@ export default function Results() {
   }, [area, guests, genre, budgetMin, budgetMax, privateRoom, drinkIncluded]);
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <Header />
-        <main className="max-w-screen-lg mx-auto py-6 px-4">
-          <p className="text-center">読み込み中...</p>
-        </main>
-        <Footer />
-      </div>
-    );
+    return <p className="text-center mt-6">読み込み中...</p>;
   }
 
   if (error) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <Header />
-        <main className="max-w-screen-lg mx-auto py-6 px-4">
-          <p className="text-center text-red-500">エラー: {error}</p>
-        </main>
-        <Footer />
-      </div>
-    );
+    return <p className="text-center text-red-500 mt-6">エラー: {error}</p>;
   }
 
   if (results.length === 0) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <Header />
-        <main className="max-w-screen-lg mx-auto py-6 px-4">
-          <p className="text-center text-gray-500">該当するお店が見つかりませんでした。</p>
-        </main>
-        <Footer />
-      </div>
-    );
+    return <p className="text-center mt-6">該当するお店が見つかりませんでした。</p>;
   }
 
   return (
@@ -104,12 +78,11 @@ export default function Results() {
             className="bg-white p-4 rounded-lg shadow mb-4"
           >
             <h2 className="text-xl font-bold">{restaurant.name}</h2>
-            <p>エリア: {restaurant.area}</p>
-            <p>ジャンル: {restaurant.category}</p>
-            <p>
-              予算: ¥{restaurant.budget_min} ~ ¥{restaurant.budget_max}
-            </p>
-            <p>収容人数: {restaurant.capacity}</p>
+            <p><strong>ジャンル:</strong> {restaurant.category || "N/A"}</p>
+            <p><strong>エリア:</strong> {restaurant.area || "N/A"}</p>
+            <p><strong>食べログ評価:</strong> {restaurant.tabelog_rating || "N/A"}</p>
+            <p><strong>Google Map評価:</strong> {restaurant.google_rating || "N/A"}</p>
+            <p><strong>単価:</strong> ¥{restaurant.budget_min || 0} ~ ¥{restaurant.budget_max || "N/A"}</p>
           </div>
         ))}
       </main>

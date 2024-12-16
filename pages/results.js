@@ -1,27 +1,49 @@
-import { useRouter } from "next/router";
+import { useSearchParams } from 'next/navigation';
 import { useState, useEffect } from "react";
 import Header from "../components/Header";
-import Ad from "../components/Ad"; // Adコンポーネントをインポート
+import Ad from "../components/Ad";
 import Footer from "../components/Footer";
 
 export default function Results() {
-  const router = useRouter(); // URLクエリパラメータを取得
-  const { area, guests, genre } = router.query; // クエリパラメータを変数として取得
+  const searchParams = useSearchParams(); // クエリパラメータを取得
+  const area = searchParams.get('area') || '';
+  const guests = searchParams.get('guests') || '';
+  const genre = searchParams.get('genre') || '';
+  const budgetMin = searchParams.get('budgetMin') || '';
+  const budgetMax = searchParams.get('budgetMax') || '';
+  const privateRoom = searchParams.get('privateRoom') || '';
+  const drinkIncluded = searchParams.get('drinkIncluded') || '';
+
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const buildQueryParams = (params) => {
+    const query = new URLSearchParams();
+    Object.keys(params).forEach((key) => {
+      if (params[key]) query.append(key, params[key]); // 値が空でない場合のみ追加
+    });
+    return query.toString();
+  };
+
   useEffect(() => {
     const fetchResults = async () => {
       try {
-        // クエリパラメータを文字列化してAPIに送信
-        const query = new URLSearchParams({ area, guests, genre }).toString();
-        const response = await fetch(`https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results?${query}`);
-        
+        const query = buildQueryParams({
+          area,
+          guests,
+          genre,
+          budgetMin,
+          budgetMax,
+          privateRoom,
+          drinkIncluded,
+        });
+        const response = await fetch(
+          `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results?${query}`
+        );
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-
         const data = await response.json();
         setResults(data); // 結果をステートに設定
       } catch (err) {
@@ -31,9 +53,8 @@ export default function Results() {
       }
     };
 
-    // クエリパラメータが変更された場合にのみデータをフェッチ
-    if (area || guests || genre) fetchResults();
-  }, [area, guests, genre]); // 依存配列にパラメータを設定
+    fetchResults();
+  }, [area, guests, genre, budgetMin, budgetMax, privateRoom, drinkIncluded]); // クエリパラメータが変更されるたびにフェッチ
 
   if (loading) return <p className="text-center mt-6">読み込み中...</p>;
   if (error) return <p className="text-center text-red-500 mt-6">エラー: {error}</p>;
@@ -54,10 +75,7 @@ export default function Results() {
           </div>
         ))}
       </main>
-      
-      {/* Adコンポーネントを追加 */}
       <Ad />
-
       <Footer />
     </div>
   );

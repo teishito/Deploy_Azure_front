@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
 
 export default function SearchForm() {
   const [area, setArea] = useState(""); // エリア
@@ -18,149 +16,144 @@ export default function SearchForm() {
     e.preventDefault();
 
     // 検索クエリを作成
-    const query = {
-      area: area || "",
-      guests: guests || "",
-      genre: genre || "",
-      budgetMin: budgetMin || "",
-      budgetMax: budgetMax || "",
-      privateRoom: privateRoom || "",
-      drinkIncluded: drinkIncluded || "",
-    };
+    const query = new URLSearchParams({
+      area,
+      guests,
+      genre,
+      budgetMin,
+      budgetMax,
+      privateRoom,
+      drinkIncluded,
+    }).toString();
 
     // 検索結果ページにリダイレクト
-    router.push({
-      pathname: "/results",
-      query: query,
-    });
+    router.push(`/results?${query}`);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center p-4">
-      <Header />
-      <main className="w-full max-w-md bg-white rounded-lg shadow-lg mt-6 p-6">
-        <form onSubmit={handleSearch} className="space-y-6">
-          <h2 className="text-lg font-bold text-center">会食用のお店を検索</h2>
+    <form
+      onSubmit={handleSearch}
+      className="w-full max-w-md bg-white rounded-lg shadow-lg p-6 space-y-6"
+    >
+      <h2 className="text-lg font-bold text-center">会食用のお店を検索</h2>
 
-          {/* エリア */}
-          <div className="relative mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-1">エリア</label>
-            <select
-              value={area}
-              onChange={(e) => setArea(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg p-2"
-            >
-              <option value="">指定なし</option>
-              <option value="福岡県福岡市中央区">福岡市中央区</option>
-              <option value="福岡県福岡市博多区">福岡市博多区</option>
-              <option value="福岡県福岡市早良区">福岡市早良区</option>
-              <option value="福岡県福岡市東区">福岡市東区</option>
-              <option value="福岡県福岡市南区">福岡市南区</option>
-              <option value="福岡県福岡市西区">福岡市西区</option>
-              <option value="福岡県福岡市城南区">福岡市城南区</option>
-              <option value="福岡県北九州市小倉北区">北九州市小倉北区</option>
-            </select>
-          </div>
+      {/* エリア */}
+      <div className="relative mb-4">
+        <label className="block text-sm font-medium text-gray-700 mb-1">エリア</label>
+        <select
+          value={area}
+          onChange={(e) => setArea(e.target.value)}
+          className="w-full border border-gray-300 rounded-lg p-2"
+        >
+          <option value="">指定なし</option>
+          <option value="福岡県福岡市中央区">福岡市中央区</option>
+          <option value="福岡県福岡市博多区">福岡市博多区</option>
+          <option value="福岡県福岡市早良区">福岡市早良区</option>
+          <option value="福岡県福岡市東区">福岡市東区</option>
+          <option value="福岡県福岡市南区">福岡市南区</option>
+          <option value="福岡県福岡市西区">福岡市西区</option>
+          <option value="福岡県福岡市城南区">福岡市城南区</option>
+          <option value="福岡県北九州市小倉北区">北九州市小倉北区</option>
+        </select>
+      </div>
 
-          {/* 人数 */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">人数</label>
-            <input
-              type="number"
-              value={guests}
-              onChange={(e) => setGuests(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg p-2"
-              placeholder="例: 2"
-            />
-          </div>
+      {/* 人数 */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">人数</label>
+        <input
+          type="number"
+          value={guests}
+          onChange={(e) => setGuests(e.target.value)}
+          className="w-full border border-gray-300 rounded-lg p-2"
+          placeholder="例: 2"
+          min="1"
+        />
+      </div>
 
-          {/* ジャンル */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">ジャンル</label>
-            <select
-              value={genre}
-              onChange={(e) => setGenre(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg p-2"
-            >
-              <option value="">指定なし</option>
-              <option value="寿司">寿司</option>
-              <option value="日本料理">日本料理</option>
-              <option value="焼肉">焼肉</option>
-              <option value="イタリアン">イタリアン</option>
-              <option value="フレンチ">フレンチ</option>
-              <option value="中華料理">中華料理</option>
-            </select>
-          </div>
+      {/* ジャンル */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">ジャンル</label>
+        <select
+          value={genre}
+          onChange={(e) => setGenre(e.target.value)}
+          className="w-full border border-gray-300 rounded-lg p-2"
+        >
+          <option value="">指定なし</option>
+          <option value="寿司">寿司</option>
+          <option value="日本料理">日本料理</option>
+          <option value="焼肉">焼肉</option>
+          <option value="イタリアン">イタリアン</option>
+          <option value="フレンチ">フレンチ</option>
+          <option value="中華料理">中華料理</option>
+        </select>
+      </div>
 
-          {/* 予算 */}
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">予算下限</label>
-              <input
-                type="number"
-                value={budgetMin}
-                onChange={(e) => setBudgetMin(e.target.value)}
-                className="w-full border border-gray-300 rounded-lg p-2"
-                placeholder="例: 1000"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">予算上限</label>
-              <input
-                type="number"
-                value={budgetMax}
-                onChange={(e) => setBudgetMax(e.target.value)}
-                className="w-full border border-gray-300 rounded-lg p-2"
-                placeholder="例: 5000"
-              />
-            </div>
-          </div>
+      {/* 予算 */}
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">予算下限</label>
+          <input
+            type="number"
+            value={budgetMin}
+            onChange={(e) => setBudgetMin(e.target.value)}
+            className="w-full border border-gray-300 rounded-lg p-2"
+            placeholder="例: 1000"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">予算上限</label>
+          <input
+            type="number"
+            value={budgetMax}
+            onChange={(e) => setBudgetMax(e.target.value)}
+            className="w-full border border-gray-300 rounded-lg p-2"
+            placeholder="例: 5000"
+          />
+        </div>
+      </div>
 
-          {/* 個室希望 */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">個室希望</label>
-            <select
-              value={privateRoom}
-              onChange={(e) => setPrivateRoom(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg p-2"
-            >
-              <option value="">指定なし</option>
-              <option value="有">有</option>
-              <option value="無">無</option>
-            </select>
-          </div>
+      {/* 個室希望 */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">個室希望</label>
+        <select
+          value={privateRoom}
+          onChange={(e) => setPrivateRoom(e.target.value)}
+          className="w-full border border-gray-300 rounded-lg p-2"
+        >
+          <option value="">指定なし</option>
+          <option value="有">有</option>
+          <option value="無">無</option>
+        </select>
+      </div>
 
-          {/* 飲み放題希望 */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">飲み放題希望</label>
-            <select
-              value={drinkIncluded}
-              onChange={(e) => setDrinkIncluded(e.target.value)}
-              className="w-full border border-gray-300 rounded-lg p-2"
-            >
-              <option value="">指定なし</option>
-              <option value="有">有</option>
-              <option value="無">無</option>
-            </select>
-          </div>
+      {/* 飲み放題希望 */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">飲み放題希望</label>
+        <select
+          value={drinkIncluded}
+          onChange={(e) => setDrinkIncluded(e.target.value)}
+          className="w-full border border-gray-300 rounded-lg p-2"
+        >
+          <option value="">指定なし</option>
+          <option value="有">有</option>
+          <option value="無">無</option>
+        </select>
+      </div>
 
-          {/* 詳細検索リンク */}
-          <div className="text-center">
-            <Link href="/details">
-              <a className="text-sm text-blue-500 hover:underline">詳細検索はこちら</a>
-            </Link>
-          </div>
+      {/* 詳細検索リンク */}
+      <div className="text-center">
+        <Link href="/details">
+          <a className="text-sm text-blue-500 hover:underline">詳細検索はこちら</a>
+        </Link>
+      </div>
 
-          {/* 検索ボタン */}
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition"
-          >
-            お店を検索する
-          </button>
-        </form>
-      </main>
-      <Footer />
-    </div>
+      {/* 検索ボタン */}
+      <button
+        type="submit"
+        className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition"
+      >
+        お店を検索する
+      </button>
+    </form>
   );
 }

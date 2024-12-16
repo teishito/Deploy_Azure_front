@@ -25,6 +25,7 @@ export default function Results() {
     const fetchResults = async () => {
       setLoading(true);
       try {
+        // クエリを作成
         const query = new URLSearchParams({
           area,
           guests,
@@ -35,17 +36,23 @@ export default function Results() {
           drinkIncluded,
         }).toString();
 
-        const response = await fetch(
-          `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results?${query}`
-        );
+        const requestUrl = `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results?${query}`;
+        console.log("Request URL:", requestUrl);
+
+        const response = await fetch(requestUrl);
+
+        console.log("Response Status:", response.status);
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();
+        console.log("Response Data:", data);
+
         setResults(data.restaurants || []);
       } catch (err) {
+        console.error("Error fetching results:", err);
         setError(err.message || "エラーが発生しました");
       } finally {
         setLoading(false);

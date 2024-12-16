@@ -14,8 +14,7 @@ export default function SearchForm() {
 
   const handleSearch = (e) => {
     e.preventDefault();
-
-    // 検索クエリを作成
+  
     const query = new URLSearchParams({
       area,
       guests,
@@ -25,8 +24,7 @@ export default function SearchForm() {
       privateRoom,
       drinkIncluded,
     }).toString();
-
-    // 検索結果ページにリダイレクト
+  
     router.push(`/results?${query}`);
   };
 
@@ -53,7 +51,6 @@ export default function SearchForm() {
           <option value="福岡県福岡市南区">福岡市南区</option>
           <option value="福岡県福岡市西区">福岡市西区</option>
           <option value="福岡県福岡市城南区">福岡市城南区</option>
-          <option value="福岡県北九州市小倉北区">北九州市小倉北区</option>
         </select>
       </div>
 

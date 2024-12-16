@@ -4,19 +4,10 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import Ad from "../components/Ad";
 
 export default function Results() {
   const searchParams = useSearchParams();
-
-  // クエリパラメータの取得
-  const area = searchParams.get("area") || "";
-  const guests = searchParams.get("guests") || "";
-  const genre = searchParams.get("genre") || "";
-  const budgetMin = searchParams.get("budgetMin") || "";
-  const budgetMax = searchParams.get("budgetMax") || "";
-  const privateRoom = searchParams.get("privateRoom") || "";
-  const drinkIncluded = searchParams.get("drinkIncluded") || "";
-
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -24,74 +15,53 @@ export default function Results() {
   useEffect(() => {
     const fetchResults = async () => {
       setLoading(true);
+
+      // 長いURLを直接指定
+      const query = searchParams.toString();
+      const requestUrl = `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results?${query}`;
+
       try {
-        // クエリパラメータをエンコードして作成
-        const query = new URLSearchParams({
-          area: encodeURIComponent(area),
-          guests,
-          genre: encodeURIComponent(genre),
-          budgetMin,
-          budgetMax,
-          privateRoom: encodeURIComponent(privateRoom),
-          drinkIncluded: encodeURIComponent(drinkIncluded),
-        }).toString();
-
-        const requestUrl = `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results?${query}`;
-        console.log("Request URL:", requestUrl);
-
         const response = await fetch(requestUrl);
-
-        console.log("Response Status:", response.status);
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        if (!response.ok) throw new Error("検索結果を取得できませんでした。");
 
         const data = await response.json();
-        console.log("Response Data:", data);
-
         setResults(data.restaurants || []);
       } catch (err) {
-        console.error("Error fetching results:", err);
-        setError(err.message || "エラーが発生しました");
+        setError(err.message);
       } finally {
         setLoading(false);
       }
     };
 
     fetchResults();
-  }, [area, guests, genre, budgetMin, budgetMax, privateRoom, drinkIncluded]);
+  }, [searchParams]);
 
-  if (loading) {
-    return <p className="text-center mt-6">読み込み中...</p>;
-  }
-
-  if (error) {
-    return <p className="text-center text-red-500 mt-6">エラー: {error}</p>;
-  }
-
-  if (results.length === 0) {
-    return <p className="text-center mt-6">該当するお店が見つかりませんでした。</p>;
-  }
+  if (loading) return <p className="text-center mt-6">読み込み中...</p>;
+  if (error) return <p className="text-center text-red-500 mt-6">{error}</p>;
+  if (!results.length)
+    return <p className="text-center mt-6">条件に一致するお店がありません。</p>;
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      <main className="max-w-screen-lg mx-auto py-6 px-4">
-        <h1 className="text-lg font-bold mb-4">検索結果</h1>
-        {results.map((restaurant) => (
-          <div
-            key={restaurant.id}
-            className="bg-white p-4 rounded-lg shadow mb-4"
-          >
-            <h2 className="text-xl font-bold">{restaurant.name}</h2>
-            <p><strong>ジャンル:</strong> {restaurant.category || "N/A"}</p>
-            <p><strong>エリア:</strong> {restaurant.area || "N/A"}</p>
-            <p><strong>食べログ評価:</strong> {restaurant.tabelog_rating || "N/A"}</p>
-            <p><strong>Google Map評価:</strong> {restaurant.google_rating || "N/A"}</p>
-            <p><strong>単価:</strong> ¥{restaurant.budget_min || 0} ~ ¥{restaurant.budget_max || "N/A"}</p>
-          </div>
-        ))}
+      <main className="max-w-4xl mx-auto p-6">
+        <h1 className="text-xl font-bold mb-4">検索結果</h1>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {results.map((res) => (
+            <div key={res.id} className="bg-white p-4 rounded shadow">
+              <h2 className="text-lg font-bold">{res.name}</h2>
+              <p>エリア: {res.area || "指定なし"}</p>
+              <p>ジャンル: {res.category || "指定なし"}</p>
+              <p>予算: ¥{res.budget_min || "N/A"} ~ ¥{res.budget_max || "N/A"}</p>
+              <p>
+                食べログ評価: {res.tabelog_rating || "N/A"} (
+                {res.tabelog_review_count || 0}件)
+              </p>
+              <p>Google評価: {res.google_rating || "N/A"}</p>
+            </div>
+          ))}
+        </div>
+        <Ad />
       </main>
       <Footer />
     </div>

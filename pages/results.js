@@ -26,8 +26,6 @@ export default function Results() {
         drinkIncluded: searchParams.get("drinkIncluded") || "",
       };
 
-      console.log("送信するフィルタ:", filters);
-
       try {
         const response = await fetch(
           `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results`,
@@ -39,28 +37,29 @@ export default function Results() {
         );
 
         if (!response.ok) {
-          const errorText = await response.text();
-          console.error("エラーレスポンス:", errorText);
           throw new Error(`HTTP Error: ${response.status}`);
         }
 
         const data = await response.json();
-        console.log("受信したデータ:", data);
-
         setResults(data.restaurants?.slice(0, 5) || []);
       } catch (err) {
-        console.error("エラーが発生しました:", err);
+        console.error("POSTリクエストエラー:", err);
 
-        // デフォルトデータを取得
-        setError(err.message);
+        // デフォルトデータ取得
         try {
           const fallbackResponse = await fetch(
-            `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/api/restaurants`
+            `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/api/allrestaurants`
           );
+
+          if (!fallbackResponse.ok) {
+            throw new Error(`Fallback HTTP Error: ${fallbackResponse.status}`);
+          }
+
           const fallbackData = await fallbackResponse.json();
           setResults(fallbackData.restaurants?.slice(0, 5) || []);
         } catch (fallbackErr) {
-          console.error("デフォルトデータの取得に失敗:", fallbackErr);
+          console.error("デフォルトデータ取得エラー:", fallbackErr);
+          setError(fallbackErr.message);
         }
       } finally {
         setLoading(false);
@@ -71,9 +70,7 @@ export default function Results() {
   }, [searchParams]);
 
   if (loading) return <p className="text-center mt-6">読み込み中...</p>;
-  if (error) console.warn("エラー:", error);
-  if (!results.length)
-    return <p className="text-center mt-6">条件に一致するお店がありません。</p>;
+  if (error) return <p className="text-center text-red-500 mt-6">{error}</p>;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -87,12 +84,7 @@ export default function Results() {
               <p><strong>エリア:</strong> {res.area || "指定なし"}</p>
               <p><strong>ジャンル:</strong> {res.category || "指定なし"}</p>
               <p><strong>予算:</strong> ¥{res.budget_min || "N/A"} ~ ¥{res.budget_max || "N/A"}</p>
-              <p><strong>食べログ評価:</strong> {res.tabelog_rating || "N/A"} ({res.tabelog_review_count || 0}件)</p>
               <p><strong>Google評価:</strong> {res.google_rating || "N/A"}</p>
-              <p><strong>収容人数:</strong> {res.capacity || "情報なし"}</p>
-              <p className="text-blue-500 mt-2 underline cursor-pointer">
-                詳細を見る
-              </p>
             </div>
           ))}
         </div>

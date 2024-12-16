@@ -25,15 +25,15 @@ export default function Results() {
     const fetchResults = async () => {
       setLoading(true);
       try {
-        // クエリを作成
+        // クエリパラメータをエンコードして作成
         const query = new URLSearchParams({
-          area,
+          area: encodeURIComponent(area),
           guests,
-          genre,
+          genre: encodeURIComponent(genre),
           budgetMin,
           budgetMax,
-          privateRoom,
-          drinkIncluded,
+          privateRoom: encodeURIComponent(privateRoom),
+          drinkIncluded: encodeURIComponent(drinkIncluded),
         }).toString();
 
         const requestUrl = `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results?${query}`;

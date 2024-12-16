@@ -16,11 +16,10 @@ export default function Results() {
     const fetchResults = async () => {
       setLoading(true);
 
-      // クエリパラメータの取得と型変換
       const filters = {
         area: searchParams.get("area") || "",
         genre: searchParams.get("genre") || "",
-        people: parseInt(searchParams.get("guests")) || 0,
+        guests: parseInt(searchParams.get("guests")) || 0,
         budgetMin: parseInt(searchParams.get("budgetMin")) || null,
         budgetMax: parseInt(searchParams.get("budgetMax")) || null,
         privateRoom: searchParams.get("privateRoom") || "",
@@ -51,7 +50,18 @@ export default function Results() {
         setResults(data.restaurants?.slice(0, 5) || []);
       } catch (err) {
         console.error("エラーが発生しました:", err);
+
+        // デフォルトデータを取得
         setError(err.message);
+        try {
+          const fallbackResponse = await fetch(
+            `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/api/restaurants`
+          );
+          const fallbackData = await fallbackResponse.json();
+          setResults(fallbackData.restaurants?.slice(0, 5) || []);
+        } catch (fallbackErr) {
+          console.error("デフォルトデータの取得に失敗:", fallbackErr);
+        }
       } finally {
         setLoading(false);
       }
@@ -61,7 +71,7 @@ export default function Results() {
   }, [searchParams]);
 
   if (loading) return <p className="text-center mt-6">読み込み中...</p>;
-  if (error) return <p className="text-center text-red-500 mt-6">{error}</p>;
+  if (error) console.warn("エラー:", error);
   if (!results.length)
     return <p className="text-center mt-6">条件に一致するお店がありません。</p>;
 

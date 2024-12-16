@@ -16,12 +16,27 @@ export default function Results() {
     const fetchResults = async () => {
       setLoading(true);
 
-      // 長いURLを直接指定
-      const query = searchParams.toString();
-      const requestUrl = `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results?${query}`;
+      // クエリパラメータをJSON形式に変換
+      const filters = {
+        area: searchParams.get("area") || "",
+        genre: searchParams.get("genre") || "",
+        people: searchParams.get("guests") || 0,
+        budgetMin: searchParams.get("budgetMin") || null,
+        budgetMax: searchParams.get("budgetMax") || null,
+        privateRoom: searchParams.get("privateRoom") || "",
+        drinkIncluded: searchParams.get("drinkIncluded") || "",
+      };
 
       try {
-        const response = await fetch(requestUrl);
+        const response = await fetch(
+          `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(filters),
+          }
+        );
+
         if (!response.ok) throw new Error("検索結果を取得できませんでした。");
 
         const data = await response.json();

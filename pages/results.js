@@ -15,19 +15,20 @@ export default function Results() {
   useEffect(() => {
     const fetchResults = async () => {
       setLoading(true);
-    
+
+      // クエリパラメータの取得と型変換
       const filters = {
         area: searchParams.get("area") || "",
         genre: searchParams.get("genre") || "",
-        people: searchParams.get("guests") || 0,
-        budgetMin: searchParams.get("budgetMin") || null,
-        budgetMax: searchParams.get("budgetMax") || null,
+        people: parseInt(searchParams.get("guests")) || 0,
+        budgetMin: parseInt(searchParams.get("budgetMin")) || null,
+        budgetMax: parseInt(searchParams.get("budgetMax")) || null,
         privateRoom: searchParams.get("privateRoom") || "",
         drinkIncluded: searchParams.get("drinkIncluded") || "",
       };
-    
+
       console.log("送信するフィルタ:", filters);
-    
+
       try {
         const response = await fetch(
           `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results`,
@@ -37,18 +38,17 @@ export default function Results() {
             body: JSON.stringify(filters),
           }
         );
-    
-        console.log("レスポンスステータス:", response.status);
-    
+
         if (!response.ok) {
           const errorText = await response.text();
           console.error("エラーレスポンス:", errorText);
           throw new Error(`HTTP Error: ${response.status}`);
         }
-    
+
         const data = await response.json();
         console.log("受信したデータ:", data);
-        setResults(data.restaurants || []);
+
+        setResults(data.restaurants?.slice(0, 5) || []);
       } catch (err) {
         console.error("エラーが発生しました:", err);
         setError(err.message);

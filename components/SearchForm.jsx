@@ -30,13 +30,14 @@ export default function SearchForm() {
 
     // 検索結果ページにリダイレクト
     router.push({
-      pathname: "/results", // 結果ページのパス
+      pathname: "/results",
       query: query,
     });
   };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center p-4">
+      <Header />
       <main className="w-full max-w-md bg-white rounded-lg shadow-lg mt-6 p-6">
         <form onSubmit={handleSearch} className="space-y-6">
           <h2 className="text-lg font-bold text-center">会食用のお店を検索</h2>
@@ -69,7 +70,7 @@ export default function SearchForm() {
               value={guests}
               onChange={(e) => setGuests(e.target.value)}
               className="w-full border border-gray-300 rounded-lg p-2"
-              placeholder="例: 0"
+              placeholder="例: 2"
             />
           </div>
 
@@ -81,57 +82,79 @@ export default function SearchForm() {
               onChange={(e) => setGenre(e.target.value)}
               className="w-full border border-gray-300 rounded-lg p-2"
             >
-              <option value="指定なし">指定なし</option>
-            {/* 日本料理 */}
-            <option value="寿司">寿司</option>
-            <option value="日本料理">日本料理</option>
-            <option value="そば">そば</option>
-            <option value="うなぎ">うなぎ</option>
-            <option value="鍋">鍋</option>
-            <option value="水炊き">水炊き</option>
-            <option value="しゃぶしゃぶ">しゃぶしゃぶ</option>
-            <option value="すっぽん">すっぽん</option>
-            <option value="もつ鍋">もつ鍋</option>
-            {/* グローバル料理 */}
-            <option value="イタリアン">イタリアン</option>
-            <option value="フレンチ">フレンチ</option>
-            <option value="韓国料理">韓国料理</option>
-            <option value="インド料理">インド料理</option>
-            <option value="中華料理">中華料理</option>
-            {/* 肉料理 */}
-            <option value="焼肉">焼肉</option>
-            <option value="焼き鳥">焼き鳥</option>
-            <option value="鳥料理">鳥料理</option>
-            <option value="ステーキ">ステーキ</option>
-            <option value="肉料理">肉料理</option>
-            <option value="ジンギスカン">ジンギスカン</option>
-            {/* バー・居酒屋 */}
-            <option value="居酒屋">居酒屋</option>
-            <option value="ダイニングバー">ダイニングバー</option>
-            {/* カジュアル */}
-            <option value="ビストロ">ビストロ</option>
-            <option value="レストラン">レストラン</option>
-            <option value="餃子">餃子</option>
-            <option value="ラーメン">ラーメン</option>
-            {/* 海鮮料理 */}
-            <option value="海鮮">海鮮</option>
-            {/* その他 */}
-            <option value="鉄板焼き">鉄板焼き</option>
-            <option value="串揚げ">串揚げ</option>
+              <option value="">指定なし</option>
+              <option value="寿司">寿司</option>
+              <option value="日本料理">日本料理</option>
+              <option value="焼肉">焼肉</option>
+              <option value="イタリアン">イタリアン</option>
+              <option value="フレンチ">フレンチ</option>
+              <option value="中華料理">中華料理</option>
             </select>
           </div>
 
-          {/* 詳細検索 */}
+          {/* 予算 */}
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">予算下限</label>
+              <input
+                type="number"
+                value={budgetMin}
+                onChange={(e) => setBudgetMin(e.target.value)}
+                className="w-full border border-gray-300 rounded-lg p-2"
+                placeholder="例: 1000"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">予算上限</label>
+              <input
+                type="number"
+                value={budgetMax}
+                onChange={(e) => setBudgetMax(e.target.value)}
+                className="w-full border border-gray-300 rounded-lg p-2"
+                placeholder="例: 5000"
+              />
+            </div>
+          </div>
+
+          {/* 個室希望 */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">個室希望</label>
+            <select
+              value={privateRoom}
+              onChange={(e) => setPrivateRoom(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg p-2"
+            >
+              <option value="">指定なし</option>
+              <option value="有">有</option>
+              <option value="無">無</option>
+            </select>
+          </div>
+
+          {/* 飲み放題希望 */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">飲み放題希望</label>
+            <select
+              value={drinkIncluded}
+              onChange={(e) => setDrinkIncluded(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg p-2"
+            >
+              <option value="">指定なし</option>
+              <option value="有">有</option>
+              <option value="無">無</option>
+            </select>
+          </div>
+
+          {/* 詳細検索リンク */}
           <div className="text-center">
-            <Link href="/details" className="text-sm text-[#2c2c2c] hover:underline">
-              詳細検索はこちら
+            <Link href="/details">
+              <a className="text-sm text-blue-500 hover:underline">詳細検索はこちら</a>
             </Link>
           </div>
 
           {/* 検索ボタン */}
           <button
             type="submit"
-            className="w-full bg-[#2c2c2c] text-white py-2 rounded-lg hover:bg-[#4f4f4f] transition"
+            className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition"
           >
             お店を検索する
           </button>

@@ -47,6 +47,63 @@ export default function Home() {
           genre={genre}
           setGenre={setGenre}
         />
+            
+        {/* 検索ボタン */}
+        <div className="text-center my-4">
+          <button
+            onClick={handleSearch}
+            className="bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition"
+          >
+            検索する
+          </button>
+        </div>
+
+        {/* ローディングとエラーメッセージ */}
+        {loading && <p className="text-center">検索中...</p>}
+        {error && <p className="text-red-500 text-center">{error}</p>}
+
+        {/* 検索結果表示 */}
+        {results.length > 0 && (
+          <div className="mt-6">
+            <h2 className="text-lg font-bold mb-4">検索結果</h2>
+            {results.map((restaurant) => (
+              <div
+                key={restaurant.id}
+                className="bg-white p-4 mb-4 rounded-lg shadow flex"
+              >
+                {/* 画像 */}
+                <img
+                  src={restaurant.store_top_image || "/placeholder.png"}
+                  alt={restaurant.name}
+                  className="w-1/4 h-24 object-cover rounded-lg mr-4"
+                />
+
+                {/* 店舗情報 */}
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold mb-2">{restaurant.name}</h3>
+                  <p>ジャンル: {restaurant.category}</p>
+                  <p>エリア: {restaurant.area}</p>
+                  <p>食べログ評価: {restaurant.tabelog_rating || "N/A"}</p>
+                  <p>Google評価: {restaurant.google_rating || "N/A"}</p>
+                </div>
+
+                {/* 詳細ページリンク */}
+                <div className="flex items-center">
+                  <Link href={`/restaurant/${restaurant.id}`}>
+                    <a className="bg-blue-500 text-white py-1 px-4 rounded-lg hover:bg-blue-600 transition">
+                      詳細ページへ
+                    </a>
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* 検索結果がない場合 */}
+        {!loading && !error && results.length === 0 && (
+          <p className="text-center text-gray-500">検索結果がありません。</p>
+        )}
       </main>
 
       {/* 広告とフッター */}

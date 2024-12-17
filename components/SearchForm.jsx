@@ -137,13 +137,6 @@ export default function SearchForm() {
         </select>
       </div>
 
-      {/* 詳細検索リンク */}
-      <div className="text-center">
-        <Link href="/details">
-          <a className="text-sm text-blue-500 hover:underline">詳細検索はこちら</a>
-        </Link>
-      </div>
-
       {/* 検索ボタン */}
       <button
         type="submit"

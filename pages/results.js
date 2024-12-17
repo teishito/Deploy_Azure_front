@@ -28,7 +28,7 @@ export default function Results() {
 
       try {
         const response = await fetch(
-          `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/results`,
+          `https://tech0-gen-8-step3-app-py-10.azurewebsites.net/results`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -48,7 +48,7 @@ export default function Results() {
         // デフォルトデータ取得
         try {
           const fallbackResponse = await fetch(
-            `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/api/allrestaurants`
+            `https://tech0-gen-8-step3-app-py-10.azurewebsites.net/api/allrestaurants`
           );
 
           if (!fallbackResponse.ok) {

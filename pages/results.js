@@ -108,6 +108,9 @@ export default function Results() {
                   <strong>予算:</strong> ¥{restaurant.budget_min || "N/A"} ~ ¥
                   {restaurant.budget_max || "N/A"}
                 </p>
+                <p className="text-sm text-gray-600 mb-1">
+                  <strong>食べログ評価:</strong> {restaurant.tabelog_rating || "N/A"}
+                </p>
                 <p className="text-sm text-gray-600 mb-4">
                   <strong>Google評価:</strong> {restaurant.google_rating || "N/A"}
                 </p>
@@ -129,14 +132,12 @@ export default function Results() {
         )}
   
         {/* 戻るボタン */}
-        <button
-          onClick={() => {
-            router.push("https://tech0-gen-8-step3-app-node-10.azurewebsites.net/");
-          }}
-          className="mt-6 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+        <a
+          href="https://tech0-gen-8-step3-app-node-10.azurewebsites.net/"
+          className="mt-6 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 inline-block text-center"
         >
           検索画面に戻る
-        </button>
+        </a>
         <Ad />
       </main>
       <Footer />

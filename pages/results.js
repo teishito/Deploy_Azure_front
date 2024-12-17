@@ -1,6 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -77,17 +78,68 @@ export default function Results() {
       <Header />
       <main className="max-w-4xl mx-auto p-6">
         <h1 className="text-xl font-bold mb-4 mt-[50px]">検索結果</h1>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {results.map((res) => (
-            <div key={res.id} className="bg-white p-4 rounded-lg shadow">
-              <h2 className="text-lg font-bold">{res.name}</h2>
-              <p><strong>エリア:</strong> {res.area || "指定なし"}</p>
-              <p><strong>ジャンル:</strong> {res.category || "指定なし"}</p>
-              <p><strong>予算:</strong> ¥{res.budget_min || "N/A"} ~ ¥{res.budget_max || "N/A"}</p>
-              <p><strong>Google評価:</strong> {res.google_rating || "N/A"}</p>
-            </div>
-          ))}
-        </div>
+  
+        {loading ? (
+          <p className="text-center">検索中...</p>
+        ) : results.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {results.map((restaurant) => (
+              <div
+                key={restaurant.id}
+                className="bg-white p-4 rounded-lg shadow flex flex-col"
+              >
+                {/* 画像エリア */}
+                <img
+                  src={restaurant.store_top_image}
+                  alt={restaurant.name}
+                  className="w-full h-40 object-cover rounded mb-4"
+                />
+  
+                {/* コンテンツエリア */}
+                <h2 className="text-lg font-bold mb-2">{restaurant.name}</h2>
+                <p className="text-sm text-gray-600 mb-1">
+                  <strong>エリア:</strong> {restaurant.area || "指定なし"}
+                </p>
+                <p className="text-sm text-gray-600 mb-1">
+                  <strong>ジャンル:</strong> {restaurant.category || "指定なし"}
+                </p>
+                <p className="text-sm text-gray-600 mb-1">
+                  <strong>予算:</strong> ¥{restaurant.budget_min || "N/A"} ~ ¥
+                  {restaurant.budget_max || "N/A"}
+                </p>
+                <p className="text-sm text-gray-600 mb-4">
+                  <strong>Google評価:</strong> {restaurant.google_rating || "N/A"}
+                </p>
+  
+                {/* ボタン */}
+                <div className="flex space-x-2 mt-auto">
+                  <button
+                    className={`py-1 px-3 rounded ${
+                      favorites.find((fav) => fav.id === restaurant.id)
+                        ? "bg-yellow-400 text-white"
+                        : "bg-gray-300 text-gray-700"
+                    }`}
+                    onClick={() => toggleFavorite(restaurant)}
+                  >
+                    {favorites.find((fav) => fav.id === restaurant.id)
+                      ? "お気に入り登録済み"
+                      : "お気に入り登録"}
+                  </button>
+                  <button
+                    onClick={() => router.push(`/restaurant/${restaurant.id}`)}
+                    className="bg-blue-600 text-white py-1 px-3 rounded hover:bg-blue-700"
+                  >
+                    詳細ページへ
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-gray-700">該当する店舗が見つかりませんでした。</p>
+        )}
+  
+        {/* 戻るボタン */}
         <button
           onClick={() => {
             router.push("https://tech0-gen-8-step3-app-node-10.azurewebsites.net/");

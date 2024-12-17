@@ -33,7 +33,7 @@ export default function SearchForm() {
       onSubmit={handleSearch}
       className="w-full max-w-md bg-white rounded-lg shadow-lg p-6 space-y-6"
     >
-      <h2 className="text-lg font-bold text-center">会食用のお店を検索</h2>
+      <h2 className="text-lg font-bold text-center mt-[50px]">会食用のお店を検索</h2>
 
       {/* エリア */}
       <div className="relative mb-4">

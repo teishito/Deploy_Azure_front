@@ -90,7 +90,7 @@ export default function Results() {
         </div>
         <button
           onClick={() => {
-            window.location.href = "https://tech0-gen-8-step3-app-node-10.azurewebsites.net/";
+            router.push("https://tech0-gen-8-step3-app-node-10.azurewebsites.net/");
           }}
           className="mt-6 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
         >

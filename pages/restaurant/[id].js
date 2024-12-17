@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+import FooterMenu from '../../components/FooterMenu';
 import Head from 'next/head';
 import Map from '../../components/Map';
 
@@ -24,6 +24,11 @@ export default function RestaurantDetails({ restaurant }) {
         <Head>
             <title>{restaurant.name}</title>
             <meta name="description" content={`${restaurant.name}の詳細ページ`} />
+            <script
+            src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyCURyWrewVgNbBjGx2cwhrN92Qzg7VuQPg`}
+            async
+            defer
+            ></script>
         </Head>
 
         <Header />
@@ -76,7 +81,7 @@ export default function RestaurantDetails({ restaurant }) {
             <p>最寄り駅: {restaurant.nearest_station || '情報がありません。'}</p>
 
         </main>
-        <Footer />
+        <FooterMenu />
         </div>
     );
     }
@@ -85,7 +90,7 @@ export default function RestaurantDetails({ restaurant }) {
     const { id } = context.params;
 
     try {
-        const res = await fetch(`https://tech0-gen-8-step3-app-node-10.azurewebsites.net/restaurant/${id}`);
+        const res = await fetch(`http://127.0.0.1:5000/restaurant/${id}`);
         if (!res.ok) {
         throw new Error('Failed to fetch');
         }

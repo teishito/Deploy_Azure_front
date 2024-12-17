@@ -41,7 +41,7 @@ export default function Results() {
         }
 
         const data = await response.json();
-        setResults(data.restaurants?.slice(0, 5) || []);
+        setResults(data.restaurants?.slice(0, 6) || []);
       } catch (err) {
         console.error("POSTリクエストエラー:", err);
 
@@ -56,7 +56,7 @@ export default function Results() {
           }
 
           const fallbackData = await fallbackResponse.json();
-          setResults(fallbackData.restaurants?.slice(0, 5) || []);
+          setResults(fallbackData.restaurants?.slice(0, 6) || []);
         } catch (fallbackErr) {
           console.error("デフォルトデータ取得エラー:", fallbackErr);
           setError(fallbackErr.message);
@@ -88,6 +88,12 @@ export default function Results() {
             </div>
           ))}
         </div>
+        <button
+          onClick={() => router.back()}
+          className="mt-6 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
+        >
+          検索画面に戻る
+        </button>
         <Ad />
       </main>
       <Footer />

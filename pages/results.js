@@ -76,7 +76,7 @@ export default function Results() {
     <div className="min-h-screen bg-gray-50">
       <Header />
       <main className="max-w-4xl mx-auto p-6">
-        <h1 className="text-xl font-bold mb-4 mt-[100px]">検索結果</h1>
+        <h1 className="text-xl font-bold mb-4 mt-[50px]">検索結果</h1>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {results.map((res) => (
             <div key={res.id} className="bg-white p-4 rounded-lg shadow">
@@ -89,7 +89,9 @@ export default function Results() {
           ))}
         </div>
         <button
-          onClick={() => router.back()}
+          onClick={() => {
+            window.location.href = "https://tech0-gen-8-step3-app-node-10.azurewebsites.net/";
+          }}
           className="mt-6 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700"
         >
           検索画面に戻る

@@ -27,6 +27,15 @@ export default function Results() {
         drinkIncluded: searchParams.get("drinkIncluded") || "",
       };
 
+        // 日本語パラメーターをエンコード
+      const encodedFilters = {
+        ...filters,
+        area: encodeURIComponent(filters.area),
+        genre: encodeURIComponent(filters.genre),
+        privateRoom: encodeURIComponent(filters.privateRoom),
+        drinkIncluded: encodeURIComponent(filters.drinkIncluded),
+      };
+
       try {
         const response = await fetch(
           `https://tech0-gen-8-step3-app-py-10.azurewebsites.net/results`,

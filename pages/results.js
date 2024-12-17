@@ -73,6 +73,7 @@ export default function Results() {
   if (loading) return <p className="text-center mt-6">読み込み中...</p>;
   if (error) return <p className="text-center text-red-500 mt-6">{error}</p>;
 
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -113,18 +114,6 @@ export default function Results() {
   
                 {/* ボタン */}
                 <div className="flex space-x-2 mt-auto">
-                  <button
-                    className={`py-1 px-3 rounded ${
-                      favorites.find((fav) => fav.id === restaurant.id)
-                        ? "bg-yellow-400 text-white"
-                        : "bg-gray-300 text-gray-700"
-                    }`}
-                    onClick={() => toggleFavorite(restaurant)}
-                  >
-                    {favorites.find((fav) => fav.id === restaurant.id)
-                      ? "お気に入り登録済み"
-                      : "お気に入り登録"}
-                  </button>
                   <button
                     onClick={() => router.push(`/restaurant/${restaurant.id}`)}
                     className="bg-blue-600 text-white py-1 px-3 rounded hover:bg-blue-700"

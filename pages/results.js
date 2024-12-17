@@ -55,22 +55,6 @@ export default function Results() {
       } catch (err) {
         console.error("POSTリクエストエラー:", err);
 
-        // デフォルトデータ取得
-        try {
-          const fallbackResponse = await fetch(
-            `https://tech0-gen-8-step3-app-py-10.azurewebsites.net/api/allrestaurants`
-          );
-
-          if (!fallbackResponse.ok) {
-            throw new Error(`Fallback HTTP Error: ${fallbackResponse.status}`);
-          }
-
-          const fallbackData = await fallbackResponse.json();
-          setResults(fallbackData.restaurants?.slice(0, 6) || []);
-        } catch (fallbackErr) {
-          console.error("デフォルトデータ取得エラー:", fallbackErr);
-          setError(fallbackErr.message);
-        }
       } finally {
         setLoading(false);
       }

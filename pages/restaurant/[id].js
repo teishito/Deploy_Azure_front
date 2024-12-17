@@ -24,11 +24,6 @@ export default function RestaurantDetails({ restaurant }) {
         <Head>
             <title>{restaurant.name}</title>
             <meta name="description" content={`${restaurant.name}の詳細ページ`} />
-            <script
-            src={`https://maps.googleapis.com/maps/api/js?key=AIzaSyCURyWrewVgNbBjGx2cwhrN92Qzg7VuQPg`}
-            async
-            defer
-            ></script>
         </Head>
 
         <Header />

@@ -9,7 +9,6 @@ import Ad from "../components/Ad";
 
 export default function Results() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -28,7 +27,7 @@ export default function Results() {
         drinkIncluded: searchParams.get("drinkIncluded") || "",
       };
 
-      console.log("フィルタ条件:", filters); // デバッグ: フィルタ条件をログ出力
+      console.log("送信するフィルタ条件:", filters); // デバッグ用ログ
 
       try {
         const response = await fetch(
@@ -36,16 +35,16 @@ export default function Results() {
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(encodedFilters),
+            body: JSON.stringify(filters), // エンコードを削除
           }
         );
 
         if (!response.ok) {
-          throw new Error(`HTTP Error: ${response.status}`);
+          throw new Error(`HTTPエラー: ${response.status}`);
         }
 
         const data = await response.json();
-        console.log("取得した結果:", data); // デバッグ: レスポンスデータをログ出力
+        console.log("取得した結果:", data); // デバッグ用ログ
         setResults(data.restaurants?.slice(0, 6) || []);
       } catch (err) {
         console.error("POSTリクエストエラー:", err);

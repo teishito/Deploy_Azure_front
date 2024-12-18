@@ -36,7 +36,7 @@ export default function RestaurantDetails({ restaurant }) {
       <Header />
       <main className="max-w-screen-md mx-auto py-6 px-4">
         {/* 店名 */}
-        <h1 className="text-2xl font-bold mb-4 text-center">{restaurant.name}</h1>
+        <h1 className="text-2xl font-bold mb-4 text-center mt-[50px]">{restaurant.name}</h1>
         <img
           src={restaurant.store_top_image}
           alt={restaurant.name}

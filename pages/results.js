@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation"; // useRouter をインポート
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -9,8 +9,9 @@ import Ad from "../components/Ad";
 
 export default function Results() {
   const searchParams = useSearchParams();
-  const router = useRouter(); // useRouter を初期化
+  const router = useRouter();
   const [results, setResults] = useState([]);
+  const [favorites, setFavorites] = useState([]); // お気に入り状態を管理
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -28,8 +29,6 @@ export default function Results() {
         drinkIncluded: searchParams.get("drinkIncluded") || "",
       };
 
-      console.log("送信するフィルタ条件:", filters);
-
       try {
         const response = await fetch(
           `https://tech0-gen-8-step3-app-py-10.azurewebsites.net/results`,
@@ -45,7 +44,6 @@ export default function Results() {
         }
 
         const data = await response.json();
-        console.log("取得した結果:", data);
         setResults(data.restaurants?.slice(0, 6) || []);
       } catch (err) {
         console.error("POSTリクエストエラー:", err);
@@ -57,6 +55,18 @@ export default function Results() {
 
     fetchResults();
   }, [searchParams]);
+
+  // お気に入りの状態を切り替え
+  const toggleFavorite = (restaurant) => {
+    const isFavorite = favorites.some((fav) => fav.id === restaurant.id);
+    if (isFavorite) {
+      // お気に入り解除
+      setFavorites(favorites.filter((fav) => fav.id !== restaurant.id));
+    } else {
+      // お気に入りに追加
+      setFavorites([...favorites, restaurant]);
+    }
+  };
 
   if (loading) return <p className="text-center mt-6">読み込み中...</p>;
   if (error) return <p className="text-center text-red-500 mt-6">{error}</p>;
@@ -96,12 +106,27 @@ export default function Results() {
                 <p className="text-sm text-gray-600 mb-4">
                   <strong>Google評価:</strong> {restaurant.google_rating || "N/A"}
                 </p>
-                <button
-                  onClick={() => router.push(`/restaurant/${restaurant.id}`)} // router の使用を明確化
-                  className="bg-blue-600 text-white py-1 px-3 rounded hover:bg-blue-700"
-                >
-                  詳細ページへ
-                </button>
+                {/* ボタンセクション */}
+                <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mt-auto">
+                  <button
+                    className={`py-1 px-4 rounded-lg ${
+                      favorites.some((fav) => fav.id === restaurant.id)
+                        ? "bg-yellow-500 text-white"
+                        : "bg-gray-200 text-gray-600"
+                    }`}
+                    onClick={() => toggleFavorite(restaurant)}
+                  >
+                    {favorites.some((fav) => fav.id === restaurant.id)
+                      ? "お気に入り登録済み"
+                      : "お気に入り登録"}
+                  </button>
+                  <button
+                    onClick={() => router.push(`/restaurant/${restaurant.id}`)}
+                    className="py-1 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                  >
+                    詳細ページへ
+                  </button>
+                </div>
               </div>
             ))}
           </div>

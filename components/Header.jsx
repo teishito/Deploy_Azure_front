@@ -59,7 +59,7 @@ export default function Header() {
               </Link>
             </li>
             <li className="mb-2">
-              <Link href="/favorites" className="text-black hover:text-blue-600">
+              <Link href="/menus/favorites" className="text-black hover:text-blue-600">
                 お気に入り
               </Link>
             </li>

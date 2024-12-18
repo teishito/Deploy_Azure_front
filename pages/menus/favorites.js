@@ -11,7 +11,7 @@ export default function Favorites() {
     useEffect(() => {
         const fetchFavorites = async () => {
             try {
-                const response = await fetch("https://your-api-endpoint.com/api/favorites");
+                const response = await fetch("https://tech0-gen-8-step3-app-py-10.azurewebsites.net/api/favorites");
                 if (!response.ok) {
                     throw new Error(`HTTPエラー! ステータス: ${response.status}`);
                 }
@@ -31,7 +31,7 @@ export default function Favorites() {
     // お気に入り解除
     const removeFromFavorites = async (id) => {
         try {
-            const response = await fetch(`https://your-api-endpoint.com/api/favorites/${id}`, {
+            const response = await fetch(`https://tech0-gen-8-step3-app-py-10.azurewebsites.net/api/favorites/${id}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",

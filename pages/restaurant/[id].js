@@ -89,6 +89,38 @@ export default function RestaurantDetails({ restaurant }) {
           </div>
         </div>
 
+         {/* お店のこだわりセクション */}
+        <h2 className="text-xl font-bold mb-4">お店のこだわり</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {/* 1枚目の画像 */}
+            <div className="text-center">
+                <img
+                    src={restaurant.detail_image1}
+                    alt="お店のこだわり1"
+                    className="w-full h-48 object-cover rounded-lg"
+                />
+                <p className="text-sm text-gray-600 mt-2">5席のプライベート空間</p>
+            </div>
+            {/* 2枚目の画像 */}
+            <div className="text-center">
+                <img
+                    src={restaurant.detail_image2}
+                    alt="お店のこだわり2"
+                    className="w-full h-48 object-cover rounded-lg"
+                />
+                <p className="text-sm text-gray-600 mt-2">鮨に合う日本酒・ワイン</p>
+            </div>
+            {/* 3枚目の画像 */}
+            <div className="text-center">
+                <img
+                    src={restaurant.detail_image3}
+                    alt="お店のこだわり3"
+                    className="w-full h-48 object-cover rounded-lg"
+                />
+                <p className="text-sm text-gray-600 mt-2">昼は握り、夜はおまかせ。</p>
+            </div>
+        </div>
+
         {/* 店舗情報 */}
         <div className="mb-4">
           <h2 className="text-md font-bold mb-2">店舗情報</h2>

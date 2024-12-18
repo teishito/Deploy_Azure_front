@@ -7,19 +7,18 @@ export default function Favorites() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // APIからお気に入りリストを取得
     useEffect(() => {
         const fetchFavorites = async () => {
             try {
-                const response = await fetch("https://your-api-endpoint.com/api/favorites");
+                const response = await fetch("https://tech0-gen-8-step3-app-py-10.azurewebsites.net/api/favorites");
                 if (!response.ok) {
-                    throw new Error(`HTTPエラー! ステータス: ${response.status}`);
+                    throw new Error(`HTTP Error: ${response.status}`);
                 }
                 const data = await response.json();
-                setFavorites(data.favorites); // サーバーから返されたお気に入りデータをセット
+                setFavorites(data.favorites);
                 setLoading(false);
             } catch (err) {
-                console.error("お気に入りデータの取得中にエラーが発生しました:", err);
+                console.error("Error fetching favorites:", err);
                 setError("お気に入りデータの取得に失敗しました。");
                 setLoading(false);
             }
@@ -28,22 +27,17 @@ export default function Favorites() {
         fetchFavorites();
     }, []);
 
-    // お気に入り解除
     const removeFromFavorites = async (id) => {
         try {
-            const response = await fetch(`https://your-api-endpoint.com/api/favorites/${id}`, {
+            const response = await fetch(`https://tech0-gen-8-step3-app-py-10.azurewebsites.net/api/favorites/${id}`, {
                 method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                },
             });
             if (!response.ok) {
-                throw new Error(`HTTPエラー! ステータス: ${response.status}`);
+                throw new Error(`HTTP Error: ${response.status}`);
             }
-            // サーバー側で削除成功後に、クライアント側の状態も更新
             setFavorites(favorites.filter((restaurant) => restaurant.id !== id));
         } catch (err) {
-            console.error("お気に入りの削除中にエラーが発生しました:", err);
+            console.error("Error removing favorite:", err);
             setError("お気に入りの削除に失敗しました。");
         }
     };

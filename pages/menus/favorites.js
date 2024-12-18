@@ -7,19 +7,18 @@ export default function Favorites() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // APIからお気に入りリストを取得
     useEffect(() => {
         const fetchFavorites = async () => {
             try {
                 const response = await fetch("https://tech0-gen-8-step3-app-py-10.azurewebsites.net/api/favorites");
                 if (!response.ok) {
-                    throw new Error(`HTTPエラー! ステータス: ${response.status}`);
+                    throw new Error(`HTTP Error: ${response.status}`);
                 }
                 const data = await response.json();
                 setFavorites(data.favorites);
                 setLoading(false);
             } catch (err) {
-                console.error("お気に入りデータの取得中にエラーが発生しました:", err);
+                console.error("Error fetching favorites:", err);
                 setError("お気に入りデータの取得に失敗しました。");
                 setLoading(false);
             }
@@ -28,21 +27,17 @@ export default function Favorites() {
         fetchFavorites();
     }, []);
 
-    // お気に入り解除
     const removeFromFavorites = async (id) => {
         try {
             const response = await fetch(`https://tech0-gen-8-step3-app-py-10.azurewebsites.net/api/favorites/${id}`, {
                 method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                },
             });
             if (!response.ok) {
-                throw new Error(`HTTPエラー! ステータス: ${response.status}`);
+                throw new Error(`HTTP Error: ${response.status}`);
             }
             setFavorites(favorites.filter((restaurant) => restaurant.id !== id));
         } catch (err) {
-            console.error("お気に入りの削除中にエラーが発生しました:", err);
+            console.error("Error removing favorite:", err);
             setError("お気に入りの削除に失敗しました。");
         }
     };
@@ -97,7 +92,7 @@ export default function Favorites() {
                             </div>
                             <button
                                 onClick={() => removeFromFavorites(restaurant.id)}
-                                className="ml-4 bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-700"
+                                className="ml-auto bg-red-500 text-white py-1 px-4 rounded-lg hover:bg-red-700"
                             >
                                 お気に入り解除
                             </button>

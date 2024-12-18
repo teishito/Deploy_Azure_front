@@ -81,14 +81,6 @@ export default function RestaurantDetails({ restaurant }) {
           </button>
         </div>
 
-        {/* Google Maps */}
-        <div className="mb-4">
-          <h2 className="text-md font-bold mb-2">Google Map</h2>
-          <div className="w-full h-64 rounded-lg overflow-hidden">
-            <Map latitude={restaurant.latitude} longitude={restaurant.longitude} />
-          </div>
-        </div>
-
          {/* お店のこだわりセクション */}
         <h2 className="text-xl font-bold mb-4">お店のこだわり</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -122,13 +114,17 @@ export default function RestaurantDetails({ restaurant }) {
         </div>
 
         {/* 店舗情報 */}
-        <div className="mb-4">
-          <h2 className="text-md font-bold mb-2">店舗情報</h2>
-          <p className="text-sm">住所: {restaurant.address || '情報がありません。'}</p>
-          <p className="text-sm">電話番号: {restaurant.phone_number || '情報がありません。'}</p>
-          <p className="text-sm">営業時間: {restaurant.opening_hours || '情報がありません。'}</p>
-          <p className="text-sm">最寄り駅: {restaurant.nearest_station || '情報がありません。'}</p>
-        </div>
+          <div className="p-4 bg-gray-100 rounded-lg mb-4">
+            {/* Google Maps */}
+            <h2 className="text-md font-bold mt-6">店舗情報</h2>
+            <p>住所：{restaurant.address || '情報がありません。'}</p>
+            <p>最寄り駅： {restaurant.nearest_station || '情報がありません。'}</p>
+            {/* 店舗情報 */}
+            <p>電話番号：{restaurant.phone_number || '情報がありません。'}</p>
+            <p>営業時間：{restaurant.opening_hours || '情報がありません。'}</p>
+            <h2 className="text-md font-bold mt-6 mb-2">Google Map</h2>
+            <Map latitude={restaurant.latitude} longitude={restaurant.longitude} />
+            </div>
       </main>
 
       <FooterMenu />

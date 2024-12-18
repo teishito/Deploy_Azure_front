@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation"; // useRouter をインポート
 import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -9,6 +9,7 @@ import Ad from "../components/Ad";
 
 export default function Results() {
   const searchParams = useSearchParams();
+  const router = useRouter(); // useRouter を初期化
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -27,7 +28,7 @@ export default function Results() {
         drinkIncluded: searchParams.get("drinkIncluded") || "",
       };
 
-      console.log("送信するフィルタ条件:", filters); // デバッグ用ログ
+      console.log("送信するフィルタ条件:", filters);
 
       try {
         const response = await fetch(
@@ -35,7 +36,7 @@ export default function Results() {
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(filters), // エンコードを削除
+            body: JSON.stringify(filters),
           }
         );
 
@@ -44,7 +45,7 @@ export default function Results() {
         }
 
         const data = await response.json();
-        console.log("取得した結果:", data); // デバッグ用ログ
+        console.log("取得した結果:", data);
         setResults(data.restaurants?.slice(0, 6) || []);
       } catch (err) {
         console.error("POSTリクエストエラー:", err);
@@ -96,7 +97,7 @@ export default function Results() {
                   <strong>Google評価:</strong> {restaurant.google_rating || "N/A"}
                 </p>
                 <button
-                  onClick={() => router.push(`/restaurant/${restaurant.id}`)}
+                  onClick={() => router.push(`/restaurant/${restaurant.id}`)} // router の使用を明確化
                   className="bg-blue-600 text-white py-1 px-3 rounded hover:bg-blue-700"
                 >
                   詳細ページへ

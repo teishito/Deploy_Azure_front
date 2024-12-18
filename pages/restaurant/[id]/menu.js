@@ -95,7 +95,7 @@ export async function getServerSideProps(context) {
     try {
         // メニュー情報を取得
         const res = await fetch(
-            `https://tech0-gen-8-step3-app-node-10.azurewebsites.net/restaurant/${id}/menu`
+            `https://tech0-gen-8-step3-app-py-10.azurewebsites.net/restaurant/${id}/menu`
         );
 
         if (!res.ok) {

@@ -124,7 +124,7 @@ export default function Results() {
                     onClick={() => router.push(`/restaurant/${restaurant.id}`)}
                     className="py-1 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                   >
-                    詳細ページへ
+                    詳細
                   </button>
                 </div>
               </div>

@@ -18,7 +18,7 @@ export default function MenuDetails({ menuData }) {
         <div className="min-h-screen bg-gray-50">
             <Header />
             <main className="max-w-screen-md mx-auto py-6 px-4 bg-white shadow-lg rounded-lg">
-                <h1 className="text-2xl font-bold mb-6 text-center">メニュー詳細</h1>
+                <h1 className="text-2xl font-bold mb-6 text-center mt-[50px]">メニュー詳細</h1>
 
                 {/* タブメニュー */}
                 <div className="flex border-b mb-4">
@@ -120,7 +120,7 @@ export async function getServerSideProps(context) {
     const { id } = context.params;
 
     try {
-        const res = await fetch(`https://tech0-gen-8-step3-app-node-10.azurewebsites.net/restaurant/${id}/menu`);
+        const res = await fetch(`https://tech0-gen-8-step3-app-py-10.azurewebsites.net/restaurant/${id}/menu`);
         if (!res.ok) {
             throw new Error('Failed to fetch');
         }

@@ -57,11 +57,12 @@ export default function ReportDetails() {
                 <h1 className="text-xl font-bold mb-4">レポート詳細</h1>
                 <div className="bg-white p-6 rounded-lg shadow-lg">
                     <div className="mb-4">
-                        <h2 className="text-lg font-bold">予約したお店 : on A TABLE（オン ア テーブル）</h2>
-                        <p>会食日時 : 0月0日</p>
+                        <h2 className="text-lg font-bold">予約したお店 : ニコアパルトマン</h2>
+                        <p>会食日時 : 2024年12月26日</p>
                         <p>会食目的 : 商談フェーズの促進</p>
                     </div>
                     <form onSubmit={handleSubmit} className="space-y-6">
+        
                         {/* 会食への評価 */}
                         <h3 className="text-lg font-semibold">会食への評価を入力</h3>
                         <div className="space-y-4">

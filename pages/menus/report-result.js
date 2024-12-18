@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
+import Recommend from "../../components/Recommend";
 import { Radar } from "react-chartjs-2";
 import {
     Chart as ChartJS,
@@ -65,7 +66,7 @@ export default function ReportResult() {
         <div className="min-h-screen bg-gray-50">
             <Header />
             <main className="max-w-screen-md mx-auto py-6 px-4">
-                <h1 className="text-xl font-bold mb-6 text-center">
+                <h1 className="text-xl font-bold mb-6 text-center mt-[50px]">
                     AIがあなたのニーズを学習して次回以降のお店を提案します
                 </h1>
                 {/* レーダーチャート */}
@@ -85,22 +86,7 @@ export default function ReportResult() {
                     AIがおすすめするあなたのニーズに近いお店
                 </h2>
                 <div className="grid grid-cols-3 gap-4">
-                    {/* サンプルデータ */}
-                    {[
-                        { name: "せいもん払い", area: "福岡市博多区", image: "/menus/seimonbarai.jpg" },
-                        { name: "なかもと", area: "福岡市博多区", image: "/nakamoto.jpg" },
-                        { name: "ひょご鳥", area: "福岡市中央区", image: "/images/hyogotori.jpg" },
-                    ].map((store, index) => (
-                        <div key={index} className="text-center">
-                            <img
-                                src={store.image}
-                                alt={store.name}
-                                className="w-full h-32 object-cover rounded-lg mb-2"
-                            />
-                            <p className="font-semibold">{store.name}</p>
-                            <p className="text-sm text-gray-600">{store.area}</p>
-                        </div>
-                    ))}
+                <Recommend />
                 </div>
             </main>
             <Footer />
